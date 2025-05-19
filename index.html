@@ -70,10 +70,22 @@
     footer{background:#00336680;color:#cccccc}
   </style>
 
-  <style>
-    /* Hide the script element so it never takes up space */
-    #clustrmaps {
-      display: none !important;
+    <style>
+    /* 1) make the bio container a new stacking context on top */
+    #bio {
+      position: relative;
+      z-index: 10;
+    }
+
+    /* 2) target the script itself, any adjacent injected <div>, and the <a> badge */
+    #clustrmaps,
+    #clustrmaps + div,
+    a[href*="clustrmaps.com"] {
+      position: absolute !important;
+      top: 0; 
+      left: 0;
+      z-index: -1 !important;       /* push it behind everything */
+      pointer-events: none !important; /* disable clicks */
     }
   </style>
 </head>
@@ -216,7 +228,7 @@
     </section>
   </main>
 
-  <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?cl=ffffff&w=70&t=n&d=k-VKK4sGCTSnv1_7j3-KMWkeht_LXQ7DWB03yGVQSG4&co=ffffff&cmo=ffffff&cmn=ffffff"></script>
+  <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=ffffff&w=70&t=n&d=k-VKK4sGCTSnv1_7j3-KMWkeht_LXQ7DWB03yGVQSG4&co=ffffff&cmo=ffffff&cmn=ffffff'></script>
 
   <!-- Footer -->
   <footer class="py-2 text-center">
