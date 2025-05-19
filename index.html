@@ -40,7 +40,7 @@
     main section + section{margin-top:2rem;}
 
     /* NAVBAR */
-    .navbar{backdrop-filter:blur(10px);background:rgba(0,0,0,.55)!important}
+    .navbar{backdrop-filter:blur(13px);background:#00336680}
     .nav-link{position:relative}
     .nav-link::after{content:"";position:absolute;left:0;bottom:0;width:0;height:2px;background:#fff;transition:width .4s}
     .nav-link:hover::after,.nav-link.active::after{width:100%}
@@ -60,14 +60,14 @@
     section h2::after{content:"";position:absolute;left:0;bottom:-6px;width:60px;height:3px;background:var(--primary-gradient)}
 
     /* LIST CARDS */
-    .list-group-item{background:#fff;border:none;border-radius:.75rem;box-shadow:var(--card-shadow);transition:transform .35s,box-shadow .35s}
-    .list-group-item:hover{transform:translateY(-6px);box-shadow:0 8px 20px rgba(0,0,0,.12)}
+    .list-group-item{background:#fff;border:none;border-radius:.75rem;box-shadow:var(--card-shadow);transition:transform 0.5s,box-shadow 0.5s}
+    .list-group-item:hover{transform:translateY(-10px);box-shadow:0 8px 10px rgba(0,0,0,.12)}
     .list-group-item strong{font-weight:700}
     .list-group-item a{text-decoration:none}
-    .pub-year{font-size:.75rem;letter-spacing:.05em;padding:.25rem .6rem;border-radius:999px;background:var(--year-gradient);color:#fff}
+    .pub-year{font-weight:600;font-size:.75rem;letter-spacing:.05em;padding:.25rem .6rem;border-radius:200px;background:var(--year-gradient);color:#fff}
 
     /* FOOTER */
-    footer{background:#343a40;color:#adb5bd}
+    footer{background:#00336680;color:#cccccc}
   </style>
 </head>
 <body data-bs-spy="scroll" data-bs-target="#navMenu" data-bs-offset="80" tabindex="0">
@@ -89,9 +89,9 @@
   <!-- Header / Hero -->
   <header id="home" class="py-5 text-center bg-white mb-4 shadow-sm">
     <div class="container">
-      <img src="pictures/WY.png" alt="Wei You" class="rounded-circle profile-img mb-3">
+      <img src="pictures/WY.png" alt="Wei You" class="profile-img mb-4">
       <h1 class="fw-bold">Wei You (尤为)</h1>
-      <p class="lead mb-1">Department of Industrial Engineering and Decision Analytics<br>The Hong Kong University of Science and Technology</p>
+      <p class="lead mb-3">Assistant Professor<br>Department of Industrial Engineering and Decision Analytics<br>The Hong Kong University of Science and Technology</p>
       
       <a href="mailto:weiyou@ust.hk"
         class="d-inline-flex align-items-center gap-1 text-decoration-none mx-2"
@@ -203,14 +203,14 @@
     <!-- Biography Section -->
     <section id="bio" class="pt-4">
       <h2>Biography</h2>
-      <div class="card border-0 shadow-sm p-4">
-        <p class="mb-0"><strong>Wei You</strong> joined the <a href="https://ieda.ust.hk/" class="text-decoration-none">Department of Industrial Engineering and Decision Analytics</a> at the Hong Kong University of Science and Technology in July 2019. Stochastic models, queueing theory, applied probability, sequential decision-making, and their applications to the performance analysis and design of service systems and digital experimentation. He received his Ph.D. degree in Operations Research (2019) from Columbia University, advised by Professor <a href="http://www.columbia.edu/~ww2040/" class="text-decoration-none">Ward Whitt</a>, and his B.S. degree in Mathematics (2014) from <a href="https://en.wikipedia.org/wiki/Nanjing_University" class="text-decoration-none">Nanjing University</a>, China.</p>
+      <div class="card border-1 shadow-sm p-4">
+        <p class="mb-0">I am an assistant professor of <a href="https://ieda.ust.hk/" class="text-decoration-none">Industrial Engineering and Decision Analytics</a> at the Hong Kong University of Science and Technology. My research focuses on Stochastic models, queueing theory, applied probability, sequential decision-making, and their applications to the performance analysis and design of service systems and digital experimentation. Previously, I received my Ph.D. degree in Operations Research (2019) from Columbia University, advised by Professor <a href="http://www.columbia.edu/~ww2040/" class="text-decoration-none">Ward Whitt</a>, and my B.S. degree in Mathematics (2014) from <a href="https://en.wikipedia.org/wiki/Nanjing_University" class="text-decoration-none">Nanjing University</a>, China.</p>
       </div>
     </section>
   </main>
 
   <!-- Footer -->
-  <footer class="py-4 text-center">
+  <footer class="py-2 text-center">
     <div class="container">
       <small>© 2025 <strong>Wei You</strong></small>
     </div>
@@ -227,6 +227,8 @@
       easing: 'ease-out-cubic'
     });
   </script>
+
+  <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=003366&w=a&t=n&d=k-VKK4sGCTSnv1_7j3-KMWkeht_LXQ7DWB03yGVQSG4&co=ffffff'></script>
 
 </body>
 
