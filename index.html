@@ -60,8 +60,8 @@
     section h2::after{content:"";position:absolute;left:0;bottom:-6px;width:60px;height:3px;background:var(--primary-gradient)}
 
     /* LIST CARDS */
-    .list-group-item{background:#fff;border:none;border-radius:.75rem;box-shadow:var(--card-shadow);transition:transform 0.5s,box-shadow 0.5s}
-    .list-group-item:hover{transform:translateY(-10px);box-shadow:0 8px 10px rgba(0,0,0,.12)}
+    .list-group-item{border-radius: 20px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3); transition: 0.4s; padding: 10px 14px; background-color: #fefefe;}
+    .list-group-item:hover{transform:translateY(-2px);box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.2);}
     .list-group-item strong{font-weight:700}
     .list-group-item a{text-decoration:none}
     .pub-year{font-weight:600;font-size:.75rem;letter-spacing:.05em;padding:.25rem .6rem;border-radius:200px;background:var(--year-gradient);color:#fff}
@@ -90,12 +90,14 @@
   <!-- NAVIGATION -->
   <nav class="navbar navbar-expand-lg fixed-top navbar-dark shadow-sm">
     <div class="container">
-      <a class="navbar-brand fw-bold" href="#home">Wei You</a>
+      <a class="navbar-brand fw-bold" href="index.html">Wei You</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"><span class="navbar-toggler-icon"></span></button>
       <div class="collapse navbar-collapse" id="navMenu">
         <ul class="navbar-nav ms-auto gap-lg-4">
-          <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="#research">Research</a></li>
+          <li class="nav-item"><a class="nav-link active" href="index.html"><i class="fa-solid fa-user"></i> Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="research.html"><i class="fa-solid fa-book"></i> Research</a></li>
+          <li class="nav-item"><a class="nav-link" href="talks.html"><i class="fa-solid fa-person-chalkboard"></i> Talks</a></li>
+          <li class="nav-item"><a class="nav-link" href="students.html"><i class="fa-solid fa-graduation-cap"></i> Students</a></li>
           <li class="nav-item"><a class="nav-link" href="CV.pdf" target="_blank">CV</a></li>
         </ul>
       </div>
@@ -143,13 +145,19 @@
 
   <!-- MAIN CONTENT -->
   <main class="container py-5">
+    <!-- TALKS SECTION -->
+    <section id="talks">
+      <h2>Biography</h2>
+      <div class="card p-4">
+        <p class="mb-0">I am an assistant professor of <a href="https://ieda.ust.hk/" class="text-decoration-none">Industrial Engineering and Decision Analytics</a> at the Hong Kong University of Science and Technology. My research focuses on Stochastic models, queueing theory, applied probability, sequential decision-making, and their applications to the performance analysis and design of service systems and digital experimentation. Previously, I received my Ph.D. degree in Operations Research (2019) from Columbia University, advised by Professor <a href="http://www.columbia.edu/~ww2040/" class="text-decoration-none">Ward Whitt</a>, and my B.S. degree in Mathematics (2014) from <a href="https://en.wikipedia.org/wiki/Nanjing_University" class="text-decoration-none">Nanjing University</a>, China.</p>
+      </div>
+    </section>
+
+
     <!-- RESEARCH SECTION -->
     <section id="research">
-      <h2>Research</h2>
-
-      <!-- Publications -->
-      <h4 class="mt-4">Publications</h4>
-      <ul class="list-group list-group-flush mb-4">
+      <h2>Selected Works</h2>
+      
         <li class="list-group-item"><span class="pub-year">2025</span> <strong class="d-block mt-2">Dual-Directed Algorithm Design for Efficient Pure Exploration</strong>
           Chao Qin and <strong>Wei You</strong><br>
           To appear in <em>Operations Research</em>, 2025. 
@@ -164,65 +172,15 @@
           <strong>Wei You</strong>, Chao Qin, Zihao Wang, Shuoguang Yang<br><em>Conference on Learning Theory (COLT)</em>, 2023. 
           [<a href="https://proceedings.mlr.press/v195/you23a.html" target="_blank">Extended abstract</a> · <a href="https://arxiv.org/abs/2205.12086" target="_blank">Full paper</a> · <a href="https://github.com/zihaophys/topk_colt23.git" target="_blank">Code</a>]</li>
 
-        <li class="list-group-item"><span class="pub-year">2022</span> <strong class="d-block mt-2">New decomposition approximations for queueing network</strong>
-          Ward Whitt and <strong>Wei You</strong><br><em>Queueing Systems</em>, 2022. 
-          [<a href="https://doi.org/10.1007/s11134-022-09739-w" target="_blank">Journal</a>]</li>
-
-        <li class="list-group-item"><span class="pub-year">2022</span> <strong class="d-block mt-2">A Robust Queueing Network Analyzer Based on Indices of Dispersion</strong>
-          Ward Whitt and <strong>Wei You</strong><br><em>Naval Research Logistics</em>, 2022. 
-          [<a href="https://doi.org/10.1002/nav.22010" target="_blank">Journal</a> · <a href="papers/RQ_Slides.pdf" target="_blank">Slides</a>]</li>
-
-        <li class="list-group-item"><span class="pub-year">2020</span> <strong class="d-block mt-2">Heavy-Traffic Limits for Stationary Network Flows</strong>
-          Ward Whitt and <strong>Wei You</strong><br><em>Queueing Systems</em>, 2020. 
-          [<a href="https://doi.org/10.1007/s11134-019-09645-8" target="_blank">Journal</a> · <a href="papers/Whitt_You_flow_full.pdf" target="_blank">Longer version</a> · <a href="papers/Flow_Slides.pdf" target="_blank">Slides</a>]</li>
-
-        <li class="list-group-item"><span class="pub-year">2019</span> <strong class="d-block mt-2">Time-Varying Robust Queueing</strong>
-          Ward Whitt and <strong>Wei You</strong><br><em>Operations Research</em>, 2019. 
-          [<a href="https://pubsonline.informs.org/doi/10.1287/opre.2019.1846" target="_blank">Journal</a> · <a href="papers/Whitt_You_TVRQ.pdf" target="_blank">Preprint</a>]</li>
-
-        <li class="list-group-item"><span class="pub-year">2019</span> <strong class="d-block mt-2">The Advantage of Indices of Dispersion in Queueing Approximations</strong>
-          Ward Whitt and <strong>Wei You</strong><br><em>Operations Research Letters</em>, 2019. 
-          [<a href="https://doi.org/10.1016/j.orl.2019.01.001" target="_blank">Journal</a> · <a href="papers/Whitt_You_Index.pdf" target="_blank">Preprint</a> · <a href="papers/Whitt_You_Index_supplement.pdf" target="_blank">Supplement</a>]</li>
-
-        <li class="list-group-item"><span class="pub-year">2018</span> <strong class="d-block mt-2">Heavy-Traffic Limit of the GI/GI/1 Stationary Departure Process and its Variance Function</strong>
-          Ward Whitt and <strong>Wei You</strong><br><em>Stochastic Systems</em>, 2018. 
-          [<a href="https://pubsonline.informs.org/doi/10.1287/stsy.2018.0011" target="_blank">Journal</a> · <a href="papers/Whitt_You_HTDep.pdf" target="_blank">Preprint</a>]</li>
+        <li class="list-group-item"><span class="pub-year">2019</span> <strong class="d-block mt-2">A Robust Queueing Network Analyzer Based on Indices of Dispersion</strong>Ph.D. Thesis, 2019. 
+          [<a href="https://doi.org/10.7916/d8-1zed-ny67" target="_blank">Thesis</a>, <a href="papers/Thesis_WYou.pdf" target="_blank">PDF</a>]</li>
 
         <li class="list-group-item"><span class="pub-year">2018</span> <strong class="d-block mt-2">Using Robust Queueing to Expose the Impact of Dependence in Single-Server Queues</strong>
           Ward Whitt and <strong>Wei You</strong><br><em>Operations Research</em>, 2018. 
           [<a href="https://pubsonline.informs.org/doi/10.1287/opre.2017.1649" target="_blank">Journal</a> · <a href="papers/Whitt_You_RQ.pdf" target="_blank">Preprint</a>]</li>
-      </ul>
-
-      <!-- Thesis -->
-      <h4 class="mt-5">Thesis</h4>
-      <ul class="list-group list-group-flush mb-4">
-        <li class="list-group-item"><span class="pub-year">2019</span> <strong class="d-block mt-2">A Robust Queueing Network Analyzer Based on Indices of Dispersion</strong>Ph.D. Thesis, 2019. 
-          [<a href="https://doi.org/10.7916/d8-1zed-ny67" target="_blank">Thesis</a>, <a href="papers/Thesis_WYou.pdf" target="_blank">PDF</a>]</li>
-      </ul>
-
-      <!-- Working papers -->
-      <h4 class="mt-5">Working Papers</h4>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item"><span class="pub-year">2025</span> <strong class="d-block mt-2">Cost-Aware Structured Bandits</strong>
-            Xinyu Liu, Chao Qin and <strong>Wei You</strong>, working paper.</li>
-        <li class="list-group-item"><span class="pub-year">2025</span> <strong class="d-block mt-2">Transfer Learning with Partially Observable Offline Data via Causal Bounds</strong>
-            Xueping Gong, <strong>Wei You</strong> and Jiheng Zhang, major revision at <em>Operations Research</em>. [<a href="papers/Gong_et_al_TL.pdf" target="_blank">Preprint</a>]</li>
-        <li class="list-group-item"><span class="pub-year">2024</span> <strong class="d-block mt-2">Service Rate Differentiation for Homogeneous Impatient Customers</strong>
-            Chenguang (Allen) Wu and <strong>Wei You</strong>, major revision at <em>Manufacturing &amp; Service Operations Management</em>.</li>
-        <li class="list-group-item"><span class="pub-year">2024</span> <strong class="d-block mt-2">Robust Queueing for Queues with Impatient Customer</strong>
-            <strong>Wei You</strong>, working paper.</li>
-        <li class="list-group-item"><span class="pub-year">2023</span> <strong class="d-block mt-2">A Multi-Armed Bandit Approach to Online Resource Allocation for Service Platforms</strong>
-            Zihao Wang and <strong>Wei You</strong>, working paper.</li>
-      </ul>
-    </section>
-
-    <!-- Biography Section -->
-    <section id="bio" class="pt-4">
-      <h2>Biography</h2>
-      <div class="card border-1 shadow-sm p-4">
-        <p class="mb-0">I am an assistant professor of <a href="https://ieda.ust.hk/" class="text-decoration-none">Industrial Engineering and Decision Analytics</a> at the Hong Kong University of Science and Technology. My research focuses on Stochastic models, queueing theory, applied probability, sequential decision-making, and their applications to the performance analysis and design of service systems and digital experimentation. Previously, I received my Ph.D. degree in Operations Research (2019) from Columbia University, advised by Professor <a href="http://www.columbia.edu/~ww2040/" class="text-decoration-none">Ward Whitt</a>, and my B.S. degree in Mathematics (2014) from <a href="https://en.wikipedia.org/wiki/Nanjing_University" class="text-decoration-none">Nanjing University</a>, China.</p>
-      </div>
-    </section>
+        
+      <p></p>
+      </section>
   </main>
 
   <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=ffffff&w=70&t=n&d=k-VKK4sGCTSnv1_7j3-KMWkeht_LXQ7DWB03yGVQSG4&co=ffffff&cmo=ffffff&cmn=ffffff'></script>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Wei You's Home Page">
+  <meta name="author" content="Wei You">
+  <title>Wei You</title>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-124664957-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}  
+    gtag('js', new Date());
+    gtag('config', 'UA-124664957-1');
+  </script>
+
+  <!-- Fonts & CSS libs -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"> 
+
+  <style>
+    :root{
+      --primary-gradient:linear-gradient(135deg,#0033662a 0%,#00336600 100%);
+      --year-gradient:linear-gradient(135deg,#003366 0%,#cccccc 100%);
+      --card-shadow:0 4px 12px rgba(0,0,0,.07);
+    }
+    html{scroll-behavior:smooth}
+    body{
+      font-family:'Roboto',sans-serif;
+      background:#f8f9fa;
+      color:#003366;
+      padding-top:3rem;
+    }
+    h1,h2,h3,h4,h5{font-family:'Roboto',sans-serif}
+
+    main section + section{margin-top:2rem;}
+
+    /* NAVBAR */
+    .navbar{backdrop-filter:blur(13px);background:#00336680}
+    .nav-link{position:relative}
+    .nav-link::after{content:"";position:absolute;left:0;bottom:0;width:0;height:2px;background:#fff;transition:width .4s}
+    .nav-link:hover::after,.nav-link.active::after{width:100%}
+
+    /* HERO */
+    header#home{
+      font-family:'Roboto',sans-serif;
+      background:var(--primary-gradient);
+      color:#000000;
+    }
+    .profile-img{
+      width:160px;height:160px;object-fit:cover;border-radius:50%;border:6px solid rgba(255,255,255,.85);box-shadow:var(--card-shadow)
+    }
+
+    /* SECTION TITLES */
+    section h2{position:relative;margin-bottom:1.5rem;font-weight:700}
+    section h2::after{content:"";position:absolute;left:0;bottom:-6px;width:60px;height:3px;background:var(--primary-gradient)}
+
+    /* LIST CARDS */
+    .list-group-item{border-radius: 20px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3); transition: 0.4s; padding: 10px 14px; background-color: #fefefe;}
+    .list-group-item:hover{transform:translateY(-2px);box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.2);}
+    .list-group-item strong{font-weight:700}
+    .list-group-item a{text-decoration:none}
+    .pub-year{font-weight:600;font-size:.75rem;letter-spacing:.05em;padding:.25rem .6rem;border-radius:200px;background:var(--year-gradient);color:#fff}
+
+    /* FOOTER */
+    footer{background:#00336680;color:#cccccc}
+  </style>
+</head>
+<body data-bs-spy="scroll" data-bs-target="#navMenu" data-bs-offset="80" tabindex="0">
+  <!-- NAVIGATION -->
+  <nav class="navbar navbar-expand-lg fixed-top navbar-dark shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="index.html">Wei You</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"><span class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto gap-lg-4">
+          <li class="nav-item"><a class="nav-link" href="index.html"><i class="fa-solid fa-user"></i> Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="research.html"><i class="fa-solid fa-book"></i> Research</a></li>
+          <li class="nav-item"><a class="nav-link active" href="talks.html"><i class="fa-solid fa-person-chalkboard"></i> Talks</a></li>
+          <li class="nav-item"><a class="nav-link" href="students.html"><i class="fa-solid fa-graduation-cap"></i> Students</a></li>
+          <li class="nav-item"><a class="nav-link" href="CV.pdf" target="_blank">CV</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Header / Hero -->
+  <header id="home" class="py-5 text-center bg-white mb-4 shadow-sm">
+    <div class="container">
+      <img src="pictures/WY.png" alt="Wei You" class="profile-img mb-4">
+      <h1 class="fw-bold">Wei You (尤为)</h1>
+      <p class="lead mb-3">Assistant Professor<br>Department of Industrial Engineering and Decision Analytics<br>The Hong Kong University of Science and Technology</p>
+      
+      <a href="mailto:weiyou@ust.hk"
+        class="d-inline-flex align-items-center gap-1 text-decoration-none mx-2"
+        aria-label="Email Wei You">
+        <img src="pictures/mail.svg"
+            alt=""
+            style="width:1.5rem; height:1.5rem;">
+        <span>weiyou@ust.hk</span>
+      </a>
+
+      <a href="https://scholar.google.com/citations?user=N9b9l8wAAAAJ"
+        target="_blank"
+        class="d-inline-flex align-items-center gap-1 text-decoration-none mx-2"
+        aria-label="Google Scholar">
+        <img src="pictures/google-scholar.svg"
+            alt=""
+            style="width:1.5rem;height:1.5rem;">
+        <span>Google Scholar</span>
+      </a>
+
+      <a href="https://orcid.org/0000-0003-0844-4194"
+        target="_blank"
+        class="d-inline-flex align-items-center gap-1 text-decoration-none mx-2"
+        aria-label="ORCID">
+        <img src="pictures/orcid.svg"
+            alt=""
+            style="width:1.5rem;height:1.5rem;">
+        <span>ORCID</span>
+      </a>
+    </p>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="container py-5">
+    <!-- TALKS SECTION -->
+    <section id="talks">
+      <h2>Conference & Invited Talks</h2>
+      <div class="conferences">
+        <h4 class="mt-4">Conference Talks</h4>
+        <ul>
+          <li><em>“Transfer Learning with Partially Observable Offline Data via Causal Bounds”</em><br>EcoSta 2025, Tokyo, Japan</li>
+          <li><em>“Cost-Aware Structured Bandits”</em><br>2025 INFORMS Applied Probability Conference, Atlanta, GA<br>2025 INFORMS International Meeting, Singapore</li>
+          <li><em>“Dual-Directed Algorithm Design for Efficient Pure Exploration”</em><br>2024 INFORMS Annual Meeting, Seattle, WA<br>IASC-ARS Interim Conference 2024, Taipei City<br>JCSDS 2023, Kunming, Yunnan</li>
+          <li><em>“Information-Directed Selection for Pure Exploration”</em><br>2023 INFORMS Annual Meeting, Phoenix, AZ</li>
+          <li><em>“Information-Directed Selection for Top-Two Algorithms”</em><br>Conference on Learning Theory (COLT 2023), Bangalore, India<br>2023 INFORMS APS Meeting, Nancy, France<br>POMS-HK 2023, Hong Kong</li>
+          <li><em>“Approximation for Single-Server Queues with Abandonment via Robust Queueing”</em><br>2024 INFORMS MSOM Conference, Minneapolis, MN<br>2021 INFORMS Annual Meeting, Anaheim, CA</li>
+          <li><em>“Online Resource Allocation for Service Platforms”</em><br>Virtual 2020 INFORMS Annual Meeting</li>
+          <li><em>“Heavy-Traffic Limit for Stationary Network Flows”</em><br>2019 INFORMS APS Meeting, Brisbane, Australia</li>
+          <li><em>“Time-Varying Robust Queueing for Quantile Approximation”</em><br>POMS-HK 2020, Hong Kong<br>2019 INFORMS APS Meeting, Brisbane, Australia</li>
+          <li><em>“A Robust Queueing Network Analyzer Based on Indices of Dispersion”</em><br>2018 INFORMS Annual Meeting, Phoenix, AZ</li>
+          <li><em>“A Robust Queueing Network Analyzer for a Series of Single-server Queues”</em><br>2017 INFORMS Annual Meeting, Houston, TX</li>
+          <li><em>“Time-Varying Robust Queueing”</em><br>2017 INFORMS APS Meeting, Evanston, IL</li>
+          <li><em>“Using Robust Queueing To Expose The Impact of Dependence In Single Server Queues”</em><br>2016 INFORMS Annual Meeting, Nashville, TN</li>
+        </ul>
+      </div>
+      <div class="invited-talks">
+        <h4 class="mt-4">Invited Talks</h4>
+        <ul>
+          <li>Antai College of Economics & Management, Shanghai Jiao Tong University, 2025</li>
+          <li>Institute of Statistics and Big Data, Renmin University of China, 2024</li>
+          <li>School of Statistics and Data Science, Nankai University, 2024</li>
+          <li>School of Management, Fudan University, 2024</li>
+          <li>School of Digital Economics, Shanghai University of Finance and Economics, 2023</li>
+          <li>School of Management and Engineering, Nanjing University, 2023</li>
+          <li>Institute of Applied Mathematics, Chinese Academy of Sciences, 2019</li>
+          <li>Institute of Mathematical Science, ShanghaiTech University, 2019</li>
+          <li>Industrial Engineering and Decision Analytics, HKUST, 2019</li>
+          <li>Industrial and System Engineering, Virginia Tech, 2019</li>
+          <li>System and Industrial Engineering, University of Arizona, 2019</li>
+          <li>Business School, University of Miami, 2019</li>
+          <li>School of Management, University of Science and Technology of China, 2019</li>
+          <li>Institute for Data and Decision Analytics, Chinese University of Hong Kong, Shen Zhen, 2019</li>
+          <li>System Engineering and Engineering Management, Chinese University of Hong Kong, 2019</li>
+          <li>School of Management and Engineering, Nanjing University, 2017</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+  
+  <!-- Footer -->
+  <footer class="py-2 text-center">
+    <div class="container">
+      <small>© 2025 <strong>Wei You</strong></small>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- AOS JS -->
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      once: true,
+      duration: 700,
+      easing: 'ease-out-cubic'
+    });
+  </script>
+
+</body>
+
+</html>
