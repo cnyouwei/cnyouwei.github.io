@@ -70,22 +70,19 @@
     footer{background:#00336680;color:#cccccc}
   </style>
 
-    <style>
-    /* 1) make the bio container a new stacking context on top */
+  <style>
     #bio {
       position: relative;
       z-index: 10;
     }
-
-    /* 2) target the script itself, any adjacent injected <div>, and the <a> badge */
     #clustrmaps,
     #clustrmaps + div,
     a[href*="clustrmaps.com"] {
       position: absolute !important;
       top: 0; 
       left: 0;
-      z-index: -1 !important;       /* push it behind everything */
-      pointer-events: none !important; /* disable clicks */
+      z-index: -1 !important;       
+      pointer-events: none !important; 
     }
   </style>
 </head>
