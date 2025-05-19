@@ -3,7 +3,7 @@
 \usepackage[parfill]{parskip} % Remove paragraph indentation
 \pagestyle{empty} % Suppress page numbers
 
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref} 
 \usepackage{enumitem} % Required to set item left margin
 
 \linespread{1.25} 
@@ -19,7 +19,8 @@
     {\huge \bfseries \scshape \name} \hfill
     \begin{tabular}{r}
          \contact \\
-         \address 
+         \address \\
+         \updated
     \end{tabular}
     \break
   \endgroup
@@ -41,6 +42,7 @@
 \def \name{Wei You} % name
 \def \address{Office: Room 5559D, HKUST} % address
 \def \contact{Email: \href{mailto:weiyou@ust.hk}{weiyou@ust.hk}}
+\def \updated{Last updated: \today}
 
 %------------------------------------------------
 
