@@ -4,7 +4,8 @@
 \pagestyle{empty} % Suppress page numbers
 
 \usepackage[hidelinks]{hyperref} 
-\usepackage{enumitem} % Required to set item left margin
+\usepackage{enumitem}
+\usepackage{lmodern}
 
 \linespread{1.25} 
 \usepackage[left=0.75in,top=0.75in,right=0.75in,bottom=0.75in]{geometry} % Document margins
@@ -16,7 +17,7 @@
 
 \def \printheader{
   \begingroup
-    {\huge \bfseries \scshape \name} \hfill
+    {\huge \bfseries \name} \hfill
     \begin{tabular}{r}
          \contact \\
          \address \\
@@ -30,17 +31,17 @@
 %	Format of blocks
 %----------------------------
 
-\newenvironment{block}[1]{ % input argument - block name
+\newenvironment{block}[1]{ 
   \medskip
-  {\Large \bfseries \scshape #1} % block title
-  \medskip % medium size virtical spacing
-  \hrule % horizontal line
+  {\Large \bfseries #1} 
+  \medskip 
+  \hrule 
 }
 
 %------------------------------------------------
 
-\def \name{Wei You} % name
-\def \address{Office: Room 5559D, HKUST} % address
+\def \name{Wei You} 
+\def \address{Office: Room 5559D, HKUST} 
 \def \contact{Email: \href{mailto:weiyou@ust.hk}{weiyou@ust.hk}}
 \def \updated{Last updated: \today}
 
@@ -94,7 +95,7 @@
 
 \textbf{\large Preprints}
 \begin{enumerate}
-	\item Cost-Aware Structured Bandits, \\
+	\item Cost-Aware Exploration for Structured Bandits, \\
             Xinyu Liu, Chao Qin and Wei You, working paper, 2025.
       \item Transfer Learning with Partially Observable Offline Data via Causal Bounds, \\
             Xueping Gong, Wei You and Jiheng Zhang, Major revision at \textbf{Operations Research}, 2025.
@@ -199,7 +200,7 @@
       \item[] School of Statistics and Data Science, Nankai University, 2024
       \item[] School of Management, Fudan University, 2024
       \item[] School of Digital Economics, Shanghai University of Finance and Economics, 2023
-      \item[] School of Management and Engineering, Nanjing University, 2023
+      \item[] School of Management and Engineering, Nanjing University, 2017, 2023
 	\item[] Institute of Applied Mathematics, Chinese Academy of Sciences, 2019
 	\item[] Institute of Mathematical Science, ShanghaiTech University, 2019
 	\item[] Industrial Engineering and Decision Analytics, HKUST, 2019
@@ -209,7 +210,6 @@
 	\item[] School of Management, University of Science and Technology of China, 2019
 	\item[] Institute for Data and Decision Analytics, Chinese University of Hong Kong, Shen Zhen, 2019
 	\item[] System Engineering and Engineering Management,  Chinese University of Hong Kong, 2019
-	\item[] School of Management and Engineering, Nanjing University, 2017
 \end{itemize}
 
 \end{block}
