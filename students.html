@@ -110,7 +110,15 @@
         </ul>
     </section>
   </main>
-  
+
+  <!-- ClustrMaps -->
+  <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=ffffff&w=70&t=n&d=k-VKK4sGCTSnv1_7j3-KMWkeht_LXQ7DWB03yGVQSG4&co=ffffff&cmo=ffffff&cmn=ffffff'></script>
+
+  <!-- Back to Top Button -->
+  <button id="backToTop" aria-label="Back to Top">
+    <i class="fa fa-chevron-up"></i>
+  </button>
+
   <!-- Footer -->
   <footer class="py-2 text-center">
     <div class="container">
@@ -133,7 +141,7 @@
     // Back to Top logic
     const backToTopBtn = document.getElementById('backToTop');
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 100) {
+      if (window.scrollY > 400) {
         backToTopBtn.style.display = 'flex';
       } else {
         backToTopBtn.style.display = 'none';
