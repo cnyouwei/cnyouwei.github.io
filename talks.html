@@ -23,54 +23,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"> 
   <script src="https://kit.fontawesome.com/41d07fa4c3.js" crossorigin="anonymous"></script>
 
-  <style>
-    :root{
-      --primary-gradient:linear-gradient(135deg,#0033662a 0%,#00336600 100%);
-      --year-gradient:linear-gradient(135deg,#003366 0%,#cccccc 100%);
-      --card-shadow:0 4px 12px rgba(0,0,0,.07);
-    }
-    html{scroll-behavior:smooth}
-    body{
-      font-family:'Roboto',sans-serif;
-      background:#f8f9fa;
-      color:#003366;
-      padding-top:3rem;
-    }
-    h1,h2,h3,h4,h5{font-family:'Roboto',sans-serif}
+  <!-- AOS CSS -->
+  <link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet">
 
-    main section + section{margin-top:2rem;}
+  <link rel="stylesheet" href="css/styles.css">
 
-    /* NAVBAR */
-    .navbar{backdrop-filter:blur(13px);background:#00336680}
-    .nav-link{position:relative}
-    .nav-link::after{content:"";position:absolute;left:0;bottom:0;width:0;height:2px;background:#fff;transition:width .4s}
-    .nav-link:hover::after,.nav-link.active::after{width:100%}
-
-    /* HERO */
-    header#home{
-      font-family:'Roboto',sans-serif;
-      background:var(--primary-gradient);
-      color:#000000;
-    }
-    .profile-img{
-      width:160px;height:160px;object-fit:cover;border-radius:50%;border:6px solid rgba(255,255,255,.85);box-shadow:var(--card-shadow)
-    }
-
-    /* SECTION TITLES */
-    section h2{position:relative;margin-bottom:1.5rem;font-weight:700}
-    section h2::after{content:"";position:absolute;left:0;bottom:-6px;width:60px;height:3px;background:var(--primary-gradient)}
-
-    /* LIST CARDS */
-    .list-group-item{border-radius: 20px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3); transition: 0.4s; padding: 10px 14px; background-color: #fefefe;}
-    .list-group-item:hover{transform:translateY(-2px);box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.2);}
-    .list-group-item strong{font-weight:700}
-    .list-group-item a{text-decoration:none}
-    .pub-year{font-weight:600;font-size:.75rem;letter-spacing:.05em;padding:.25rem .6rem;border-radius:200px;background:var(--year-gradient);color:#fff}
-
-    /* FOOTER */
-    footer{background:#00336680;color:#cccccc}
-  </style>
 </head>
+
 <body data-bs-spy="scroll" data-bs-target="#navMenu" data-bs-offset="80" tabindex="0">
   <!-- NAVIGATION -->
   <nav class="navbar navbar-expand-lg fixed-top navbar-dark shadow-sm">
@@ -174,7 +133,7 @@
       </div>
     </section>
   </main>
-  
+
   <!-- Footer -->
   <footer class="py-2 text-center">
     <div class="container">
@@ -187,10 +146,30 @@
   <!-- AOS JS -->
   <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
   <script>
+    // Initialize AOS
     AOS.init({
       once: true,
       duration: 700,
       easing: 'ease-out-cubic'
+    });
+
+    // Back to Top logic
+    const backToTopBtn = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        backToTopBtn.style.display = 'flex';
+      } else {
+        backToTopBtn.style.display = 'none';
+      }
+    });
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Activate ScrollSpy (Bootstrap)
+    const scrollSpy = new bootstrap.ScrollSpy(document.body, {
+      target: '#navMenu',
+      offset: 100
     });
   </script>
 

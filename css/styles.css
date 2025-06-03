@@ -1,0 +1,190 @@
+/* === styles.css === */
+
+/* CSS Variables & Global Resets */
+:root {
+  --primary-gradient: linear-gradient(135deg, #0033662a 0%, #00336600 100%);
+  --year-gradient: linear-gradient(135deg, #003366 0%, #cccccc 100%);
+  --card-shadow: 0 4px 12px rgba(0,0,0,0.07);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background: #f8f9fa;
+  color: #003366;
+  padding-top: 3rem; /* adjust if navbar height changes */
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Roboto', sans-serif;
+}
+
+/* If you use multiple <section> tags and want spacing between them */
+main section + section {
+  margin-top: 2rem;
+}
+
+/* NAVBAR */
+.navbar {
+  backdrop-filter: blur(13px);
+  background: #003366bb;
+}
+
+.nav-link {
+  position: relative;
+  transition: color 0.3s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #ffcc00 !important;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 0;
+  height: 2px;
+  background: #ffcc00;
+  transition: width 0.4s;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
+}
+
+/* HERO */
+header#home {
+  background: var(--primary-gradient);
+  color: #000000;
+}
+
+.profile-img {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 6px solid rgba(255,255,255,0.85);
+  box-shadow: var(--card-shadow);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.profile-img:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* SECTION TITLES */
+section h2 {
+  position: relative;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+section h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 60px;
+  height: 3px;
+  background: #ffcc00;
+}
+
+.subsection-title {
+  margin-top: 3rem;
+  font-weight: 600;
+  color: #003366;
+}
+
+/* LIST‐GROUP CARDS */
+.list-group-item {
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  background-color: #ffffff;
+  margin-bottom: 0.5rem;
+  padding: 1rem 1.5rem;
+}
+
+.list-group-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+}
+
+.list-group-item strong {
+  font-weight: 700;
+  color: #003366;
+}
+
+.list-group-item a {
+  text-decoration: none;
+  color: #0066cc;
+}
+
+.list-group-item a:hover {
+  text-decoration: underline;
+}
+
+.pub-year {
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.6rem;
+  border-radius: 200px;
+  background: var(--year-gradient);
+  color: #fff;
+}
+
+/* BACK TO TOP BUTTON */
+#backToTop {
+  position: fixed;
+  bottom: 3rem;
+  right: 2rem;
+  background: #003366;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  z-index: 1000;
+  transition: background 0.3s;
+}
+
+#backToTop:hover {
+  background: #ffcc00;
+  color: #003366;
+}
+
+/* FOOTER */
+footer {
+  background: #003366bb;
+  color: #cccccc;
+}
+
+/* CLUSTRMAPS OVERRIDES */
+#bio {
+  position: relative;
+  z-index: 10;
+}
+
+#clustrmaps,
+#clustrmaps + div,
+a[href*="clustrmaps.com"] {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  z-index: -1 !important;
+  pointer-events: none !important;
+}
