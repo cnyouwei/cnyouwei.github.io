@@ -3,45 +3,45 @@
 \usepackage[parfill]{parskip} % Remove paragraph indentation
 \pagestyle{empty} % Suppress page numbers
 
-\usepackage[hidelinks]{hyperref} 
+\usepackage[hidelinks]{hyperref}
 \usepackage{enumitem}
 \usepackage{lmodern}
 
-\linespread{1.25} 
+\linespread{1.25}
 \usepackage[left=0.75in,top=0.75in,right=0.75in,bottom=0.75in]{geometry} % Document margins
 \setlist[itemize,1]{leftmargin=0.15in} % Set itemize left margin
 
 %----------------------------
-%	Heading
+%  Heading
 %----------------------------
 
 \def \printheader{
   \begingroup
-    {\huge \bfseries \name} \hfill
-    \begin{tabular}{r}
-         \contact \\
-         \address \\
-         \updated
-    \end{tabular}
-    \break
+  {\huge \bfseries \name} \hfill
+  \begin{tabular}{r}
+    \contact \\
+    \address \\
+    \updated
+  \end{tabular}
+  \break
   \endgroup
 }
 
 %----------------------------
-%	Format of blocks
+%  Format of blocks
 %----------------------------
 
-\newenvironment{block}[1]{ 
+\newenvironment{block}[1]{
   \medskip
-  {\Large \bfseries #1} 
-  \medskip 
-  \hrule 
+  {\Large \bfseries #1}
+  \medskip
+  \hrule
 }
 
 %------------------------------------------------
 
-\def \name{Wei You} 
-\def \address{Office: Room 5559D, HKUST} 
+\def \name{Wei You}
+\def \address{Office: Room 5559D, HKUST}
 \def \contact{Email: \href{mailto:weiyou@ust.hk}{weiyou@ust.hk}}
 \def \updated{Last updated: \today}
 
@@ -54,10 +54,10 @@
 %------------------------------------------------
 
 \begin{block}{Academic Appointment}
-\textbf{Hong Kong University of Science and Technology}
-\begin{itemize}
+  \textbf{Hong Kong University of Science and Technology}
+  \begin{itemize}
     \item[] Assistant Professor (2019-present), Industrial Engineering and Decision Analytics (tenure track)
-\end{itemize}
+  \end{itemize}
 
 \end{block}
 
@@ -65,17 +65,17 @@
 
 \begin{block}{Education}
 
-\textbf{Columbia University}
-\begin{itemize}
+  \textbf{Columbia University}
+  \begin{itemize}
     \item[] Ph.D. in Operations Research (2019)
     \item[] Thesis: A Robust Queueing Network Analyzer Based on Indices of Dispersion
     \item[] Committee: Ward Whitt (Advisor), Henry Lam, Martin Reiman, David Yao, Assaf Zeevi
-\end{itemize}
+  \end{itemize}
 
-\textbf{Nanjing University}
-\begin{itemize}
+  \textbf{Nanjing University}
+  \begin{itemize}
     \item[] B.Sc in Mathematics (2014)
-\end{itemize}
+  \end{itemize}
 
 \end{block}
 
@@ -83,9 +83,9 @@
 
 \begin{block}{Research Interests}
 
-\begin{itemize}
+  \begin{itemize}
     \item[] Stochastic models, queueing theory, applied probability, sequential decision-making, and their applications to the performance analysis and design of service systems and digital experimentation.
-\end{itemize}
+  \end{itemize}
 
 \end{block}
 
@@ -93,60 +93,64 @@
 
 \begin{block}{Publications \& Preprints}
 
-\textbf{\large Preprints}
-\begin{enumerate}
-	\item Cost-Aware Exploration for Structured Bandits, \\
-            Xinyu Liu, Chao Qin and Wei You, working paper, 2025.
-      \item Transfer Learning with Partially Observable Offline Data via Causal Bounds, \\
-            Xueping Gong, Wei You and Jiheng Zhang, Major revision at \textbf{Operations Research}, 2025.
-      \item Service Rate Differentiation for Homogeneous Impatient Customers, \\
-		Chenguang (Allen) Wu and Wei You, Major revision at \textbf{Manufacturing \& Service Operations Management}, 2024. 
-	\item Robust Queueing for Queues with Impatient Customer, \\
-		Wei You, working paper, 2024.
-	\item A Multi-Armed Bandit Approach to Online Resource Allocation for Service Platforms, \\
-		Zihao Wang and Wei You, working paper, 2023.
-\end{enumerate}
+  \textbf{\large Preprints}
+  \begin{enumerate}
+    \item Efficient Transfer Learning via Causal Bounds, \\
+      Xueping Gong, Wei You and Jiheng Zhang, Major revision at \textbf{Operations Research}, 2025.
+    \item Cost-Aware Exploration for Structured Bandits, \\
+      Xinyu Liu, Chao Qin and Wei You, working paper, 2025.
+    \item Minimax Optimality in Contextual Dynamic Pricing with General Valuation Models, \\
+      Xueping Gong, Wei You and Jiheng Zhang, Major revision at \textbf{Operations Research}, 2025.
+    \item Service Rate Differentiation for Homogeneous Impatient Customers, \\
+      Chenguang (Allen) Wu and Wei You, submitted, 2025.
+    \item Robust Queueing for Queues with Impatient Customer, \\
+      Wei You, working paper, 2024.
+    \item A Multi-Armed Bandit Approach to Online Resource Allocation for Service Platforms, \\
+      Zihao Wang and Wei You, submitted, 2024.
+  \end{enumerate}
 
-\smallskip
-\textbf{\large Publications}
-\begin{enumerate}
-      \item Dual-Directed Algorithm Design for Efficient Pure Exploration \\
-        Chao Qin and Wei You, to appear in \textbf{Operations Research}.
-      \item Stochastic Compositional Optimization with Compositional Constraints\\
-        Shuoguang Yang, Wei You, Zhe Zhang, and Ethan X. Fang, to appear in \textbf{INFORMS Journal on Optimization}.
-      \item Information-Directed Selection for Top-Two Algorithms\\
-        Wei You, Chao Qin, Zihao Wang, Shuoguang Yang, \textbf{Conference on Learning Theory (COLT)}, 2023.
-      \item New decomposition approximations for queueing network\\
-        Ward Whitt and Wei You, \textbf{Queueing Systems}, 2022.
-	\item A Robust Queueing Network Analyzer Based on Indices of Dispersion \\
-        Ward Whitt and Wei You, \textbf{Naval Research Logistics}, 2022.
- 	\item Heavy-Traffic Limits for Stationary Network Flows \\
-        Ward Whitt and Wei You, \textbf{Queueing Systems}, 2020.
-      \item Time-Varying Robust Queueing \\
-	      Ward Whitt and Wei You, \textbf{Operations Research}, 2019.
-	\item The Advantage of Indices of Dispersion in Queueing Approximations \\
-        Ward Whitt and Wei You, \textbf{Operations Research Letters}, 2019.
-	\item Heavy-Traffic Limit of the GI/GI/1 Stationary Departure Process and its Variance Function \\
-        Ward Whitt and Wei You, \textbf{Stochastic Systems},  2018.
-	\item Using Robust Queueing to Expose the Impact of Dependence in Single-Server Queues \\
-        Ward Whitt and Wei You, \textbf{Operations Research},  2018.
-\end{enumerate}
+  \smallskip
+  \textbf{\large Publications}
+  \begin{enumerate}
+    \item Dual-Directed Algorithm Design for Efficient Pure Exploration \\
+      Chao Qin and Wei You, to appear in \textbf{Operations Research}.
+    \item Stochastic Compositional Optimization with Compositional Constraints\\
+      Shuoguang Yang, Wei You, Zhe Zhang, and Ethan X. Fang, \textbf{INFORMS Journal on Optimization}.
+    \item Information-Directed Selection for Top-Two Algorithms\\
+      Wei You, Chao Qin, Zihao Wang, Shuoguang Yang, \textbf{Conference on Learning Theory (COLT)}, 2023.
+    \item New decomposition approximations for queueing network\\
+      Ward Whitt and Wei You, \textbf{Queueing Systems}, 2022.
+    \item A Robust Queueing Network Analyzer Based on Indices of Dispersion \\
+      Ward Whitt and Wei You, \textbf{Naval Research Logistics}, 2022.
+    \item Heavy-Traffic Limits for Stationary Network Flows \\
+      Ward Whitt and Wei You, \textbf{Queueing Systems}, 2020.
+    \item Time-Varying Robust Queueing \\
+      Ward Whitt and Wei You, \textbf{Operations Research}, 2019.
+    \item The Advantage of Indices of Dispersion in Queueing Approximations \\
+      Ward Whitt and Wei You, \textbf{Operations Research Letters}, 2019.
+    \item Heavy-Traffic Limit of the GI/GI/1 Stationary Departure Process and its Variance Function \\
+      Ward Whitt and Wei You, \textbf{Stochastic Systems},  2018.
+    \item Using Robust Queueing to Expose the Impact of Dependence in Single-Server Queues \\
+      Ward Whitt and Wei You, \textbf{Operations Research},  2018.
+  \end{enumerate}
 
 \end{block}
 
 %------------------------------------------------
 
 \begin{block}{Teaching Experience}
-\textbf{Hong Kong University of Science and Technology}, Instructor
+  \textbf{Hong Kong University of Science and Technology}, Instructor
   \begin{itemize}
-  	\item[] IEDA5270 Engineering Statistics (2019-2025)
-  	\item[] IEDA2540 Statistics for Engineers (2020-2025)
-  	\item[] EEMT5500 Applied Probability, Statistics and Data Analytics (2022)
+    \item[] IEDA5270 Engineering Statistics (2019-2025)
+    \item[] IEDA2540 Statistics for Engineers (2020-2025)
+    \item[] EEMT5500 Applied Probability, Statistics and Data Analytics (2022)
   \end{itemize}
 
-\textbf{Columbia University}, Teaching Assistant
+  \textbf{Columbia University}, Teaching Assistant
   \begin{itemize}
-    \item[] Applied Statistical Models (2017), Simulation (2017, 2015), Stochastic Models (2014)
+    \item[] Applied Statistical Models (2017)
+    \item[] Simulation (2017, 2015)
+    \item[] Stochastic Models (2014)
   \end{itemize}
 
 \end{block}
@@ -155,62 +159,62 @@
 
 \begin{block}{Conference \& Invited Talks}
 
-\textbf{\large Conferences}
-\begin{itemize}
-      \item[] {\em ``Transfer Learning with Partially Observable Offline Data via Causal Bounds''}\\
+  \textbf{\large Conferences}
+  \begin{itemize}
+    \item[] {\em ``Transfer Learning with Partially Observable Offline Data via Causal Bounds''}\\
       EcoSta 2025, Tokyo, Japan
-      \item[] {\em``Cost-Aware Exploration for Structured Bandits''} \\
+    \item[] {\em``Cost-Aware Exploration for Structured Bandits''} \\
       2025 INFORMS Applied Probability Conference, Atlanta, GA \\
-      2025 INFORMS International Meeting, Singapore\\
-      \item[] {\em``Dual-Directed Algorithm Design for Efficient Pure Exploration''} \\
+      2025 INFORMS International Meeting, Singapore
+    \item[] {\em``Dual-Directed Algorithm Design for Efficient Pure Exploration''} \\
       2024 INFORMS Annual Meeting, Seattle, WA\\
       IASC-ARS Interim Conference 2024, Taipei City\\
       JCSDS 2023, Kunming, Yunnan
-      \item[] {\em``Information-Directed Selection for Pure Exploration''} \\
+    \item[] {\em``Information-Directed Selection for Pure Exploration''} \\
       2023 INFORMS Annual Meeting, Phoenix, AZ
-      \item[] {\em``Information-Directed Selection for Top-Two Algorithms''} \\
+    \item[] {\em``Information-Directed Selection for Top-Two Algorithms''} \\
       Conference on Learning Theory (COLT) 2023, Bangalore, India\\
       2023 INFORMS APS Meeting, Nancy, France\\
       POMS-HK 2023, Hong Kong
-      \item [] {\em``Approximation for Single-Server Queues with Abandonment via Robust Queueing''} \\
+    \item [] {\em``Approximation for Single-Server Queues with Abandonment via Robust Queueing''} \\
       2024 INFORMS MSOM Conference, Minneapolis, Minnesota\\
       2021 INFORMS Annual Meeting, Anaheim, CA
-      \item[] {\em``Online Resource Allocation for Service Platforms''} \\
+    \item[] {\em``Online Resource Allocation for Service Platforms''} \\
       Virtual 2020 INFORMS Annual Meeting
-	\item[] {\em``Heavy-Traffic Limit for Stationary Network Flows''} \\
+    \item[] {\em``Heavy-Traffic Limit for Stationary Network Flows''} \\
       2019 INFORMS APS Meeting, Brisbane, Australia
-	\item[] {\em``Time-Varying Robust Queueing for Quantile Approxiamtion''} \\
-	POMS-HK 2020, Hong Kong\\
+    \item[] {\em``Time-Varying Robust Queueing for Quantile Approxiamtion''} \\
+      POMS-HK 2020, Hong Kong\\
       2019 INFORMS APS Meeting, Brisbane, Australia
-	\item[] {\em``A Robust Queueing Network Analyzer Based on Indices of Dispersion''} \\
+    \item[] {\em``A Robust Queueing Network Analyzer Based on Indices of Dispersion''} \\
       2018 INFORMS Annual Meeting, Phoenix, AZ
-	\item[] {\em``A Robust Queueing Network Analyzer for a Series of Single-server Queues''} \\
+    \item[] {\em``A Robust Queueing Network Analyzer for a Series of Single-server Queues''} \\
       2017 INFORMS Annual Meeting, Houston, TX
-	\item[] {\em``Time-Varying Robust Queueing''} \\
+    \item[] {\em``Time-Varying Robust Queueing''} \\
       2017 INFORMS APS Meeting, Evanston, IL
-	\item[] {\em``Using Robust Queueing To Expose The Impact of Dependence In Single Server Queues''} \\
+    \item[] {\em``Using Robust Queueing To Expose The Impact of Dependence In Single Server Queues''} \\
       2016 INFORMS Annual Meeting, Nashville, TN
-\end{itemize}
+  \end{itemize}
 
-\smallskip
-\textbf{\large Invited Talks}
-\begin{itemize}
-      \item[] Antai College of Economics \& Management, Shanghai Jiao Tong University, 2025
-      \item[] Institute of Statistics and Big Data, Renmin University of China, 2024
-      \item[] School of Statistics and Data Science, Nankai University, 2024
-      \item[] School of Management, Fudan University, 2024
-      \item[] School of Digital Economics, Shanghai University of Finance and Economics, 2023
-      \item[] School of Management and Engineering, Nanjing University, 2017, 2023
-	\item[] Institute of Applied Mathematics, Chinese Academy of Sciences, 2019
-	\item[] Institute of Mathematical Science, ShanghaiTech University, 2019
-	\item[] Industrial Engineering and Decision Analytics, HKUST, 2019
-	\item[] Industrial and System Engineering, Virginia Tech, 2019
-	\item[] System and Industrial Engineering, University of Arizona, 2019
-	\item[] Business School, University of Miami, 2019
-	\item[] School of Management, University of Science and Technology of China, 2019
-	\item[] Institute for Data and Decision Analytics, Chinese University of Hong Kong, Shen Zhen, 2019
-	\item[] System Engineering and Engineering Management,  Chinese University of Hong Kong, 2019
-\end{itemize}
+  \smallskip
+  \textbf{\large Invited Talks}
+  \begin{itemize}
+    \item[] Antai College of Economics \& Management, Shanghai Jiao Tong University, 2025
+    \item[] Institute of Statistics and Big Data, Renmin University of China, 2024
+    \item[] School of Statistics and Data Science, Nankai University, 2024
+    \item[] School of Management, Fudan University, 2024
+    \item[] School of Digital Economics, Shanghai University of Finance and Economics, 2023
+    \item[] School of Management and Engineering, Nanjing University, 2017, 2023
+    \item[] Institute of Applied Mathematics, Chinese Academy of Sciences, 2019
+    \item[] Institute of Mathematical Science, ShanghaiTech University, 2019
+    \item[] Industrial Engineering and Decision Analytics, HKUST, 2019
+    \item[] Industrial and System Engineering, Virginia Tech, 2019
+    \item[] System and Industrial Engineering, University of Arizona, 2019
+    \item[] Business School, University of Miami, 2019
+    \item[] School of Management, University of Science and Technology of China, 2019
+    \item[] Institute for Data and Decision Analytics, Chinese University of Hong Kong, Shen Zhen, 2019
+    \item[] System Engineering and Engineering Management,  Chinese University of Hong Kong, 2019
+  \end{itemize}
 
 \end{block}
 
@@ -218,10 +222,10 @@
 
 \begin{block}{Grants}
 
-\begin{itemize}
+  \begin{itemize}
     \item[] Hong Kong RGC-GRF (2024-2026). Project No. 16212823, PI, HK\$651,464.
     \item[] Hong Kong RGC-ECS (2021-2023). Project No.  26212320, PI, HK\$529,972.
-\end{itemize}
+  \end{itemize}
 
 \end{block}
 
@@ -231,17 +235,17 @@
 
 \begin{block}{Students}
 
-\begin{itemize}  
+  \begin{itemize}
     \item[] Xinyu Liu, Ph.D. (2024-present)
     \item[] Qiaoqiao Wang, Ph.D. (2023-present)
     \item[] Ke Lu, Mphil. (2023-present)
     \item[] Zihao Wang, Ph.D. (2019-2023)  \\
-    --- Thesis: ``Online Resource Allocation for Service Platforms and Bandit Experiments''\\
-    --- First placement: Equity Derivatives Quant, Bank of America.
+      --- Thesis: ``Online Resource Allocation for Service Platforms and Bandit Experiments''\\
+      --- First placement: Equity Derivatives Quant, Bank of America.
     \item[] Yingxian Wu, Mphil. (2020-2022), Co-advised with Prof. Sisi Jian \\
-    --- Thesis: ``Mix Allocation of Two Types of Passengers and Drivers''\\
-    --- First placement: Investment Risk Management Assistant, E Fund Management Co., LTD.
-\end{itemize}
+      --- Thesis: ``Mix Allocation of Two Types of Passengers and Drivers''\\
+      --- First placement: Investment Risk Management Assistant, E Fund Management Co., LTD.
+  \end{itemize}
 
 \end{block}
 
@@ -251,10 +255,10 @@
 
 \begin{block}{Academic Service}
 
-\begin{itemize}
+  \begin{itemize}
     \item[] Reviewer: Management Science, Operations Research, Queueing Systems, Stochastic Systems, Performance Evaluation, Production and Operations Management, Naval Research Logistics, Probability in the Engineering and Informational Sciences, Operations Research Letters, Winter Simulation Conference (2024, 2025), Algorithmic Learning Theory (2025), Israel Science Foundation (ISF)
     \item[] Session Chair: 2017 INFORMS APS Meeting, POMS-HK 2023, 2025 INFORMS Applied Probability Conference, 2025 INFORMS International Meeting
-\end{itemize}
+  \end{itemize}
 
 \end{block}
 
