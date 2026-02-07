@@ -13,7 +13,7 @@ Recently, I revisited the notes and created a complete English translation with 
 
 [Chinese version (original)](../assets/papers/Real_analysis.pdf) | [English version (translation)](../assets/papers/Real_analysis_en.pdf)
 
-## Introduction
+## Real Analysis
 
 Real analysis begins as a continuation of calculus, but it matures the moment one recognizes that “well-behaved” functions are not the default. The subject is, in a precise sense, the art of building a calculus that survives contact with pathological examples: functions that oscillate too violently, sets too irregular to be described by elementary geometry, and limiting processes that destroy the very properties one hopes to preserve.
 
@@ -39,9 +39,9 @@ A guiding thread can be summarized in a small number of principles.
 
 These principles are not merely pedagogical; they are the mechanism by which the modern theory becomes usable.
 
-### A road map of the text
+## A road map of the text
 
-#### Chapter 1: Sets, topology, and descriptive foundations
+### Chapter 1: Sets, topology, and descriptive foundations
 
 The first chapter provides the language in which measure theory naturally lives. It treats set operations and the subtle notion of set limits via limsup and liminf, then develops the topology of \(\mathbb{R}^n\): open and closed sets, compactness (Heine–Borel), and the structural decomposition of open sets.
 
@@ -52,7 +52,7 @@ Two themes are particularly important for the sequel:
 
 The chapter also develops extension tools (Tietze and Urysohn-type lemmas in \(\mathbb{R}^n\)), which later become the bridge between measurability and continuity in Lusin’s theorem.
 
-#### Chapter 2: Constructing Lebesgue measure
+### Chapter 2: Constructing Lebesgue measure
 
 Measure theory is built, here, as it should be built: by construction rather than decree.
 
@@ -64,7 +64,7 @@ The notes begin on a concrete and tractable family of sets—finite unions of bo
 
 This chapter also clarifies how Lebesgue measurable sets relate to Borel sets, and why nonmeasurable sets are unavoidable (a Vitali-type selection argument illustrates the obstruction). Perhaps most importantly, it establishes the first of the “Littlewood principles”: measurable sets are close to simple geometric sets (open/closed approximations with small measure error).
 
-#### Chapter 3: Measurable functions and convergence
+### Chapter 3: Measurable functions and convergence
 
 Once measurability of sets is in place, measurability of functions becomes a natural extension: a function is measurable if its superlevel sets are measurable. This choice is not arbitrary; it is engineered to make measurability stable under the operations analysis requires.
 
@@ -76,7 +76,7 @@ Two achievements dominate the chapter.
 
 A subtle warning closes the chapter: composition behaves cleanly for Borel measurability, but not necessarily for Lebesgue measurability, because inverse images of Lebesgue measurable sets need not stay within the Borel class. This is one of many reminders that “measurable” is a family of concepts, and one must keep track of which family is being used.
 
-#### Chapter 4: Lebesgue integration
+### Chapter 4: Lebesgue integration
 
 With measurable functions available, integration is built so that approximation and limit-passing become central features rather than exceptional tricks.
 
@@ -98,7 +98,7 @@ The chapter culminates in Tonelli and Fubini theorems, which establish when iter
 
 Finally, the density of continuous compactly supported functions in \(L^1\) is proved, giving a powerful practical message: even though \(L^1\) functions may be highly irregular pointwise, they can be approximated in integral norm by smooth objects.
 
-#### Chapter 5: Differentiation of measures and the Newton–Leibniz formula
+### Chapter 5: Differentiation of measures and the Newton–Leibniz formula
 
 The final chapter returns to the fundamental theorem of calculus from a deeper vantage point: differentiation is not merely an operation on functions; it is an operation on measures.
 
@@ -197,3 +197,48 @@ flowchart TB
   class goodset,approxf,conv support;
   class reg littlewood;
 ```
+
+## Theorem Cheat Sheet
+
+### Topology / descriptive set tools
+
+- **Heine–Borel (in \(\mathbb{R}^n\))**: compact \(\Leftrightarrow\) closed and bounded. Use: extract finite subcovers; prove existence of minimizers; regularity arguments.
+- **Tietze extension (in \(\mathbb{R}^n\))**: bounded continuous on a closed set extends to bounded continuous on \(\mathbb{R}^n\). Use: upgrade Lusin closed-set continuity to global continuous approximation.
+- **Baire category theorem**: \(\mathbb{R}^n\) is not a countable union of nowhere dense sets. Use: show sets like \(\mathbb{Q}\) cannot be \(G_\delta\), and \(\mathbb{R}\setminus\mathbb{Q}\) cannot be \(F_\sigma\).
+
+### Measure construction / regularity
+
+- **Outer measure properties**: monotone, countably subadditive; agrees with \(m_0\) on \(R_0^n\).
+- **Carathéodory criterion**: the definition of Lebesgue measurable sets; proves \(\mathcal{L}^n\) is a \(\sigma\)-ring.
+- **Approximation by open/closed sets**: basis for Littlewood principle 1 and many \(\varepsilon\)–\(\delta\) arguments.
+
+### Measurable functions and convergence
+
+- **Simple approximation**: reduces many proofs to finite sums.
+- **Lusin**: measurable \(\approx\) continuous off a small-measure set.
+- **Egorov (finite measure only)**: a.e. convergence \(\approx\) uniform convergence off a small-measure set.
+- **Riesz**: convergence in measure \(\Rightarrow\) a.e. convergence of a subsequence.
+
+### Integration
+
+- **Tonelli (nonnegative)**: allows iterated integrals and swapping order.
+- **Fubini (\(L^1\))**: same, under absolute integrability.
+- **Layer-cake**: for \(f\ge 0\),
+\[
+\int_E f(x)\,dx=\int_0^\infty m(\{x\in E: f(x)>y\})\,dy.
+\]
+Use: distribution-function proofs, estimates, rearrangement-type arguments.
+
+### Limit theorems
+
+- **Fatou**: controls \(\int \liminf f_n\) in terms of \(\liminf \int f_n\) (with one-sided integrable control).
+- **Monotone convergence (Levi)**: \(0\le f_n\uparrow f\) implies \(\int f_n\uparrow \int f\).
+- **Dominated convergence (DCT)**: if \(f_n\to f\) (a.e. or in measure) and \(|f_n|\le F\in L^1\), then \(\int f_n\to \int f\).
+
+### Differentiation / RN / BV / AC
+
+- **Vitali covering**: converts local ball estimates into global a.e. statements.
+- **Lebesgue differentiation**: identifies pointwise values from averages.
+- **Radon–Nikodym**: represents absolutely continuous measures as densities.
+- **BV**: differentiable a.e.; \(f'\in L^1\); variation bounds \(\int |f'|\).
+- **AC**: the right class for Newton–Leibniz; excludes “singular” counterexamples.
