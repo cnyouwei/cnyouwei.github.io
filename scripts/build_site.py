@@ -105,12 +105,26 @@ def parse_tags(raw_tags: str) -> list[str]:
 
 def inline_markdown_to_html(raw: str) -> str:
     text = escape_html(raw)
+    math_tokens: list[str] = []
+
+    def stash_math(match: re.Match[str]) -> str:
+        token = f"@@MATH{len(math_tokens)}@@"
+        math_tokens.append(match.group(0))
+        return token
+
+    # Protect math segments so markdown regexes do not mutate TeX content.
+    text = re.sub(r"\\\((.+?)\\\)", stash_math, text)
+    text = re.sub(r"\\\[(.+?)\\\]", stash_math, text)
+    text = re.sub(r"(?<!\\)\$(?!\$)(.+?)(?<!\\)\$(?!\$)", stash_math, text)
 
     # Inline code first.
     text = re.sub(r"`([^`]+)`", r"<code>\1</code>", text)
     text = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", text)
     text = re.sub(r"\*([^*]+)\*", r"<em>\1</em>", text)
     text = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", r'<a href="\2">\1</a>', text)
+
+    for idx, segment in enumerate(math_tokens):
+        text = text.replace(f"@@MATH{idx}@@", segment)
 
     return text
 
@@ -120,12 +134,31 @@ def markdown_to_html(markdown: str) -> str:
     blocks: list[str] = []
     i = 0
 
+    def render_display_math(delimiter: str, expression: str) -> str:
+        safe_expression = escape_html(expression.strip())
+        if delimiter == "$$":
+            return f"<div class=\"math-display\">$$\n{safe_expression}\n$$</div>"
+        return f"<div class=\"math-display\">\\[\n{safe_expression}\n\\]</div>"
+
+    def parse_single_line_display_math(line: str) -> str | None:
+        stripped = line.strip()
+        match_dollars = re.fullmatch(r"\$\$(.+)\$\$", stripped)
+        if match_dollars:
+            return render_display_math("$$", match_dollars.group(1))
+
+        match_brackets = re.fullmatch(r"\\\[(.+)\\\]", stripped)
+        if match_brackets:
+            return render_display_math(r"\[", match_brackets.group(1))
+
+        return None
+
     def collect_paragraph(start: int) -> tuple[str, int]:
         paragraph_lines = []
         j = start
 
         while j < len(lines):
             line = lines[j]
+            stripped = line.strip()
             if not line.strip():
                 break
             if re.match(r"^(#{1,6})\s+", line):
@@ -137,6 +170,10 @@ def markdown_to_html(markdown: str) -> str:
             if re.match(r"^\d+\.\s+", line):
                 break
             if re.match(r"^>\s?", line):
+                break
+            if stripped in (r"\[", "$$"):
+                break
+            if parse_single_line_display_math(line):
                 break
             paragraph_lines.append(line.strip())
             j += 1
@@ -158,7 +195,30 @@ def markdown_to_html(markdown: str) -> str:
             i += 1
             continue
 
+        single_line_math = parse_single_line_display_math(line)
+        if single_line_math:
+            blocks.append(single_line_math)
+            i += 1
+            continue
+
+        stripped = line.strip()
+        if stripped in (r"\[", "$$"):
+            delimiter = stripped
+            closing = r"\]" if delimiter == r"\[" else "$$"
+            math_lines = []
+            i += 1
+            while i < len(lines) and lines[i].strip() != closing:
+                math_lines.append(lines[i])
+                i += 1
+            if i < len(lines):
+                i += 1
+            blocks.append(render_display_math(delimiter, "\n".join(math_lines)))
+            continue
+
         if line.startswith("```"):
+            fence_tokens = line[3:].strip().split()
+            fence_language = fence_tokens[0].lower() if fence_tokens else ""
+            safe_language = re.sub(r"[^a-z0-9_-]+", "", fence_language)
             code_lines = []
             i += 1
             while i < len(lines) and not lines[i].startswith("```"):
@@ -167,7 +227,14 @@ def markdown_to_html(markdown: str) -> str:
             if i < len(lines):
                 i += 1
             code_text = escape_html("\n".join(code_lines))
-            blocks.append(f"<pre><code>{code_text}</code></pre>")
+            if safe_language == "mermaid":
+                blocks.append(f'<pre class="mermaid">{code_text}</pre>')
+            elif safe_language:
+                blocks.append(
+                    f'<pre><code class="language-{safe_language}">{code_text}</code></pre>'
+                )
+            else:
+                blocks.append(f"<pre><code>{code_text}</code></pre>")
             continue
 
         if re.match(r"^[-*]\s+", line):
@@ -181,11 +248,50 @@ def markdown_to_html(markdown: str) -> str:
 
         if re.match(r"^\d+\.\s+", line):
             items = []
-            while i < len(lines) and re.match(r"^\d+\.\s+", lines[i]):
-                items.append(re.sub(r"^\d+\.\s+", "", lines[i]).strip())
+            list_start = 1
+            while i < len(lines):
+                current = lines[i]
+                if not current.strip():
+                    # Keep ordered lists contiguous when authors place blank lines between items.
+                    j = i
+                    while j < len(lines) and not lines[j].strip():
+                        j += 1
+                    if j < len(lines) and re.match(r"^\d+\.\s+", lines[j]) and items:
+                        i = j
+                        continue
+                    i = j
+                    break
+
+                item_match = re.match(r"^(\d+)\.\s+(.*)$", current)
+                if not item_match:
+                    break
+
+                if not items:
+                    list_start = int(item_match.group(1))
+
+                item_text = item_match.group(2).strip()
                 i += 1
+
+                # Support indented continuation lines for the same ordered-list item.
+                continuation = []
+                while i < len(lines):
+                    cont_line = lines[i]
+                    if not cont_line.strip():
+                        break
+                    if re.match(r"^\s{2,}\S", cont_line) or cont_line.startswith("\t"):
+                        continuation.append(cont_line.strip())
+                        i += 1
+                        continue
+                    break
+
+                if continuation:
+                    item_text = item_text + " " + " ".join(continuation)
+
+                items.append(item_text)
+
             li = "".join(f"<li>{inline_markdown_to_html(item)}</li>" for item in items)
-            blocks.append(f"<ol>{li}</ol>")
+            start_attr = f' start="{list_start}"' if list_start != 1 else ""
+            blocks.append(f"<ol{start_attr}>{li}</ol>")
             continue
 
         if re.match(r"^>\s?", line):
@@ -238,6 +344,22 @@ def post_page_template(post: dict[str, object], body_html: str, ga_id: str) -> s
     tags_markup = "".join(
         f'<span class="blog-tag">{escape_html(tag)}</span>' for tag in post["tags"]
     )
+    mermaid_stylesheet = ""
+    mermaid_script = ""
+    if 'class="mermaid"' in body_html:
+        mermaid_stylesheet = (
+            '  <link rel="stylesheet" '
+            'href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />'
+        )
+        mermaid_script = """  <script type=\"module\">
+    import mermaid from \"https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs\";
+    mermaid.initialize({
+      startOnLoad: true,
+      securityLevel: \"loose\",
+      forceLegacyMathML: true
+    });
+  </script>
+"""
 
     return f"""<!DOCTYPE html>
 <html lang=\"en\" data-ga-id=\"{escape_html(ga_id)}\">
@@ -250,6 +372,7 @@ def post_page_template(post: dict[str, object], body_html: str, ga_id: str) -> s
   <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />
   <link href=\"https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap\" rel=\"stylesheet\" />
   <link rel=\"stylesheet\" href=\"../css/site.css\" />
+{mermaid_stylesheet}
 </head>
 <body>
   <header class=\"site-header\" id=\"top\">
@@ -306,13 +429,17 @@ def post_page_template(post: dict[str, object], body_html: str, ga_id: str) -> s
         displayMath: [['$$', '$$'], ['\\\\[', '\\\\]']],
         processEscapes: true
       }},
+      chtml: {{
+        mtextInheritFont: true,
+        merrorInheritFont: true
+      }},
       options: {{
         skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
       }}
     }};
   </script>
   <script defer src=\"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js\"></script>
-  <script src=\"../js/site.js\" defer></script>
+{mermaid_script}  <script src=\"../js/site.js\" defer></script>
   <script>
     const yearNode = document.getElementById(\"year\");
     if (yearNode) yearNode.textContent = String(new Date().getFullYear());
@@ -407,6 +534,10 @@ def blog_index_template(posts: list[dict[str, object]], ga_id: str) -> str:
         inlineMath: [['$', '$'], ['\\\\(', '\\\\)']],
         displayMath: [['$$', '$$'], ['\\\\[', '\\\\]']],
         processEscapes: true
+      }},
+      chtml: {{
+        mtextInheritFont: true,
+        merrorInheritFont: true
       }},
       options: {{
         skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']

@@ -36,7 +36,12 @@
 
       <section class="module-section reveal-up delay-1">
         <div class="module-grid">
-<article class="module-card blog-card"><h3>No posts yet</h3><p>Add a markdown file under content/blog and rerun the build script.</p></article>
+<article class="module-card blog-card">
+  <div class="blog-meta"><time datetime="2026-02-07">February 07, 2026</time><span class="blog-tag">math</span><span class="blog-tag">notes</span><span class="blog-tag">real analysis</span></div>
+  <h3><a href="./2026-02-07-real_analysis.html">A Real Analysis Note</a></h3>
+  <p>A real analysis note I wrote in Chinese in 2011, now refreshed with a complete English translation produced with ChatGPT.</p>
+  <a class="button" href="./2026-02-07-real_analysis.html">Read post</a>
+</article>
         </div>
       </section>
 
@@ -60,6 +65,10 @@
         inlineMath: [['$', '$'], ['\\(', '\\)']],
         displayMath: [['$$', '$$'], ['\\[', '\\]']],
         processEscapes: true
+      },
+      chtml: {
+        mtextInheritFont: true,
+        merrorInheritFont: true
       },
       options: {
         skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']

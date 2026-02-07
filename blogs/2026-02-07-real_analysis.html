@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" data-ga-id="G-W043BW5W9F">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A Real Analysis Note | Wei You</title>
+  <meta name="description" content="A real analysis note I wrote in Chinese in 2011, now refreshed with a complete English translation produced with ChatGPT." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/site.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
+</head>
+<body>
+  <header class="site-header" id="top">
+    <div class="container nav-wrap">
+      <a class="brand" href="../index.html#home">Wei You</a>
+      <button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="site-nav" aria-expanded="false">
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary">
+        <a class="nav-link" href="../index.html#research">Research</a>
+        <a class="nav-link" href="../teaching/index.html">Teaching</a>
+        <a class="nav-link is-active" href="./index.html">Blog</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="teaching-page">
+    <section class="container teaching-shell">
+      <header class="course-hero reveal-up">
+        <p class="eyebrow">Research Notes</p>
+        <h1>A Real Analysis Note</h1>
+        <p class="blog-meta"><time datetime="2026-02-07">February 07, 2026</time><span class="blog-tag">math</span><span class="blog-tag">notes</span><span class="blog-tag">real analysis</span></p>
+        <p class="course-lead">A real analysis note I wrote in Chinese in 2011, now refreshed with a complete English translation produced with ChatGPT.</p>
+      </header>
+
+      <section class="module-section reveal-up delay-1">
+        <article class="panel post-card">
+          <div class="post-body">
+<p>Back in 2011, I wrote a set of real analysis notes in Chinese at Nanjing University. They grew out of a course I took with Prof. Zhong Chengkui (钟承奎). It was my first exposure to real analysis, and it was an excellent experience. The course’s level of detail and rigor inspired me to pursue an academic path. Around that time I had just started using LaTeX, and these notes also became a practical way for me to learn it.</p>
+<p>The notes were circulated on the university forum and on a Sina knowledge‑sharing platform <a href="http://iask.sina.com.cn/u/1776601564/ish">iask</a>, where they accumulated a few thousand downloads. That Sina site has long since disappeared—it has since turned into an online medical Q&amp;A site. I’ve often felt that these notes deserve a wider audience, and I’ve been thinking about translating them into English for a long time.</p>
+<p>Recently, I revisited the notes and created a complete English translation with ChatGPT. With the new OpenAI Codex app—especially its ability to create/modify files and compile/debug automatically—the conversion was virtually effortless. I ended up with a near‑perfect translation in about two hours. I hope the rise of LLMs can truly break down barriers to knowledge (and language) and make it accessible to everyone.</p>
+<p><a href="../assets/papers/Real_analysis.pdf">Chinese version (original)</a> | <a href="../assets/papers/Real_analysis_en.pdf">English version (translation)</a></p>
+<h2>Introduction</h2>
+<p>Real analysis begins as a continuation of calculus, but it matures the moment one recognizes that “well-behaved” functions are not the default. The subject is, in a precise sense, the art of building a calculus that survives contact with pathological examples: functions that oscillate too violently, sets too irregular to be described by elementary geometry, and limiting processes that destroy the very properties one hopes to preserve.</p>
+<p>These lecture notes take a classical route through this landscape while remaining uncompromisingly modern in spirit. They do not treat measure theory as an isolated technical chapter appended to analysis; instead, they develop Lebesgue measure and the Lebesgue integral as the <em>structural repair</em> of the weaknesses of the Riemann integral and of pointwise calculus. Along the way, they show how the language of “almost everywhere” becomes not a convenience, but the correct level of resolution at which calculus is stable.</p>
+<h3>Why another integral?</h3>
+<p>The opening discussion sets the agenda with three recurring themes.</p>
+<p>First, <strong>limits</strong>. A sequence of continuous functions may converge pointwise to a function that is no longer continuous and may even fail to be Riemann integrable. Yet the integrals of the approximating functions may converge, suggesting that the integral itself—not merely the function class—should be redesigned to commute with limits under natural hypotheses.</p>
+<p>Second, <strong>geometry in the large</strong>. The length of a curve, defined as the supremum of polygonal approximations, is a geometric quantity that can exist even when classical differentiability fails. The proper analytic condition turns out to be <strong>bounded variation</strong>, not differentiability, and the familiar arc-length formula requires additional care (often a reparameterization).</p>
+<p>Third, <strong>differentiation and integration</strong>. The fundamental theorem of calculus is not wrong; it is <em>incomplete</em>. Its correct form requires the right notion of integrability (Lebesgue) and the right regularity class (absolute continuity). The notes return to this theme at the end, where differentiation is understood not only for functions, but for measures.</p>
+<h3>The organizing philosophy</h3>
+<p>A guiding thread can be summarized in a small number of principles.</p>
+<ul><li>Replace pointwise structure by <em>measure-theoretic structure</em>: work “up to null sets,” where the analytic objects behave robustly.</li><li>Replace rigid descriptions by <em>approximation</em>: measurable sets are approximable by simple geometric sets, measurable functions by simple functions and by continuous functions on large subsets, and a.e. convergence by almost uniform convergence on large subsets.</li><li>Replace ad hoc arguments by <em>closure principles</em>: define “good” families (good sets, good functions) and prove closure under the operations that generate the objects of interest.</li></ul>
+<p>These principles are not merely pedagogical; they are the mechanism by which the modern theory becomes usable.</p>
+<h3>A road map of the text</h3>
+<h4>Chapter 1: Sets, topology, and descriptive foundations</h4>
+<p>The first chapter provides the language in which measure theory naturally lives. It treats set operations and the subtle notion of set limits via limsup and liminf, then develops the topology of \(\mathbb{R}^n\): open and closed sets, compactness (Heine–Borel), and the structural decomposition of open sets.</p>
+<p>Two themes are particularly important for the sequel:</p>
+<ol><li><strong>Inverse images preserve structure.</strong> This is the conceptual basis for both continuity (“preimages of open sets are open”) and measurability (“preimages of Borel sets are measurable”).</li><li><strong>Borel structure and category.</strong> The Borel \(\sigma\)-ring generated by open (equivalently, closed) sets is introduced, and the Baire category theorem provides a parallel notion of largeness distinct from measure. This distinction—between “large in category” and “large in measure”—is a recurring source of insight (and of instructive counterexamples).</li></ol>
+<p>The chapter also develops extension tools (Tietze and Urysohn-type lemmas in \(\mathbb{R}^n\)), which later become the bridge between measurability and continuity in Lusin’s theorem.</p>
+<h4>Chapter 2: Constructing Lebesgue measure</h4>
+<p>Measure theory is built, here, as it should be built: by construction rather than decree.</p>
+<p>The notes begin on a concrete and tractable family of sets—finite unions of bounded left-open right-closed boxes—forming a ring \(R_0^n\). A pre-measure \(m_0\) (volume) is defined on this ring, and the central extension mechanism follows:</p>
+<ul><li><strong>Outer measure</strong> \(m_0^*\) is created by taking infima over countable covers.</li><li><strong>Carathéodory measurability</strong> is then used to <em>select</em> the sets on which outer measure behaves additively in the correct sense.</li><li>The measurable class \(\mathcal{L}^n\) emerges as a \(\sigma\)-ring, and \(m\) becomes a genuine measure.</li></ul>
+<p>This chapter also clarifies how Lebesgue measurable sets relate to Borel sets, and why nonmeasurable sets are unavoidable (a Vitali-type selection argument illustrates the obstruction). Perhaps most importantly, it establishes the first of the “Littlewood principles”: measurable sets are close to simple geometric sets (open/closed approximations with small measure error).</p>
+<h4>Chapter 3: Measurable functions and convergence</h4>
+<p>Once measurability of sets is in place, measurability of functions becomes a natural extension: a function is measurable if its superlevel sets are measurable. This choice is not arbitrary; it is engineered to make measurability stable under the operations analysis requires.</p>
+<p>Two achievements dominate the chapter.</p>
+<ol><li><strong>Structural approximation.</strong> Nonnegative measurable functions can be approximated from below by simple functions. Beyond that, Lusin’s theorem asserts that measurable functions are “almost continuous”: after discarding a set of arbitrarily small measure, one obtains continuity on a closed set. This is the second Littlewood principle: measurable functions are close to continuous ones.</li><li><strong>Modes of convergence.</strong> The notes develop almost everywhere convergence and convergence in measure, show how they relate on finite-measure sets (Egorov’s theorem giving almost uniform convergence off a small exceptional set), and prove the Riesz subsequence principle (convergence in measure yields an a.e. convergent subsequence). These results supply a disciplined replacement for the brittle pointwise convergence arguments of elementary analysis.</li></ol>
+<p>A subtle warning closes the chapter: composition behaves cleanly for Borel measurability, but not necessarily for Lebesgue measurability, because inverse images of Lebesgue measurable sets need not stay within the Borel class. This is one of many reminders that “measurable” is a family of concepts, and one must keep track of which family is being used.</p>
+<h4>Chapter 4: Lebesgue integration</h4>
+<p>With measurable functions available, integration is built so that approximation and limit-passing become central features rather than exceptional tricks.</p>
+<p>The construction proceeds in stages:</p>
+<ul><li>bounded measurable functions on finite-measure sets,</li><li>nonnegative measurable functions on general sets via truncations and exhaustions,</li><li>general integrable functions via positive and negative parts.</li></ul>
+<p>From this framework, the major limit theorems emerge in their natural form:</p>
+<ul><li>Fatou’s lemma,</li><li>monotone convergence (Levi),</li><li>dominated convergence.</li></ul>
+<p>These theorems are the operational heart of Lebesgue integration; they explain, precisely, when integrals commute with limits.</p>
+<p>The chapter culminates in Tonelli and Fubini theorems, which establish when iterated integrals represent multiple integrals and when one may exchange the order of integration. The layer-cake representation further reinforces the geometric intuition behind integration: a nonnegative function is integrated by measuring its superlevel sets.</p>
+<p>Finally, the density of continuous compactly supported functions in \(L^1\) is proved, giving a powerful practical message: even though \(L^1\) functions may be highly irregular pointwise, they can be approximated in integral norm by smooth objects.</p>
+<h4>Chapter 5: Differentiation of measures and the Newton–Leibniz formula</h4>
+<p>The final chapter returns to the fundamental theorem of calculus from a deeper vantage point: differentiation is not merely an operation on functions; it is an operation on measures.</p>
+<p>The Vitali covering theorem provides the geometric engine needed to pass from local ball estimates to global measure statements. From it, the Lebesgue differentiation theorem follows: local averages of an \(L^1_{\mathrm{loc}}\) function converge to the function value almost everywhere. This is, in a precise sense, the restoration of pointwise information from integral data—on the correct “almost everywhere” scale.</p>
+<p>Radon measures enter as the natural setting for measure differentiation, and the Radon–Nikodym theorem plays the role of a generalized Newton–Leibniz principle: absolute continuity of measures is equivalent to representability by a density function, and the density is obtained via differentiation of measures.</p>
+<p>The chapter then specializes these ideas back to one-variable analysis. Monotone functions are differentiable a.e.; functions of bounded variation decompose as differences of monotone functions; absolutely continuous functions are exactly those for which the Newton–Leibniz formula holds in its strongest meaningful form:</p>
+<div class="math-display">\[
+f(b)-f(a) = \int_a^b f&#x27;(t)\,dt.
+\]</div>
+<p>In this way, the text closes the loop: the modern integral is not a replacement for calculus, but its completion.</p>
+<h2>How to read effectively</h2>
+<p>A reader will benefit from treating the text not as a list of theorems, but as a carefully staged construction.</p>
+<ul><li>Read Chapters 1–2 as <em>foundational engineering</em>: you are building the universe in which the later theorems are true.</li><li>Read Chapter 3 as <em>approximation technology</em>: it tells you how to replace irregular objects by regular ones without losing measurable/integral information.</li><li>Read Chapter 4 as <em>operational calculus</em>: it supplies the limit-exchange tools that power most applications.</li><li>Read Chapter 5 as <em>conceptual synthesis</em>: it explains why the measure-theoretic integral is the correct partner of differentiation.</li></ul>
+<p>The exercises should be treated as part of the narrative: many of the “obvious” implications in this subject become obvious only after one has practiced the closure arguments and approximation steps repeatedly.</p>
+<pre class="mermaid">flowchart TB
+  top(&quot;Ch. 1&lt;br/&gt;Sets and Topology&lt;br/&gt;in $$\mathbb{R}^n$$&quot;)
+  borel(&quot;Borel sigma-ring&lt;br/&gt;$$G_\delta / F_\sigma$$&lt;br/&gt;Baire category&quot;)
+  goodset(&quot;Good-set principle&lt;br/&gt;(preimages)&quot;)
+
+  ring(&quot;Ch. 2.1&lt;br/&gt;$$R_0^n$$&lt;br/&gt;premeasure $$m_0$$&quot;)
+  outer(&quot;Ch. 2.2&lt;br/&gt;Outer measure&lt;br/&gt;$$m_0^*$$&quot;)
+  carath(&quot;Ch. 2.3&lt;br/&gt;Caratheodory&lt;br/&gt;$$\mathcal{L}^n$$, Lebesgue measure&quot;)
+  reg(&quot;Ch. 2.4&lt;br/&gt;Open/closed approximation&lt;br/&gt;(Littlewood 1)&quot;)
+
+  measf(&quot;Ch. 3&lt;br/&gt;Measurable functions&quot;)
+  approxf(&quot;Simple approximation&lt;br/&gt;Lusin (LW 2)&quot;)
+  conv(&quot;Ch. 3.3&lt;br/&gt;a.e. and in measure&lt;br/&gt;Egorov (LW 3), Riesz subseq.&quot;)
+
+  int(&quot;Ch. 4&lt;br/&gt;Lebesgue integral&lt;br/&gt;$$L^1$$&quot;)
+  lim(&quot;Ch. 4.3&lt;br/&gt;Fatou / MCT / DCT&quot;)
+  fub(&quot;Ch. 4.5&lt;br/&gt;Tonelli/Fubini&lt;br/&gt;layer-cake&quot;)
+
+  vitali(&quot;Ch. 5.1&lt;br/&gt;Vitali covering&quot;)
+  diff(&quot;Ch. 5.3&lt;br/&gt;Differentiation&lt;br/&gt;Lebesgue points&quot;)
+  rn(&quot;Ch. 5.4&lt;br/&gt;Radon–Nikodym&lt;br/&gt;Lebesgue decomposition&quot;)
+  bv(&quot;Ch. 5.5&lt;br/&gt;Monotone/BV&lt;br/&gt;Jordan decomposition&quot;)
+  ac(&quot;Ch. 5.6&lt;br/&gt;Absolutely continuous&lt;br/&gt;Newton–Leibniz&quot;)
+
+  top --&gt; borel
+  top --&gt; goodset
+  goodset --&gt; borel
+
+  top --&gt; ring
+  ring --&gt; outer
+  outer --&gt; carath
+  borel --&gt; carath
+
+  carath --&gt; reg
+  carath --&gt; measf
+
+  measf --&gt; approxf
+  approxf --&gt; conv
+
+  measf --&gt; int
+  conv --&gt; lim
+  int --&gt; lim
+  lim --&gt; fub
+
+  carath --&gt; fub
+
+  carath --&gt; vitali
+  vitali --&gt; diff
+  diff --&gt; rn
+
+  rn --&gt; bv
+  rn --&gt; ac
+  bv --&gt; ac
+
+  reg -.-&gt; approxf
+  approxf -.-&gt; conv
+
+  classDef ch1 fill:#e0f2fe,stroke:#0369a1,stroke-width:2px,color:#0c4a6e;
+  classDef ch2 fill:#dcfce7,stroke:#15803d,stroke-width:2px,color:#14532d;
+  classDef ch3 fill:#fef3c7,stroke:#b45309,stroke-width:2px,color:#78350f;
+  classDef ch4 fill:#ede9fe,stroke:#6d28d9,stroke-width:2px,color:#4c1d95;
+  classDef ch5 fill:#fee2e2,stroke:#b91c1c,stroke-width:2px,color:#7f1d1d;
+  classDef support fill:#f8fafc,stroke:#475569,stroke-width:1.5px,color:#0f172a;
+  classDef littlewood fill:#fff7ed,stroke:#ea580c,stroke-width:2px,color:#7c2d12;
+
+  class top,borel ch1;
+  class ring,outer,carath ch2;
+  class measf ch3;
+  class int,lim,fub ch4;
+  class vitali,diff,rn,bv,ac ch5;
+  class goodset,approxf,conv support;
+  class reg littlewood;</pre>
+          </div>
+        </article>
+      </section>
+
+      <div class="hero-links reveal-up delay-2">
+        <a class="chip" href="./index.html">All posts</a>
+        <a class="chip" href="../index.html#blog">Back to main site</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; <span id="year"></span> Wei You</p>
+      <p>Department of Industrial Engineering and Decision Analytics, HKUST</p>
+    </div>
+  </footer>
+
+  <a class="back-to-top" href="#top" aria-label="Back to top">Top</a>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true
+      },
+      chtml: {
+        mtextInheritFont: true,
+        merrorInheritFont: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({
+      startOnLoad: true,
+      securityLevel: "loose",
+      forceLegacyMathML: true
+    });
+  </script>
+  <script src="../js/site.js" defer></script>
+  <script>
+    const yearNode = document.getElementById("year");
+    if (yearNode) yearNode.textContent = String(new Date().getFullYear());
+  </script>
+</body>
+</html>

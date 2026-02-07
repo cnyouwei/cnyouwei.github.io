@@ -1,1 +1,13 @@
-[]
+[
+  {
+    "title": "A Real Analysis Note",
+    "slug": "2026-02-07-real_analysis",
+    "date": "2026-02-07",
+    "summary": "A real analysis note I wrote in Chinese in 2011, now refreshed with a complete English translation produced with ChatGPT.",
+    "tags": [
+      "math",
+      "notes",
+      "real analysis"
+    ]
+  }
+]
