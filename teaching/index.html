@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" data-ga-id="G-W043BW5W9F">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Teaching | Wei You</title>
+  <meta name="description" content="Course pages and teaching materials by Wei You." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;family=Noto+Sans+SC:wght@400;500;700&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/site.css" />
+</head>
+<body>
+  <header class="site-header" id="top">
+    <div class="container nav-wrap">
+      <a class="brand" href="../index.html#home">Wei You</a>
+      <button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="site-nav" aria-expanded="false">
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary">
+        <a class="nav-link" href="../index.html#research">Research</a>
+        <a class="nav-link is-active" href="./index.html">Teaching</a>
+        <a class="nav-link" href="../blogs/index.html">Blog</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="teaching-page">
+    <section class="container teaching-shell">
+      <header class="course-hero reveal-up">
+        <p class="eyebrow">Courses</p>
+        <h1>Teaching</h1>
+      </header>
+
+      <section class="module-section reveal-up delay-1">
+        <div class="module-grid">
+<article class="module-card course-card">
+  <p class="timeline-year">2026–present</p>
+  <p class="course-status is-soon">Coming Soon</p>
+  <h3>IEDA3250 Stochastic Models</h3>
+  <p>Stochastic-process modeling methods for engineering systems.</p>
+  <p class="muted">Course page coming soon.</p>
+</article>
+<article class="module-card course-card">
+  <p class="timeline-year">2019–present</p>
+  <p class="course-status is-soon">Coming Soon</p>
+  <h3>IEDA5270 Engineering Statistics</h3>
+  <p>Graduate-level statistical methodology for data-driven engineering.</p>
+  <p class="muted">Course page coming soon.</p>
+</article>
+<article class="module-card course-card">
+  <p class="timeline-year">2020–2025</p>
+  <p class="course-status is-live">Published</p>
+  <h3>IEDA2540 Statistics for Engineers</h3>
+  <p>Core statistics for engineers: uncertainty modeling, estimation, inference, and regression.</p>
+  <a class="button" href="./ieda2540.html">Open course page</a>
+</article>
+<article class="module-card course-card">
+  <p class="timeline-year">2022</p>
+  <p class="course-status is-soon">Coming Soon</p>
+  <h3>EEMT5500 Applied Probability, Statistics and Data Analytics</h3>
+  <p>Applied probability and statistical methods for engineering management contexts.</p>
+  <p class="muted">Course page coming soon.</p>
+</article>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; <span id="year"></span> Wei You</p>
+      <p>Department of Industrial Engineering and Decision Analytics, HKUST</p>
+    </div>
+  </footer>
+
+  <a class="back-to-top" href="#top" aria-label="Back to top">Top</a>
+  <script src="../js/site.js" defer></script>
+  <script>
+    const yearNode = document.getElementById("year");
+    if (yearNode) yearNode.textContent = String(new Date().getFullYear());
+  </script>
+</body>
+</html>

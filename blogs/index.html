@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="../css/site.css" />
 </head>
 <body>
-  <header class="site-header">
+  <header class="site-header" id="top">
     <div class="container nav-wrap">
       <a class="brand" href="../index.html#home">Wei You</a>
       <button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="site-nav" aria-expanded="false">
@@ -20,26 +20,40 @@
       </button>
       <nav class="site-nav" id="site-nav" aria-label="Primary">
         <a class="nav-link" href="../index.html#research">Research</a>
+        <a class="nav-link" href="../teaching/index.html">Teaching</a>
         <a class="nav-link is-active" href="./index.html">Blog</a>
       </nav>
     </div>
   </header>
 
-  <main class="blog-page">
-    <section class="blog-shell">
-      <header class="blog-head">
+  <main class="teaching-page">
+    <section class="container teaching-shell">
+      <header class="course-hero reveal-up">
         <p class="eyebrow">Writing</p>
         <h1>Blog</h1>
-        <p class="blog-intro">Research notes, teaching reflections, and short updates.</p>
+        <p class="course-lead">Research notes, teaching reflections, and short updates.</p>
       </header>
 
-      <div class="post-list">
-<article class="blog-card"><h3>No posts yet</h3><p>Add a markdown file under content/blog and rerun the build script.</p></article>
-      </div>
+      <section class="module-section reveal-up delay-1">
+        <div class="module-grid">
+<article class="module-card blog-card"><h3>No posts yet</h3><p>Add a markdown file under content/blog and rerun the build script.</p></article>
+        </div>
+      </section>
 
-      <p><a href="../index.html#blog">Back to main site</a></p>
+      <div class="hero-links reveal-up delay-2">
+        <a class="chip" href="../index.html#blog">Back to main site</a>
+      </div>
     </section>
   </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; <span id="year"></span> Wei You</p>
+      <p>Department of Industrial Engineering and Decision Analytics, HKUST</p>
+    </div>
+  </footer>
+
+  <a class="back-to-top" href="#top" aria-label="Back to top">Top</a>
   <script>
     window.MathJax = {
       tex: {
@@ -54,5 +68,9 @@
   </script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
   <script src="../js/site.js" defer></script>
+  <script>
+    const yearNode = document.getElementById("year");
+    if (yearNode) yearNode.textContent = String(new Date().getFullYear());
+  </script>
 </body>
 </html>

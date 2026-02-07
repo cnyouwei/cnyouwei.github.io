@@ -5,6 +5,7 @@ This script performs both build steps:
 1) Build blog outputs from content/blog/*.md
 2) Build the Home selected-papers list and Research section in index.html
    from content/research/papers.json
+3) Build teaching pages from content/teaching/courses.json
 """
 
 from __future__ import annotations
@@ -24,6 +25,10 @@ BLOG_OUTPUT_DIR = ROOT_DIR / "blogs"
 # Research paths
 INDEX_PATH = ROOT_DIR / "index.html"
 RESEARCH_DATA_PATH = ROOT_DIR / "content" / "research" / "papers.json"
+
+# Teaching paths
+TEACHING_DATA_PATH = ROOT_DIR / "content" / "teaching" / "courses.json"
+TEACHING_OUTPUT_DIR = ROOT_DIR / "teaching"
 
 SELECTED_START_MARKER = "<!-- SELECTED-PAPERS:START -->"
 SELECTED_END_MARKER = "<!-- SELECTED-PAPERS:END -->"
@@ -247,7 +252,7 @@ def post_page_template(post: dict[str, object], body_html: str, ga_id: str) -> s
   <link rel=\"stylesheet\" href=\"../css/site.css\" />
 </head>
 <body>
-  <header class=\"site-header\">
+  <header class=\"site-header\" id=\"top\">
     <div class=\"container nav-wrap\">
       <a class=\"brand\" href=\"../index.html#home\">Wei You</a>
       <button class=\"menu-toggle\" type=\"button\" aria-label=\"Open menu\" aria-controls=\"site-nav\" aria-expanded=\"false\">
@@ -256,30 +261,44 @@ def post_page_template(post: dict[str, object], body_html: str, ga_id: str) -> s
       </button>
       <nav class=\"site-nav\" id=\"site-nav\" aria-label=\"Primary\">
         <a class=\"nav-link\" href=\"../index.html#research\">Research</a>
-        <a class=\"nav-link\" href=\"../index.html#blog\">Blog</a>
-        <a class=\"nav-link\" href=\"./index.html\">All Posts</a>
+        <a class=\"nav-link\" href=\"../teaching/index.html\">Teaching</a>
+        <a class=\"nav-link is-active\" href=\"./index.html\">Blog</a>
       </nav>
     </div>
   </header>
 
-  <main class=\"blog-page\">
-    <article class=\"blog-shell\">
-      <header class=\"blog-head\">
+  <main class=\"teaching-page\">
+    <section class=\"container teaching-shell\">
+      <header class=\"course-hero reveal-up\">
         <p class=\"eyebrow\">Research Notes</p>
         <h1>{escape_html(post['title'])}</h1>
         <p class=\"blog-meta\"><time datetime=\"{post['date']}\">{format_date(post['date'])}</time>{tags_markup}</p>
-        <p class=\"blog-intro\">{escape_html(post['summary'])}</p>
+        <p class=\"course-lead\">{escape_html(post['summary'])}</p>
       </header>
 
-      <section class=\"post-card\">
-        <div class=\"post-body\">
+      <section class=\"module-section reveal-up delay-1\">
+        <article class=\"panel post-card\">
+          <div class=\"post-body\">
 {body_html}
-        </div>
+          </div>
+        </article>
       </section>
 
-      <p><a href=\"./index.html\">Back to all posts</a></p>
-    </article>
+      <div class=\"hero-links reveal-up delay-2\">
+        <a class=\"chip\" href=\"./index.html\">All posts</a>
+        <a class=\"chip\" href=\"../index.html#blog\">Back to main site</a>
+      </div>
+    </section>
   </main>
+
+  <footer class=\"site-footer\">
+    <div class=\"container footer-inner\">
+      <p>&copy; <span id=\"year\"></span> Wei You</p>
+      <p>Department of Industrial Engineering and Decision Analytics, HKUST</p>
+    </div>
+  </footer>
+
+  <a class=\"back-to-top\" href=\"#top\" aria-label=\"Back to top\">Top</a>
   <script>
     window.MathJax = {{
       tex: {{
@@ -294,6 +313,10 @@ def post_page_template(post: dict[str, object], body_html: str, ga_id: str) -> s
   </script>
   <script defer src=\"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js\"></script>
   <script src=\"../js/site.js\" defer></script>
+  <script>
+    const yearNode = document.getElementById(\"year\");
+    if (yearNode) yearNode.textContent = String(new Date().getFullYear());
+  </script>
 </body>
 </html>
 """
@@ -307,18 +330,18 @@ def blog_index_template(posts: list[dict[str, object]], ga_id: str) -> str:
             f'<span class="blog-tag">{escape_html(tag)}</span>' for tag in post["tags"][:3]
         )
         cards.append(
-            f"""<article class=\"blog-card\">
+            f"""<article class=\"module-card blog-card\">
   <div class=\"blog-meta\"><time datetime=\"{post['date']}\">{format_date(post['date'])}</time>{tags_markup}</div>
   <h3><a href=\"./{post['slug']}.html\">{escape_html(post['title'])}</a></h3>
   <p>{escape_html(post['summary'])}</p>
-  <a href=\"./{post['slug']}.html\">Read post</a>
+  <a class=\"button\" href=\"./{post['slug']}.html\">Read post</a>
 </article>"""
         )
 
     card_markup = "\n".join(cards)
     if not card_markup:
         card_markup = (
-            '<article class="blog-card"><h3>No posts yet</h3><p>Add a markdown file under '
+            '<article class="module-card blog-card"><h3>No posts yet</h3><p>Add a markdown file under '
             'content/blog and rerun the build script.</p></article>'
         )
 
@@ -335,7 +358,7 @@ def blog_index_template(posts: list[dict[str, object]], ga_id: str) -> str:
   <link rel=\"stylesheet\" href=\"../css/site.css\" />
 </head>
 <body>
-  <header class=\"site-header\">
+  <header class=\"site-header\" id=\"top\">
     <div class=\"container nav-wrap\">
       <a class=\"brand\" href=\"../index.html#home\">Wei You</a>
       <button class=\"menu-toggle\" type=\"button\" aria-label=\"Open menu\" aria-controls=\"site-nav\" aria-expanded=\"false\">
@@ -344,26 +367,40 @@ def blog_index_template(posts: list[dict[str, object]], ga_id: str) -> str:
       </button>
       <nav class=\"site-nav\" id=\"site-nav\" aria-label=\"Primary\">
         <a class=\"nav-link\" href=\"../index.html#research\">Research</a>
+        <a class=\"nav-link\" href=\"../teaching/index.html\">Teaching</a>
         <a class=\"nav-link is-active\" href=\"./index.html\">Blog</a>
       </nav>
     </div>
   </header>
 
-  <main class=\"blog-page\">
-    <section class=\"blog-shell\">
-      <header class=\"blog-head\">
+  <main class=\"teaching-page\">
+    <section class=\"container teaching-shell\">
+      <header class=\"course-hero reveal-up\">
         <p class=\"eyebrow\">Writing</p>
         <h1>Blog</h1>
-        <p class=\"blog-intro\">Research notes, teaching reflections, and short updates.</p>
+        <p class=\"course-lead\">Research notes, teaching reflections, and short updates.</p>
       </header>
 
-      <div class=\"post-list\">
+      <section class=\"module-section reveal-up delay-1\">
+        <div class=\"module-grid\">
 {card_markup}
-      </div>
+        </div>
+      </section>
 
-      <p><a href=\"../index.html#blog\">Back to main site</a></p>
+      <div class=\"hero-links reveal-up delay-2\">
+        <a class=\"chip\" href=\"../index.html#blog\">Back to main site</a>
+      </div>
     </section>
   </main>
+
+  <footer class=\"site-footer\">
+    <div class=\"container footer-inner\">
+      <p>&copy; <span id=\"year\"></span> Wei You</p>
+      <p>Department of Industrial Engineering and Decision Analytics, HKUST</p>
+    </div>
+  </footer>
+
+  <a class=\"back-to-top\" href=\"#top\" aria-label=\"Back to top\">Top</a>
   <script>
     window.MathJax = {{
       tex: {{
@@ -378,6 +415,10 @@ def blog_index_template(posts: list[dict[str, object]], ga_id: str) -> str:
   </script>
   <script defer src=\"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js\"></script>
   <script src=\"../js/site.js\" defer></script>
+  <script>
+    const yearNode = document.getElementById(\"year\");
+    if (yearNode) yearNode.textContent = String(new Date().getFullYear());
+  </script>
 </body>
 </html>
 """
@@ -766,14 +807,355 @@ def build_research() -> int:
 
 
 # ---------------------------------------------------------------------------
+# Teaching build
+# ---------------------------------------------------------------------------
+
+def ensure_list_of_strings(value: object) -> list[str]:
+    if value is None:
+        return []
+    if not isinstance(value, list):
+        raise ValueError("Expected a list of strings.")
+    output: list[str] = []
+    for item in value:
+        if not isinstance(item, str):
+            raise ValueError(f"Expected string item, got: {item!r}")
+        stripped = item.strip()
+        if stripped:
+            output.append(stripped)
+    return output
+
+
+def normalize_teaching_path(url: str) -> str:
+    stripped = url.strip()
+    if not stripped:
+        return stripped
+    if re.match(r"^(https?:|mailto:|#|/)", stripped):
+        return stripped
+    if stripped.startswith("../") or stripped.startswith("./"):
+        return stripped
+    return "../" + stripped
+
+
+def validate_course(course: dict[str, object]) -> None:
+    required = ["slug", "code", "title", "period"]
+    missing = [field for field in required if not str(course.get(field, "")).strip()]
+    if missing:
+        raise ValueError(f"Course missing required fields {missing}: {course}")
+
+    slug = str(course["slug"]).strip()
+    if not re.fullmatch(r"[a-z0-9-]+", slug):
+        raise ValueError(f"Invalid course slug `{slug}`. Use lowercase letters, digits, and hyphens.")
+
+    published = course.get("published", False)
+    if not isinstance(published, bool):
+        raise ValueError(f"`published` must be boolean in course {slug}")
+
+    outcomes = course.get("outcomes", [])
+    if outcomes is not None and not isinstance(outcomes, list):
+        raise ValueError(f"`outcomes` must be a list in course {slug}")
+
+    modules = course.get("modules", [])
+    if modules is not None and not isinstance(modules, list):
+        raise ValueError(f"`modules` must be a list in course {slug}")
+
+    for module in modules:
+        if not isinstance(module, dict):
+            raise ValueError(f"Each module must be an object in course {slug}")
+        module_required = ["code", "title", "description", "link_label", "link_url"]
+        module_missing = [field for field in module_required if not str(module.get(field, "")).strip()]
+        if module_missing:
+            raise ValueError(f"Module missing fields {module_missing} in course {slug}: {module}")
+
+
+def load_teaching_data() -> list[dict[str, object]]:
+    if not TEACHING_DATA_PATH.exists():
+        return []
+
+    payload = json.loads(TEACHING_DATA_PATH.read_text(encoding="utf-8"))
+    courses = payload.get("courses", [])
+    if not isinstance(courses, list):
+        raise ValueError("`courses` must be a list in content/teaching/courses.json")
+
+    normalized: list[dict[str, object]] = []
+    for course in courses:
+        if not isinstance(course, dict):
+            raise ValueError(f"Each course must be an object, got: {course!r}")
+        validate_course(course)
+        normalized.append(course)
+    return normalized
+
+
+def teaching_index_template(courses: list[dict[str, object]], ga_id: str) -> str:
+    cards: list[str] = []
+    for course in courses:
+        code = escape_html(str(course["code"]))
+        title = escape_html(str(course["title"]))
+        period = escape_html(str(course["period"]))
+        summary = escape_html(str(course.get("summary", "")).strip() or "Course page in preparation.")
+        slug = escape_html(str(course["slug"]))
+        published = bool(course.get("published", False))
+
+        action = (
+            f'<a class="button" href="./{slug}.html">Open course page</a>'
+            if published
+            else '<p class="muted">Course page coming soon.</p>'
+        )
+        status = "Published" if published else "Coming Soon"
+        status_class = "is-live" if published else "is-soon"
+
+        cards.append(
+            "\n".join(
+                [
+                    '<article class="module-card course-card">',
+                    f'  <p class="timeline-year">{period}</p>',
+                    f'  <p class="course-status {status_class}">{status}</p>',
+                    f"  <h3>{code} {title}</h3>",
+                    f"  <p>{summary}</p>",
+                    f"  {action}",
+                    "</article>",
+                ]
+            )
+        )
+
+    cards_html = "\n".join(cards)
+    if not cards_html:
+        cards_html = (
+            '<article class="module-card course-card"><h3>No courses yet</h3>'
+            "<p>Add entries to content/teaching/courses.json and rebuild.</p></article>"
+        )
+
+    return f"""<!DOCTYPE html>
+<html lang="en" data-ga-id="{escape_html(ga_id)}">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Teaching | Wei You</title>
+  <meta name="description" content="Course pages and teaching materials by Wei You." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;family=Noto+Sans+SC:wght@400;500;700&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/site.css" />
+</head>
+<body>
+  <header class="site-header" id="top">
+    <div class="container nav-wrap">
+      <a class="brand" href="../index.html#home">Wei You</a>
+      <button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="site-nav" aria-expanded="false">
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary">
+        <a class="nav-link" href="../index.html#research">Research</a>
+        <a class="nav-link is-active" href="./index.html">Teaching</a>
+        <a class="nav-link" href="../blogs/index.html">Blog</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="teaching-page">
+    <section class="container teaching-shell">
+      <header class="course-hero reveal-up">
+        <p class="eyebrow">Courses</p>
+        <h1>Teaching</h1>
+      </header>
+
+      <section class="module-section reveal-up delay-1">
+        <div class="module-grid">
+{cards_html}
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; <span id="year"></span> Wei You</p>
+      <p>Department of Industrial Engineering and Decision Analytics, HKUST</p>
+    </div>
+  </footer>
+
+  <a class="back-to-top" href="#top" aria-label="Back to top">Top</a>
+  <script src="../js/site.js" defer></script>
+  <script>
+    const yearNode = document.getElementById("year");
+    if (yearNode) yearNode.textContent = String(new Date().getFullYear());
+  </script>
+</body>
+</html>
+"""
+
+
+def teaching_course_template(course: dict[str, object], ga_id: str) -> str:
+    code = escape_html(str(course["code"]))
+    title = escape_html(str(course["title"]))
+    period = escape_html(str(course["period"]))
+    summary = escape_html(str(course.get("summary", "")).strip())
+    overview = escape_html(str(course.get("overview", "")).strip() or str(course.get("summary", "")).strip())
+    audience = escape_html(str(course.get("audience", "")).strip() or "Undergraduate/graduate students.")
+    prerequisites = escape_html(str(course.get("prerequisites", "")).strip() or "See syllabus.")
+
+    outcomes = ensure_list_of_strings(course.get("outcomes", []))
+    modules = course.get("modules", [])
+    if not isinstance(modules, list):
+        modules = []
+
+    module_cards: list[str] = []
+    for module in modules:
+        if not isinstance(module, dict):
+            continue
+        module_code = escape_html(str(module.get("code", "")).strip())
+        module_title = escape_html(str(module.get("title", "")).strip())
+        module_desc = escape_html(str(module.get("description", "")).strip())
+        link_label = escape_html(str(module.get("link_label", "")).strip() or "Open resource")
+        link_url = normalize_teaching_path(str(module.get("link_url", "")).strip())
+        safe_url = escape_html(link_url)
+        module_cards.append(
+            "\n".join(
+                [
+                    '<article class="module-card">',
+                    f'  <p class="module-code">{module_code}</p>',
+                    f"  <h3>{module_title}</h3>",
+                    f"  <p>{module_desc}</p>",
+                    f'  <a class="button" href="{safe_url}" target="_blank" rel="noopener noreferrer">{link_label}</a>',
+                    "</article>",
+                ]
+            )
+        )
+
+    modules_html = "\n".join(module_cards)
+    if not modules_html:
+        modules_html = (
+            '<article class="module-card"><h3>No modules published yet</h3>'
+            "<p>Materials will be added here when available.</p></article>"
+        )
+
+    outcomes_items = "".join(f"<li>{escape_html(item)}</li>" for item in outcomes)
+    if not outcomes_items:
+        outcomes_items = "<li>Learning outcomes will be posted soon.</li>"
+
+    return f"""<!DOCTYPE html>
+<html lang="en" data-ga-id="{escape_html(ga_id)}">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{code} {title} | Teaching</title>
+  <meta name="description" content="{summary}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;family=Noto+Sans+SC:wght@400;500;700&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/site.css" />
+</head>
+<body>
+  <header class="site-header" id="top">
+    <div class="container nav-wrap">
+      <a class="brand" href="../index.html#home">Wei You</a>
+      <button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="site-nav" aria-expanded="false">
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary">
+        <a class="nav-link" href="../index.html#research">Research</a>
+        <a class="nav-link" href="../index.html#teaching">Teaching</a>
+        <a class="nav-link is-active" href="./index.html">Course Directory</a>
+        <a class="nav-link" href="../blogs/index.html">Blog</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="teaching-page">
+    <section class="container teaching-shell">
+      <header class="course-hero reveal-up">
+        <p class="eyebrow">HKUST IEDA</p>
+        <h1>{code}: {title}</h1>
+        <p class="course-lead">{overview}</p>
+        <div class="hero-links">
+          <a class="chip" href="./index.html">All Course Pages</a>
+          <a class="chip" href="../index.html#teaching">Main Site Teaching Section</a>
+        </div>
+      </header>
+
+      <section class="course-snapshot reveal-up delay-1" aria-label="Course snapshot">
+        <article class="panel">
+          <h2>Course Snapshot</h2>
+          <ul class="stack-list">
+            <li><strong>Period:</strong> {period}</li>
+            <li><strong>Audience:</strong> {audience}</li>
+            <li><strong>Prerequisites:</strong> {prerequisites}</li>
+          </ul>
+        </article>
+        <article class="panel">
+          <h2>Learning Outcomes</h2>
+          <ul class="stack-list">
+            {outcomes_items}
+          </ul>
+        </article>
+      </section>
+
+      <section class="module-section reveal-up delay-2" aria-label="Lecture modules">
+        <header class="section-header">
+          <p class="eyebrow">Lecture Modules</p>
+          <h2>Materials</h2>
+        </header>
+        <div class="module-grid">
+          {modules_html}
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; <span id="year"></span> Wei You</p>
+      <p>Department of Industrial Engineering and Decision Analytics, HKUST</p>
+    </div>
+  </footer>
+
+  <a class="back-to-top" href="#top" aria-label="Back to top">Top</a>
+  <script src="../js/site.js" defer></script>
+  <script>
+    const yearNode = document.getElementById("year");
+    if (yearNode) yearNode.textContent = String(new Date().getFullYear());
+  </script>
+</body>
+</html>
+"""
+
+
+def build_teaching() -> int:
+    courses = load_teaching_data()
+    ga_id = read_ga_measurement_id()
+
+    TEACHING_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    (TEACHING_OUTPUT_DIR / "index.html").write_text(
+        teaching_index_template(courses, ga_id),
+        encoding="utf-8",
+    )
+
+    generated = 0
+    for course in courses:
+        if not bool(course.get("published", False)):
+            continue
+        slug = str(course["slug"]).strip()
+        output_path = TEACHING_OUTPUT_DIR / f"{slug}.html"
+        output_path.write_text(teaching_course_template(course, ga_id), encoding="utf-8")
+        generated += 1
+
+    print(f"Built teaching directory from {len(courses)} course entry(ies).")
+    print(f"Generated: teaching/index.html and {generated} course page(s).")
+    return len(courses)
+
+
+# ---------------------------------------------------------------------------
 # Entrypoint
 # ---------------------------------------------------------------------------
 
 def main() -> None:
-    print("[1/2] Building research section...")
+    print("[1/3] Building research section...")
     build_research()
-    print("[2/2] Building blog...")
+    print("[2/3] Building blog...")
     build_blog()
+    print("[3/3] Building teaching pages...")
+    build_teaching()
     print("Site build complete.")
 
 

@@ -1,0 +1,118 @@
+{
+  "courses": [
+    {
+      "slug": "ieda3250",
+      "code": "IEDA3250",
+      "title": "Stochastic Models",
+      "period": "2026–present",
+      "summary": "Stochastic-process modeling methods for engineering systems.",
+      "published": false
+    },
+    {
+      "slug": "ieda5270",
+      "code": "IEDA5270",
+      "title": "Engineering Statistics",
+      "period": "2019–present",
+      "summary": "Graduate-level statistical methodology for data-driven engineering.",
+      "published": false
+    },
+    {
+      "slug": "ieda2540",
+      "code": "IEDA2540",
+      "title": "Statistics for Engineers",
+      "period": "2020–2025",
+      "summary": "Core statistics for engineers: uncertainty modeling, estimation, inference, and regression.",
+      "published": true,
+      "overview": "This course introduces statistical thinking for engineering systems: data description, probabilistic modeling, statistical estimation, uncertainty quantification, and evidence-based decisions.",
+      "audience": "Undergraduate engineering students.",
+      "prerequisites": "Basic calculus and algebra.",
+      "outcomes": [
+        "Summarize and visualize engineering data effectively.",
+        "Apply probability models to quantify uncertainty.",
+        "Construct point estimates and confidence intervals.",
+        "Run hypothesis tests and interpret p-values responsibly.",
+        "Build and interpret basic linear regression models."
+      ],
+      "modules": [
+        {
+          "code": "T0a",
+          "title": "Course Introduction",
+          "description": "Course goals, data-driven engineering decisions, and the role of statistics in the IEDA curriculum.",
+          "link_label": "Open Slides",
+          "link_url": "assets/teaching/IEDA2540/T0a_introduction.pdf"
+        },
+        {
+          "code": "T0b",
+          "title": "Sampling Foundations",
+          "description": "Population vs. sample, sampling bias, and how sampling design impacts inference quality.",
+          "link_label": "Open Slides",
+          "link_url": "assets/teaching/IEDA2540/T0b_sampling.pdf"
+        },
+        {
+          "code": "T1",
+          "title": "Descriptive Statistics",
+          "description": "Summary measures and visual diagnostics for understanding variation and central tendency.",
+          "link_label": "Open Slides",
+          "link_url": "assets/teaching/IEDA2540/T1_descriptive.pdf"
+        },
+        {
+          "code": "T2",
+          "title": "Probability Distributions",
+          "description": "Discrete and continuous distributions, random variables, and model assumptions used in practice.",
+          "link_label": "Open Slides",
+          "link_url": "assets/teaching/IEDA2540/T2_distributions.pdf"
+        },
+        {
+          "code": "T3a",
+          "title": "Random Samples",
+          "description": "Sampling distributions, law of large numbers intuition, and central limit theorem viewpoints.",
+          "link_label": "Open Slides",
+          "link_url": "assets/teaching/IEDA2540/T3_random_sample.pdf"
+        },
+        {
+          "code": "T3b",
+          "title": "Point Estimation",
+          "description": "Estimators, bias, variance, MSE tradeoffs, and principles for good estimator construction.",
+          "link_label": "Open Slides",
+          "link_url": "assets/teaching/IEDA2540/T3_point_estimation.pdf"
+        },
+        {
+          "code": "T4",
+          "title": "Confidence Intervals",
+          "description": "Interval construction, interpretation under repeated sampling, and common misuse patterns.",
+          "link_label": "Open Slides",
+          "link_url": "assets/teaching/IEDA2540/T4_confidence_interval.pdf"
+        },
+        {
+          "code": "T5",
+          "title": "Hypothesis Testing",
+          "description": "Null/alternative setup, type I/II errors, p-values, power, and practical test selection.",
+          "link_label": "Open Slides",
+          "link_url": "assets/teaching/IEDA2540/T5_hypothesis_testing.pdf"
+        },
+        {
+          "code": "T6",
+          "title": "Comparing Multiple Samples",
+          "description": "Inference with more than two groups, model assumptions, and interpretation of group differences.",
+          "link_label": "Open Slides",
+          "link_url": "assets/teaching/IEDA2540/T6_comparing_multiple_samples.pdf"
+        },
+        {
+          "code": "T7",
+          "title": "Linear Regression",
+          "description": "Model fitting, coefficient interpretation, diagnostics, and prediction in engineering contexts.",
+          "link_label": "Open Slides",
+          "link_url": "assets/teaching/IEDA2540/T7_regression.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "eemt5500",
+      "code": "EEMT5500",
+      "title": "Applied Probability, Statistics and Data Analytics",
+      "period": "2022",
+      "summary": "Applied probability and statistical methods for engineering management contexts.",
+      "published": false
+    }
+  ]
+}

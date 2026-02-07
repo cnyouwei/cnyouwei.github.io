@@ -9,8 +9,10 @@ This repository contains a fully static personal research website.
 - `js/site.js`: Navigation, paper filter/search, and blog preview loader.
 - `content/research/papers.json`: Source of truth for working papers and publications.
 - `content/blog/*.md`: Source markdown files for blog posts.
-- `scripts/build_site.py`: Compiles the Research section from `content/research/papers.json` and generates blog pages from `content/blog/*.md`.
+- `content/teaching/courses.json`: Source of truth for teaching directory and course pages.
+- `scripts/build_site.py`: Compiles research from `content/research/papers.json`, blog from `content/blog/*.md`, and teaching pages from `content/teaching/courses.json`.
 - `blogs/`: Generated blog output (`index.html`, post pages, `posts.json`, and `posts.js`).
+- `teaching/`: Generated teaching output (`index.html` and per-course pages).
 
 ## Manage Research Papers
 
@@ -58,6 +60,21 @@ python3 scripts/build_site.py
 ```
 
 4. Commit both the markdown source and generated files under `blogs/`.
+
+## Add or Update Course Pages
+
+1. Edit `content/teaching/courses.json`.
+2. For each course, set:
+   - `published: true` to generate a course page at `teaching/<slug>.html`
+   - `published: false` to show it as "Coming Soon" in the teaching directory
+3. For published courses, you can define:
+   - `overview`, `audience`, `prerequisites`, `outcomes`
+   - `modules` with `code`, `title`, `description`, `link_label`, and `link_url`
+4. Rebuild:
+
+```bash
+python3 scripts/build_site.py
+```
 
 ## Local Preview
 

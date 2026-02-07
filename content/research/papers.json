@@ -15,7 +15,7 @@
       "links": [
         {
           "label": "Preprint",
-          "url": "papers/Liu_et_al_cost_aware.pdf"
+          "url": "assets/papers/Liu_et_al_cost_aware.pdf"
         }
       ]
     },
@@ -24,7 +24,7 @@
       "section": "working",
       "type": "working",
       "year": 2025,
-      "title": "Pure Exploration via Frank-Wolfe Self-Play",
+      "title": "Pure Exploration via Frank–Wolfe Self-Play",
       "topic": "Bandit Learning",
       "authors": ["Xinyu Liu", "Chao Qin", "Wei You"],
       "note": "Short version appeared at NeurIPS 2025 MLxOR Workshop.",
@@ -133,7 +133,7 @@
         },
         {
           "label": "Slides",
-          "url": "papers/PE_Slides.pdf"
+          "url": "assets/papers/PE_Slides.pdf"
         },
         {
           "label": "Code",
@@ -229,7 +229,7 @@
         },
         {
           "label": "Slides",
-          "url": "papers/RQ_Slides.pdf"
+          "url": "assets/papers/RQ_Slides.pdf"
         }
       ]
     },
@@ -250,11 +250,11 @@
         },
         {
           "label": "Longer Version",
-          "url": "papers/Whitt_You_flow_full.pdf"
+          "url": "assets/papers/Whitt_You_flow_full.pdf"
         },
         {
           "label": "Slides",
-          "url": "papers/Flow_Slides.pdf"
+          "url": "assets/papers/Flow_Slides.pdf"
         }
       ]
     },
@@ -275,7 +275,7 @@
         },
         {
           "label": "PDF",
-          "url": "papers/Whitt_You_TVRQ.pdf"
+          "url": "assets/papers/Whitt_You_TVRQ.pdf"
         }
       ]
     },
@@ -296,11 +296,11 @@
         },
         {
           "label": "PDF",
-          "url": "papers/Whitt_You_Index.pdf"
+          "url": "assets/papers/Whitt_You_Index.pdf"
         },
         {
           "label": "Supplement",
-          "url": "papers/Whitt_You_Index_supplement.pdf"
+          "url": "assets/papers/Whitt_You_Index_supplement.pdf"
         }
       ]
     },
@@ -321,7 +321,7 @@
         },
         {
           "label": "PDF",
-          "url": "papers/Whitt_You_HTDep.pdf"
+          "url": "assets/papers/Whitt_You_HTDep.pdf"
         }
       ]
     },
@@ -342,7 +342,7 @@
         },
         {
           "label": "PDF",
-          "url": "papers/Whitt_You_RQ.pdf"
+          "url": "assets/papers/Whitt_You_RQ.pdf"
         }
       ]
     },
@@ -363,7 +363,7 @@
         },
         {
           "label": "PDF",
-          "url": "papers/Thesis_WYou.pdf"
+          "url": "assets/papers/Thesis_WYou.pdf"
         }
       ]
     }
