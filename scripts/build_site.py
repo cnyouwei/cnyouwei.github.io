@@ -34,6 +34,10 @@ SELECTED_START_MARKER = "<!-- SELECTED-PAPERS:START -->"
 SELECTED_END_MARKER = "<!-- SELECTED-PAPERS:END -->"
 RESEARCH_START_MARKER = "<!-- RESEARCH-CONTENT:START -->"
 RESEARCH_END_MARKER = "<!-- RESEARCH-CONTENT:END -->"
+NAV_TEACHING_START_MARKER = "<!-- NAV-TEACHING-DROPDOWN:START -->"
+NAV_TEACHING_END_MARKER = "<!-- NAV-TEACHING-DROPDOWN:END -->"
+NAV_BLOG_START_MARKER = "<!-- NAV-BLOG-DROPDOWN:START -->"
+NAV_BLOG_END_MARKER = "<!-- NAV-BLOG-DROPDOWN:END -->"
 GA_ID_PLACEHOLDER = "G-XXXXXXXXXX"
 
 BADGE_LABELS = {
@@ -340,7 +344,149 @@ def format_date(date_string: str) -> str:
     return date_obj.strftime("%B %d, %Y")
 
 
-def post_page_template(post: dict[str, object], body_html: str, ga_id: str) -> str:
+def published_courses_for_nav(courses: list[dict[str, object]]) -> list[dict[str, str]]:
+    entries: list[dict[str, str]] = []
+    for course in courses:
+        if not bool(course.get("published", False)):
+            continue
+        slug = str(course.get("slug", "")).strip()
+        code = str(course.get("code", "")).strip()
+        title = str(course.get("title", "")).strip()
+        if not slug or not code or not title:
+            continue
+        entries.append(
+            {
+                "slug": slug,
+                "label": f"{code} {title}",
+            }
+        )
+    return entries
+
+
+def recent_posts_for_nav(posts: list[dict[str, object]], limit: int = 3) -> list[dict[str, str]]:
+    entries: list[dict[str, str]] = []
+    for post in posts[: max(limit, 0)]:
+        slug = str(post.get("slug", "")).strip()
+        title = str(post.get("title", "")).strip()
+        if not slug or not title:
+            continue
+        entries.append({"slug": slug, "label": title})
+    return entries
+
+
+def render_nav_dropdown_items(
+    items: list[dict[str, str]],
+    active_href: str = "",
+) -> str:
+    lines: list[str] = []
+    for item in items:
+        href = str(item.get("href", "")).strip()
+        label = str(item.get("label", "")).strip()
+        if not href or not label:
+            continue
+        is_active = bool(active_href) and href == active_href
+        item_class = "nav-dropdown__item is-active" if is_active else "nav-dropdown__item"
+        lines.append(
+            f'<a class="{item_class}" href="{escape_html(href)}">{escape_html(label)}</a>'
+        )
+    return "\n".join(lines)
+
+
+def render_nav_dropdown(
+    label: str,
+    items: list[dict[str, str]],
+    *,
+    active: bool = False,
+    active_href: str = "",
+) -> str:
+    toggle_class = "nav-link nav-dropdown__toggle"
+    if active:
+        toggle_class += " is-active"
+    items_markup = render_nav_dropdown_items(items, active_href=active_href)
+    safe_label = escape_html(label)
+    return "\n".join(
+        [
+            '<div class="nav-dropdown">',
+            f'  <button class="{toggle_class}" type="button" aria-haspopup="true" aria-expanded="false">{safe_label}</button>',
+            f'  <div class="nav-dropdown__menu" role="menu" aria-label="{safe_label} links">',
+            indent_block(items_markup, "    "),
+            "  </div>",
+            "</div>",
+        ]
+    )
+
+
+def build_teaching_dropdown_items(
+    *,
+    directory_href: str,
+    course_href_prefix: str,
+    published_courses: list[dict[str, str]],
+) -> list[dict[str, str]]:
+    items: list[dict[str, str]] = [{"href": directory_href, "label": "Course Directory"}]
+    items.extend(
+        {
+            "href": f"{course_href_prefix}{course['slug']}.html",
+            "label": course["label"],
+        }
+        for course in published_courses
+    )
+    return items
+
+
+def build_blog_dropdown_items(
+    *,
+    blog_index_href: str,
+    post_href_prefix: str,
+    recent_posts: list[dict[str, str]],
+) -> list[dict[str, str]]:
+    items: list[dict[str, str]] = [
+        {
+            "href": f"{post_href_prefix}{post['slug']}.html",
+            "label": post["label"],
+        }
+        for post in recent_posts
+    ]
+    items.append({"href": blog_index_href, "label": "View all posts"})
+    return items
+
+
+def update_index_nav_dropdowns(
+    posts: list[dict[str, object]],
+    courses: list[dict[str, object]],
+) -> None:
+    published_courses = published_courses_for_nav(courses)
+    recent_posts = recent_posts_for_nav(posts)
+
+    teaching_items = build_teaching_dropdown_items(
+        directory_href="teaching/index.html",
+        course_href_prefix="teaching/",
+        published_courses=published_courses,
+    )
+    blog_items = build_blog_dropdown_items(
+        blog_index_href="blogs/index.html",
+        post_href_prefix="blogs/",
+        recent_posts=recent_posts,
+    )
+
+    update_index_block(
+        NAV_TEACHING_START_MARKER,
+        NAV_TEACHING_END_MARKER,
+        render_nav_dropdown_items(teaching_items),
+    )
+    update_index_block(
+        NAV_BLOG_START_MARKER,
+        NAV_BLOG_END_MARKER,
+        render_nav_dropdown_items(blog_items),
+    )
+
+
+def post_page_template(
+    post: dict[str, object],
+    body_html: str,
+    ga_id: str,
+    recent_posts: list[dict[str, str]],
+    published_courses: list[dict[str, str]],
+) -> str:
     tags_markup = "".join(
         f'<span class="blog-tag">{escape_html(tag)}</span>' for tag in post["tags"]
     )
@@ -506,6 +652,28 @@ def post_page_template(post: dict[str, object], body_html: str, ga_id: str) -> s
   </script>
 """
 
+    teaching_dropdown_items = build_teaching_dropdown_items(
+        directory_href="../teaching/index.html",
+        course_href_prefix="../teaching/",
+        published_courses=published_courses,
+    )
+    blog_dropdown_items = build_blog_dropdown_items(
+        blog_index_href="./index.html",
+        post_href_prefix="./",
+        recent_posts=recent_posts,
+    )
+
+    teaching_dropdown = render_nav_dropdown(
+        "Teaching",
+        teaching_dropdown_items,
+    )
+    blog_dropdown = render_nav_dropdown(
+        "Blog",
+        blog_dropdown_items,
+        active=True,
+        active_href=f"./{str(post['slug']).strip()}.html",
+    )
+
     return f"""<!DOCTYPE html>
 <html lang=\"en\" data-ga-id=\"{escape_html(ga_id)}\">
 <head>
@@ -544,8 +712,8 @@ def post_page_template(post: dict[str, object], body_html: str, ga_id: str) -> s
         </button>
         <nav class=\"site-nav\" id=\"site-nav\" aria-label=\"Primary\">
           <a class=\"nav-link\" href=\"../index.html#research\">Research</a>
-          <a class=\"nav-link\" href=\"../teaching/index.html\">Teaching</a>
-          <a class=\"nav-link is-active\" href=\"./index.html\">Blog</a>
+{indent_block(teaching_dropdown, '          ')}
+{indent_block(blog_dropdown, '          ')}
         </nav>
       </div>
     </div>
@@ -610,7 +778,11 @@ def post_page_template(post: dict[str, object], body_html: str, ga_id: str) -> s
 """
 
 
-def blog_index_template(posts: list[dict[str, object]], ga_id: str) -> str:
+def blog_index_template(
+    posts: list[dict[str, object]],
+    ga_id: str,
+    published_courses: list[dict[str, str]],
+) -> str:
     cards = []
 
     for post in posts:
@@ -632,6 +804,29 @@ def blog_index_template(posts: list[dict[str, object]], ga_id: str) -> str:
             '<article class="module-card blog-card"><h3>No posts yet</h3><p>Add a markdown file under '
             'content/blog and rerun the build script.</p></article>'
         )
+
+    recent_posts = recent_posts_for_nav(posts)
+    teaching_dropdown_items = build_teaching_dropdown_items(
+        directory_href="../teaching/index.html",
+        course_href_prefix="../teaching/",
+        published_courses=published_courses,
+    )
+    blog_dropdown_items = build_blog_dropdown_items(
+        blog_index_href="./index.html",
+        post_href_prefix="./",
+        recent_posts=recent_posts,
+    )
+
+    teaching_dropdown = render_nav_dropdown(
+        "Teaching",
+        teaching_dropdown_items,
+    )
+    blog_dropdown = render_nav_dropdown(
+        "Blog",
+        blog_dropdown_items,
+        active=True,
+        active_href="./index.html",
+    )
 
     return f"""<!DOCTYPE html>
 <html lang=\"en\" data-ga-id=\"{escape_html(ga_id)}\">
@@ -670,8 +865,8 @@ def blog_index_template(posts: list[dict[str, object]], ga_id: str) -> str:
         </button>
         <nav class=\"site-nav\" id=\"site-nav\" aria-label=\"Primary\">
           <a class=\"nav-link\" href=\"../index.html#research\">Research</a>
-          <a class=\"nav-link\" href=\"../teaching/index.html\">Teaching</a>
-          <a class=\"nav-link is-active\" href=\"./index.html\">Blog</a>
+{indent_block(teaching_dropdown, '          ')}
+{indent_block(blog_dropdown, '          ')}
         </nav>
       </div>
     </div>
@@ -767,9 +962,10 @@ def read_source_posts() -> list[dict[str, object]]:
     return posts
 
 
-def write_blog_output(posts: list[dict[str, object]]) -> None:
+def write_blog_output(posts: list[dict[str, object]], courses: list[dict[str, object]]) -> None:
     BLOG_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     ga_id = read_ga_measurement_id()
+    published_courses = published_courses_for_nav(courses)
 
     manifest = [
         {
@@ -790,19 +986,26 @@ def write_blog_output(posts: list[dict[str, object]]) -> None:
         encoding="utf-8",
     )
     (BLOG_OUTPUT_DIR / "index.html").write_text(
-        blog_index_template(manifest, ga_id), encoding="utf-8"
+        blog_index_template(manifest, ga_id, published_courses), encoding="utf-8"
     )
 
+    recent_posts = recent_posts_for_nav(manifest)
     for post in posts:
         output_path = BLOG_OUTPUT_DIR / f"{post['slug']}.html"
         output_path.write_text(
-            post_page_template(post, post["html"], ga_id), encoding="utf-8"
+            post_page_template(
+                post,
+                post["html"],
+                ga_id,
+                recent_posts,
+                published_courses,
+            ),
+            encoding="utf-8",
         )
 
 
-def build_blog() -> int:
-    posts = read_source_posts()
-    write_blog_output(posts)
+def build_blog(posts: list[dict[str, object]], courses: list[dict[str, object]]) -> int:
+    write_blog_output(posts, courses)
 
     print(f"Built {len(posts)} blog post(s).")
     print("Generated: blogs/index.html")
@@ -1193,7 +1396,11 @@ def load_teaching_data() -> list[dict[str, object]]:
     return normalized
 
 
-def teaching_index_template(courses: list[dict[str, object]], ga_id: str) -> str:
+def teaching_index_template(
+    courses: list[dict[str, object]],
+    ga_id: str,
+    recent_posts: list[dict[str, str]],
+) -> str:
     cards: list[str] = []
     for course in courses:
         code = escape_html(str(course["code"]))
@@ -1232,6 +1439,25 @@ def teaching_index_template(courses: list[dict[str, object]], ga_id: str) -> str
             "<p>Add entries to content/teaching/courses.json and rebuild.</p></article>"
         )
 
+    teaching_dropdown_items = build_teaching_dropdown_items(
+        directory_href="./index.html",
+        course_href_prefix="./",
+        published_courses=published_courses_for_nav(courses),
+    )
+    blog_dropdown_items = build_blog_dropdown_items(
+        blog_index_href="../blogs/index.html",
+        post_href_prefix="../blogs/",
+        recent_posts=recent_posts,
+    )
+
+    teaching_dropdown = render_nav_dropdown(
+        "Teaching",
+        teaching_dropdown_items,
+        active=True,
+        active_href="./index.html",
+    )
+    blog_dropdown = render_nav_dropdown("Blog", blog_dropdown_items)
+
     return f"""<!DOCTYPE html>
 <html lang="en" data-ga-id="{escape_html(ga_id)}">
 <head>
@@ -1269,8 +1495,8 @@ def teaching_index_template(courses: list[dict[str, object]], ga_id: str) -> str
         </button>
         <nav class="site-nav" id="site-nav" aria-label="Primary">
           <a class="nav-link" href="../index.html#research">Research</a>
-          <a class="nav-link is-active" href="./index.html">Teaching</a>
-          <a class="nav-link" href="../blogs/index.html">Blog</a>
+{indent_block(teaching_dropdown, '          ')}
+{indent_block(blog_dropdown, '          ')}
         </nav>
       </div>
     </div>
@@ -1309,7 +1535,12 @@ def teaching_index_template(courses: list[dict[str, object]], ga_id: str) -> str
 """
 
 
-def teaching_course_template(course: dict[str, object], ga_id: str) -> str:
+def teaching_course_template(
+    course: dict[str, object],
+    ga_id: str,
+    recent_posts: list[dict[str, str]],
+    published_courses: list[dict[str, str]],
+) -> str:
     code = escape_html(str(course["code"]))
     title = escape_html(str(course["title"]))
     period = escape_html(str(course["period"]))
@@ -1357,6 +1588,26 @@ def teaching_course_template(course: dict[str, object], ga_id: str) -> str:
     if not outcomes_items:
         outcomes_items = "<li>Learning outcomes will be posted soon.</li>"
 
+    current_slug = str(course["slug"]).strip()
+    teaching_dropdown_items = build_teaching_dropdown_items(
+        directory_href="./index.html",
+        course_href_prefix="./",
+        published_courses=published_courses,
+    )
+    blog_dropdown_items = build_blog_dropdown_items(
+        blog_index_href="../blogs/index.html",
+        post_href_prefix="../blogs/",
+        recent_posts=recent_posts,
+    )
+
+    teaching_dropdown = render_nav_dropdown(
+        "Teaching",
+        teaching_dropdown_items,
+        active=True,
+        active_href=f"./{current_slug}.html",
+    )
+    blog_dropdown = render_nav_dropdown("Blog", blog_dropdown_items)
+
     return f"""<!DOCTYPE html>
 <html lang="en" data-ga-id="{escape_html(ga_id)}">
 <head>
@@ -1394,9 +1645,8 @@ def teaching_course_template(course: dict[str, object], ga_id: str) -> str:
         </button>
         <nav class="site-nav" id="site-nav" aria-label="Primary">
           <a class="nav-link" href="../index.html#research">Research</a>
-          <a class="nav-link" href="../index.html#teaching">Teaching</a>
-          <a class="nav-link is-active" href="./index.html">Course Directory</a>
-          <a class="nav-link" href="../blogs/index.html">Blog</a>
+{indent_block(teaching_dropdown, '          ')}
+{indent_block(blog_dropdown, '          ')}
         </nav>
       </div>
     </div>
@@ -1461,13 +1711,13 @@ def teaching_course_template(course: dict[str, object], ga_id: str) -> str:
 """
 
 
-def build_teaching() -> int:
-    courses = load_teaching_data()
+def build_teaching(courses: list[dict[str, object]], recent_posts: list[dict[str, str]]) -> int:
     ga_id = read_ga_measurement_id()
+    published_courses = published_courses_for_nav(courses)
 
     TEACHING_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     (TEACHING_OUTPUT_DIR / "index.html").write_text(
-        teaching_index_template(courses, ga_id),
+        teaching_index_template(courses, ga_id, recent_posts),
         encoding="utf-8",
     )
 
@@ -1477,7 +1727,15 @@ def build_teaching() -> int:
             continue
         slug = str(course["slug"]).strip()
         output_path = TEACHING_OUTPUT_DIR / f"{slug}.html"
-        output_path.write_text(teaching_course_template(course, ga_id), encoding="utf-8")
+        output_path.write_text(
+            teaching_course_template(
+                course,
+                ga_id,
+                recent_posts,
+                published_courses,
+            ),
+            encoding="utf-8",
+        )
         generated += 1
 
     print(f"Built teaching directory from {len(courses)} course entry(ies).")
@@ -1492,10 +1750,15 @@ def build_teaching() -> int:
 def main() -> None:
     print("[1/3] Building research section...")
     build_research()
+    posts = read_source_posts()
+    courses = load_teaching_data()
+    recent_posts = recent_posts_for_nav(posts)
     print("[2/3] Building blog...")
-    build_blog()
+    build_blog(posts, courses)
     print("[3/3] Building teaching pages...")
-    build_teaching()
+    build_teaching(courses, recent_posts)
+    update_index_nav_dropdowns(posts, courses)
+    print("Updated: index navigation dropdowns.")
     print("Site build complete.")
 
 
