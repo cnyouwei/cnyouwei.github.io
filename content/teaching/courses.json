@@ -113,6 +113,45 @@
       "period": "2022",
       "summary": "Applied probability and statistical methods for engineering management contexts.",
       "published": false
+    },
+    {
+      "slug": "real-analysis-2011",
+      "code": "NJU",
+      "title": "Real Analysis Notes",
+      "period": "2011",
+      "summary": "Real analysis notes written at Nanjing University, with an English translation and a companion blog post.",
+      "published": true,
+      "overview": "A set of real analysis notes originally written in Chinese at Nanjing University in 2011 and later translated into English, with context and commentary in a companion blog post.",
+      "audience": "Undergraduate mathematics students and self-learners.",
+      "prerequisites": "Single-variable and multivariable calculus.",
+      "outcomes": [
+        "Understand the measure-theoretic foundations behind modern real analysis.",
+        "Connect key results across topology, measure, integration, and differentiation.",
+        "Use the notes as a structured reference for study and teaching."
+      ],
+      "modules": [
+        {
+          "code": "BLOG",
+          "title": "Companion Blog Post",
+          "description": "Background and roadmap for the 2011 notes and their English translation.",
+          "link_label": "Open Blog Post",
+          "link_url": "blogs/2026-02-07-real_analysis.html"
+        },
+        {
+          "code": "CN",
+          "title": "Chinese Notes (Original)",
+          "description": "Original Chinese real analysis notes written in 2011.",
+          "link_label": "Open PDF (Chinese)",
+          "link_url": "assets/papers/Real_analysis.pdf"
+        },
+        {
+          "code": "EN",
+          "title": "English Notes (Translation)",
+          "description": "Complete English translation of the original notes.",
+          "link_label": "Open PDF (English)",
+          "link_url": "assets/papers/Real_analysis_en.pdf"
+        }
+      ]
     }
   ]
 }
