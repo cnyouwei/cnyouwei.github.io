@@ -7,9 +7,9 @@ tags: [math, notes, real analysis]
 
 Back in 2011, I wrote a set of real analysis notes in Chinese at Nanjing University. They grew out of a course I took with Prof. Zhong Chengkui (钟承奎). It was my first exposure to real analysis, and it was an excellent experience. The course’s level of detail and rigor inspired me to pursue an academic path. Around that time I had just started using LaTeX, and these notes also became a practical way for me to learn it.
 
-The notes were circulated on the university forum and on a Sina knowledge‑sharing platform [iask](http://iask.sina.com.cn/u/1776601564/ish), where they accumulated a few thousand downloads. That Sina site has long since disappeared—it has since turned into an online medical Q&A site. I’ve often felt that these notes deserve a wider audience, and I’ve been thinking about translating them into English for a long time.
+The notes were circulated on the university forum and on a Sina knowledge‑sharing platform [iask](http://iask.sina.com.cn/u/1776601564/ish), where they accumulated a few thousand downloads. That site has long since disappeared (it eventually became an online medical Q\&A portal). For years I have felt that the notes deserve a wider audience, and I have periodically considered translating them into English.
 
-Recently, I revisited the notes and created a complete English translation with ChatGPT. With the new OpenAI Codex app—especially its ability to create/modify files and compile/debug automatically—the conversion was virtually effortless. I ended up with a near‑perfect translation in about two hours. I hope the rise of LLMs can truly break down barriers to knowledge (and language) and make it accessible to everyone.
+Recently, I revisited the manuscript and produced a complete English translation with ChatGPT. With the current generation of LLM-assisted tooling—especially the ability to edit files and iterate quickly through compilation and correction—the conversion process was far smoother than I expected. I ended up with a near‑perfect translation in about two hours. I hope the rise of LLMs can truly break down barriers to knowledge (and language) and make it accessible to everyone.
 
 [Chinese version (original)](../assets/papers/Real_analysis.pdf) | [English version (translation)](../assets/papers/Real_analysis_en.pdf)
 
