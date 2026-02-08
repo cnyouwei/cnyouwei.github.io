@@ -152,16 +152,44 @@
   window.addEventListener('themechange', syncThemeAwareImages);
 
   const navDropdowns = Array.from(document.querySelectorAll('.nav-dropdown'));
+  const navDropdownCloseTimers = new WeakMap();
+  const navDropdownCloseDelayMs = 100;
+  const navDropdownCanHover =
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  function setNavDropdownOpen(dropdown, shouldOpen) {
+    dropdown.classList.toggle('is-open', shouldOpen);
+    const toggle = dropdown.querySelector('.nav-dropdown__toggle');
+    if (toggle) {
+      toggle.setAttribute('aria-expanded', shouldOpen ? 'true' : 'false');
+    }
+  }
+
+  function clearNavDropdownCloseTimer(dropdown) {
+    const timerId = navDropdownCloseTimers.get(dropdown);
+    if (typeof timerId === 'number') {
+      window.clearTimeout(timerId);
+      navDropdownCloseTimers.delete(dropdown);
+    }
+  }
+
+  function scheduleNavDropdownClose(dropdown) {
+    clearNavDropdownCloseTimer(dropdown);
+    const timerId = window.setTimeout(function () {
+      if (dropdown.dataset.pinned === 'true') return;
+      if (dropdown.matches(':hover') || dropdown.matches(':focus-within')) return;
+      setNavDropdownOpen(dropdown, false);
+    }, navDropdownCloseDelayMs);
+    navDropdownCloseTimers.set(dropdown, timerId);
+  }
 
   function closeNavDropdowns(exceptDropdown) {
     navDropdowns.forEach(function (dropdown) {
+      clearNavDropdownCloseTimer(dropdown);
       const shouldStayOpen = Boolean(exceptDropdown) && dropdown === exceptDropdown;
-      dropdown.classList.toggle('is-open', shouldStayOpen);
-
-      const toggle = dropdown.querySelector('.nav-dropdown__toggle');
-      if (toggle) {
-        toggle.setAttribute('aria-expanded', shouldStayOpen ? 'true' : 'false');
-      }
+      setNavDropdownOpen(dropdown, shouldStayOpen);
+      if (!shouldStayOpen) delete dropdown.dataset.pinned;
     });
   }
 
@@ -173,8 +201,26 @@
       toggle.addEventListener('click', function (event) {
         event.preventDefault();
         const nextIsOpen = !dropdown.classList.contains('is-open');
-        closeNavDropdowns(nextIsOpen ? dropdown : null);
+        if (!nextIsOpen) {
+          closeNavDropdowns(null);
+          return;
+        }
+
+        closeNavDropdowns(dropdown);
+        dropdown.dataset.pinned = 'true';
       });
+
+      if (navDropdownCanHover) {
+        dropdown.addEventListener('mouseenter', function () {
+          if (dropdown.dataset.pinned === 'true') return;
+          closeNavDropdowns(dropdown);
+        });
+
+        dropdown.addEventListener('mouseleave', function () {
+          if (dropdown.dataset.pinned === 'true') return;
+          scheduleNavDropdownClose(dropdown);
+        });
+      }
     });
 
     document.addEventListener('click', function (event) {

@@ -711,8 +711,12 @@ def post_page_template(
           <span></span>
         </button>
         <nav class=\"site-nav\" id=\"site-nav\" aria-label=\"Primary\">
+          <a class=\"nav-link\" href=\"../index.html#home\">Home</a>
           <a class=\"nav-link\" href=\"../index.html#research\">Research</a>
+          <a class=\"nav-link\" href=\"../index.html#talks\">Talks</a>
 {indent_block(teaching_dropdown, '          ')}
+          <a class=\"nav-link\" href=\"../index.html#team\">Team</a>
+          <a class=\"nav-link\" href=\"../index.html#about\">About</a>
 {indent_block(blog_dropdown, '          ')}
         </nav>
       </div>
@@ -864,8 +868,12 @@ def blog_index_template(
           <span></span>
         </button>
         <nav class=\"site-nav\" id=\"site-nav\" aria-label=\"Primary\">
+          <a class=\"nav-link\" href=\"../index.html#home\">Home</a>
           <a class=\"nav-link\" href=\"../index.html#research\">Research</a>
+          <a class=\"nav-link\" href=\"../index.html#talks\">Talks</a>
 {indent_block(teaching_dropdown, '          ')}
+          <a class=\"nav-link\" href=\"../index.html#team\">Team</a>
+          <a class=\"nav-link\" href=\"../index.html#about\">About</a>
 {indent_block(blog_dropdown, '          ')}
         </nav>
       </div>
@@ -1494,8 +1502,12 @@ def teaching_index_template(
           <span></span>
         </button>
         <nav class="site-nav" id="site-nav" aria-label="Primary">
+          <a class="nav-link" href="../index.html#home">Home</a>
           <a class="nav-link" href="../index.html#research">Research</a>
+          <a class="nav-link" href="../index.html#talks">Talks</a>
 {indent_block(teaching_dropdown, '          ')}
+          <a class="nav-link" href="../index.html#team">Team</a>
+          <a class="nav-link" href="../index.html#about">About</a>
 {indent_block(blog_dropdown, '          ')}
         </nav>
       </div>
@@ -1644,8 +1656,12 @@ def teaching_course_template(
           <span></span>
         </button>
         <nav class="site-nav" id="site-nav" aria-label="Primary">
+          <a class="nav-link" href="../index.html#home">Home</a>
           <a class="nav-link" href="../index.html#research">Research</a>
+          <a class="nav-link" href="../index.html#talks">Talks</a>
 {indent_block(teaching_dropdown, '          ')}
+          <a class="nav-link" href="../index.html#team">Team</a>
+          <a class="nav-link" href="../index.html#about">About</a>
 {indent_block(blog_dropdown, '          ')}
         </nav>
       </div>
