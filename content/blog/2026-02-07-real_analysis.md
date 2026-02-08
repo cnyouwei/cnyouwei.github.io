@@ -181,13 +181,13 @@ flowchart TB
   reg -.-> approxf
   approxf -.-> conv
 
-  classDef ch1 fill:#e0f2fe,stroke:#0369a1,stroke-width:2px,color:#0c4a6e;
-  classDef ch2 fill:#dcfce7,stroke:#15803d,stroke-width:2px,color:#14532d;
-  classDef ch3 fill:#fef3c7,stroke:#b45309,stroke-width:2px,color:#78350f;
-  classDef ch4 fill:#ede9fe,stroke:#6d28d9,stroke-width:2px,color:#4c1d95;
-  classDef ch5 fill:#fee2e2,stroke:#b91c1c,stroke-width:2px,color:#7f1d1d;
-  classDef support fill:#f8fafc,stroke:#475569,stroke-width:1.5px,color:#0f172a;
-  classDef littlewood fill:#fff7ed,stroke:#ea580c,stroke-width:2px,color:#7c2d12;
+  classDef ch1 fill:var(--mermaid-ch1-fill),stroke:var(--mermaid-ch1-stroke),stroke-width:2px,color:var(--mermaid-ch1-text);
+  classDef ch2 fill:var(--mermaid-ch2-fill),stroke:var(--mermaid-ch2-stroke),stroke-width:2px,color:var(--mermaid-ch2-text);
+  classDef ch3 fill:var(--mermaid-ch3-fill),stroke:var(--mermaid-ch3-stroke),stroke-width:2px,color:var(--mermaid-ch3-text);
+  classDef ch4 fill:var(--mermaid-ch4-fill),stroke:var(--mermaid-ch4-stroke),stroke-width:2px,color:var(--mermaid-ch4-text);
+  classDef ch5 fill:var(--mermaid-ch5-fill),stroke:var(--mermaid-ch5-stroke),stroke-width:2px,color:var(--mermaid-ch5-text);
+  classDef support fill:var(--mermaid-support-fill),stroke:var(--mermaid-support-stroke),stroke-width:1.5px,color:var(--mermaid-support-text);
+  classDef littlewood fill:var(--mermaid-littlewood-fill),stroke:var(--mermaid-littlewood-stroke),stroke-width:2px,color:var(--mermaid-littlewood-text);
 
   class top,borel ch1;
   class ring,outer,carath ch2;

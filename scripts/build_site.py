@@ -353,10 +353,155 @@ def post_page_template(post: dict[str, object], body_html: str, ga_id: str) -> s
         )
         mermaid_script = """  <script type=\"module\">
     import mermaid from \"https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs\";
-    mermaid.initialize({
-      startOnLoad: true,
-      securityLevel: \"loose\",
-      forceLegacyMathML: true
+
+    const diagramNodes = Array.from(document.querySelectorAll('pre.mermaid'));
+    const MERMAID_COLOR_FALLBACKS = {
+      '--mermaid-ch1-fill': '#e0f2fe',
+      '--mermaid-ch1-stroke': '#0369a1',
+      '--mermaid-ch1-text': '#0c4a6e',
+      '--mermaid-ch2-fill': '#dcfce7',
+      '--mermaid-ch2-stroke': '#15803d',
+      '--mermaid-ch2-text': '#14532d',
+      '--mermaid-ch3-fill': '#fef3c7',
+      '--mermaid-ch3-stroke': '#b45309',
+      '--mermaid-ch3-text': '#78350f',
+      '--mermaid-ch4-fill': '#ede9fe',
+      '--mermaid-ch4-stroke': '#6d28d9',
+      '--mermaid-ch4-text': '#4c1d95',
+      '--mermaid-ch5-fill': '#fee2e2',
+      '--mermaid-ch5-stroke': '#b91c1c',
+      '--mermaid-ch5-text': '#7f1d1d',
+      '--mermaid-support-fill': '#f8fafc',
+      '--mermaid-support-stroke': '#475569',
+      '--mermaid-support-text': '#0f172a',
+      '--mermaid-littlewood-fill': '#fff7ed',
+      '--mermaid-littlewood-stroke': '#ea580c',
+      '--mermaid-littlewood-text': '#7c2d12'
+    };
+
+    function readActiveTheme() {
+      const explicitTheme = document.documentElement.getAttribute('data-theme');
+      if (explicitTheme === 'light' || explicitTheme === 'dark') return explicitTheme;
+      if (typeof window.matchMedia === 'function' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return 'dark';
+      }
+      return 'light';
+    }
+
+    function getMermaidTheme(theme) {
+      return theme === 'dark' ? 'dark' : 'default';
+    }
+
+    function readMermaidColor(token) {
+      const rootStyle = window.getComputedStyle(document.documentElement);
+      const value = rootStyle.getPropertyValue(token).trim();
+      return value || MERMAID_COLOR_FALLBACKS[token] || '#000000';
+    }
+
+    function resolveMermaidCssVars(sourceText) {
+      let resolved = sourceText;
+      Object.keys(MERMAID_COLOR_FALLBACKS).forEach(function (token) {
+        const replacement = readMermaidColor(token);
+        const marker = 'var(' + token + ')';
+        resolved = resolved.split(marker).join(replacement);
+      });
+      return resolved;
+    }
+
+    async function renderMermaid(theme) {
+      if (!diagramNodes.length) return;
+
+      diagramNodes.forEach(function (node) {
+        if (!node.dataset.mermaidSource) {
+          node.dataset.mermaidSource = node.textContent || '';
+        }
+
+        const resolvedSource = resolveMermaidCssVars(node.dataset.mermaidSource);
+        node.removeAttribute('data-processed');
+        node.textContent = resolvedSource;
+      });
+
+      mermaid.initialize({
+        startOnLoad: false,
+        securityLevel: \"loose\",
+        forceLegacyMathML: true,
+        theme: getMermaidTheme(theme),
+        flowchart: {
+          htmlLabels: true,
+        }
+      });
+
+      try {
+        await mermaid.run({ nodes: diagramNodes });
+      } catch (error) {}
+    }
+
+    let renderQueue = Promise.resolve();
+
+    function queueRender(theme) {
+      renderQueue = renderQueue.then(function () {
+        return renderMermaid(theme);
+      });
+      return renderQueue;
+    }
+
+    function getRevealAncestors() {
+      const ancestors = new Set();
+      diagramNodes.forEach(function (node) {
+        let current = node.parentElement;
+        while (current) {
+          if (current.classList && current.classList.contains('reveal-up')) {
+            ancestors.add(current);
+          }
+          current = current.parentElement;
+        }
+      });
+      return Array.from(ancestors);
+    }
+
+    function waitForRevealAnimations() {
+      const revealAncestors = getRevealAncestors();
+      if (!revealAncestors.length) return Promise.resolve();
+
+      const waits = revealAncestors.map(function (element) {
+        const style = window.getComputedStyle(element);
+        const duration = parseFloat(style.animationDuration || '0') || 0;
+        const delay = parseFloat(style.animationDelay || '0') || 0;
+        const totalMs = Math.round((duration + delay) * 1000);
+
+        if (style.animationName === 'none' || totalMs <= 0) {
+          return Promise.resolve();
+        }
+
+        return new Promise(function (resolve) {
+          let done = false;
+          function finish() {
+            if (done) return;
+            done = true;
+            element.removeEventListener('animationend', onAnimationEnd);
+            resolve();
+          }
+          function onAnimationEnd(event) {
+            if (event.target === element) finish();
+          }
+          element.addEventListener('animationend', onAnimationEnd);
+          window.setTimeout(finish, Math.max(totalMs + 120, 700));
+        });
+      });
+
+      return Promise.all(waits).then(function () {});
+    }
+
+    waitForRevealAnimations().then(function () {
+      queueRender(readActiveTheme());
+    });
+
+    window.addEventListener('themechange', function (event) {
+      const detailTheme = event && event.detail ? event.detail.theme : '';
+      const nextTheme = detailTheme === 'light' || detailTheme === 'dark'
+        ? detailTheme
+        : readActiveTheme();
+      queueRender(nextTheme);
     });
   </script>
 """
@@ -371,6 +516,17 @@ def post_page_template(post: dict[str, object], body_html: str, ga_id: str) -> s
   <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />
   <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />
   <link href=\"https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap\" rel=\"stylesheet\" />
+  <script>
+    (function () {{
+      try {{
+        var storedTheme = localStorage.getItem('wy-theme');
+        var themeSource = localStorage.getItem('wy-theme-source');
+        if (themeSource === 'manual' && (storedTheme === 'light' || storedTheme === 'dark')) {{
+          document.documentElement.setAttribute('data-theme', storedTheme);
+        }}
+      }} catch (error) {{}}
+    }})();
+  </script>
   <link rel=\"stylesheet\" href=\"../css/site.css\" />
 {mermaid_stylesheet}
 </head>
@@ -378,15 +534,20 @@ def post_page_template(post: dict[str, object], body_html: str, ga_id: str) -> s
   <header class=\"site-header\" id=\"top\">
     <div class=\"container nav-wrap\">
       <a class=\"brand\" href=\"../index.html#home\">Wei You</a>
-      <button class=\"menu-toggle\" type=\"button\" aria-label=\"Open menu\" aria-controls=\"site-nav\" aria-expanded=\"false\">
-        <span></span>
-        <span></span>
-      </button>
-      <nav class=\"site-nav\" id=\"site-nav\" aria-label=\"Primary\">
-        <a class=\"nav-link\" href=\"../index.html#research\">Research</a>
-        <a class=\"nav-link\" href=\"../teaching/index.html\">Teaching</a>
-        <a class=\"nav-link is-active\" href=\"./index.html\">Blog</a>
-      </nav>
+      <div class=\"nav-controls\">
+        <button class=\"theme-toggle\" type=\"button\" aria-label=\"Toggle theme\" aria-pressed=\"false\">
+          <span class=\"theme-toggle__text\">Dark</span>
+        </button>
+        <button class=\"menu-toggle\" type=\"button\" aria-label=\"Open menu\" aria-controls=\"site-nav\" aria-expanded=\"false\">
+          <span></span>
+          <span></span>
+        </button>
+        <nav class=\"site-nav\" id=\"site-nav\" aria-label=\"Primary\">
+          <a class=\"nav-link\" href=\"../index.html#research\">Research</a>
+          <a class=\"nav-link\" href=\"../teaching/index.html\">Teaching</a>
+          <a class=\"nav-link is-active\" href=\"./index.html\">Blog</a>
+        </nav>
+      </div>
     </div>
   </header>
 
@@ -421,7 +582,7 @@ def post_page_template(post: dict[str, object], body_html: str, ga_id: str) -> s
     </div>
   </footer>
 
-  <a class=\"back-to-top\" href=\"#top\" aria-label=\"Back to top\">Top</a>
+  <button class=\"back-to-top\" type=\"button\" aria-label=\"Back to top\">Top</button>
   <script>
     window.MathJax = {{
       tex: {{
@@ -482,21 +643,37 @@ def blog_index_template(posts: list[dict[str, object]], ga_id: str) -> str:
   <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />
   <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />
   <link href=\"https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap\" rel=\"stylesheet\" />
+  <script>
+    (function () {{
+      try {{
+        var storedTheme = localStorage.getItem('wy-theme');
+        var themeSource = localStorage.getItem('wy-theme-source');
+        if (themeSource === 'manual' && (storedTheme === 'light' || storedTheme === 'dark')) {{
+          document.documentElement.setAttribute('data-theme', storedTheme);
+        }}
+      }} catch (error) {{}}
+    }})();
+  </script>
   <link rel=\"stylesheet\" href=\"../css/site.css\" />
 </head>
 <body>
   <header class=\"site-header\" id=\"top\">
     <div class=\"container nav-wrap\">
       <a class=\"brand\" href=\"../index.html#home\">Wei You</a>
-      <button class=\"menu-toggle\" type=\"button\" aria-label=\"Open menu\" aria-controls=\"site-nav\" aria-expanded=\"false\">
-        <span></span>
-        <span></span>
-      </button>
-      <nav class=\"site-nav\" id=\"site-nav\" aria-label=\"Primary\">
-        <a class=\"nav-link\" href=\"../index.html#research\">Research</a>
-        <a class=\"nav-link\" href=\"../teaching/index.html\">Teaching</a>
-        <a class=\"nav-link is-active\" href=\"./index.html\">Blog</a>
-      </nav>
+      <div class=\"nav-controls\">
+        <button class=\"theme-toggle\" type=\"button\" aria-label=\"Toggle theme\" aria-pressed=\"false\">
+          <span class=\"theme-toggle__text\">Dark</span>
+        </button>
+        <button class=\"menu-toggle\" type=\"button\" aria-label=\"Open menu\" aria-controls=\"site-nav\" aria-expanded=\"false\">
+          <span></span>
+          <span></span>
+        </button>
+        <nav class=\"site-nav\" id=\"site-nav\" aria-label=\"Primary\">
+          <a class=\"nav-link\" href=\"../index.html#research\">Research</a>
+          <a class=\"nav-link\" href=\"../teaching/index.html\">Teaching</a>
+          <a class=\"nav-link is-active\" href=\"./index.html\">Blog</a>
+        </nav>
+      </div>
     </div>
   </header>
 
@@ -527,7 +704,7 @@ def blog_index_template(posts: list[dict[str, object]], ga_id: str) -> str:
     </div>
   </footer>
 
-  <a class=\"back-to-top\" href=\"#top\" aria-label=\"Back to top\">Top</a>
+  <button class=\"back-to-top\" type=\"button\" aria-label=\"Back to top\">Top</button>
   <script>
     window.MathJax = {{
       tex: {{
@@ -1065,21 +1242,37 @@ def teaching_index_template(courses: list[dict[str, object]], ga_id: str) -> str
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;family=Noto+Sans+SC:wght@400;500;700&amp;display=swap" rel="stylesheet" />
+  <script>
+    (function () {{
+      try {{
+        var storedTheme = localStorage.getItem('wy-theme');
+        var themeSource = localStorage.getItem('wy-theme-source');
+        if (themeSource === 'manual' && (storedTheme === 'light' || storedTheme === 'dark')) {{
+          document.documentElement.setAttribute('data-theme', storedTheme);
+        }}
+      }} catch (error) {{}}
+    }})();
+  </script>
   <link rel="stylesheet" href="../css/site.css" />
 </head>
 <body>
   <header class="site-header" id="top">
     <div class="container nav-wrap">
       <a class="brand" href="../index.html#home">Wei You</a>
-      <button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="site-nav" aria-expanded="false">
-        <span></span>
-        <span></span>
-      </button>
-      <nav class="site-nav" id="site-nav" aria-label="Primary">
-        <a class="nav-link" href="../index.html#research">Research</a>
-        <a class="nav-link is-active" href="./index.html">Teaching</a>
-        <a class="nav-link" href="../blogs/index.html">Blog</a>
-      </nav>
+      <div class="nav-controls">
+        <button class="theme-toggle" type="button" aria-label="Toggle theme" aria-pressed="false">
+          <span class="theme-toggle__text">Dark</span>
+        </button>
+        <button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="site-nav" aria-expanded="false">
+          <span></span>
+          <span></span>
+        </button>
+        <nav class="site-nav" id="site-nav" aria-label="Primary">
+          <a class="nav-link" href="../index.html#research">Research</a>
+          <a class="nav-link is-active" href="./index.html">Teaching</a>
+          <a class="nav-link" href="../blogs/index.html">Blog</a>
+        </nav>
+      </div>
     </div>
   </header>
 
@@ -1105,7 +1298,7 @@ def teaching_index_template(courses: list[dict[str, object]], ga_id: str) -> str
     </div>
   </footer>
 
-  <a class="back-to-top" href="#top" aria-label="Back to top">Top</a>
+  <button class="back-to-top" type="button" aria-label="Back to top">Top</button>
   <script src="../js/site.js" defer></script>
   <script>
     const yearNode = document.getElementById("year");
@@ -1174,22 +1367,38 @@ def teaching_course_template(course: dict[str, object], ga_id: str) -> str:
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;family=Noto+Sans+SC:wght@400;500;700&amp;display=swap" rel="stylesheet" />
+  <script>
+    (function () {{
+      try {{
+        var storedTheme = localStorage.getItem('wy-theme');
+        var themeSource = localStorage.getItem('wy-theme-source');
+        if (themeSource === 'manual' && (storedTheme === 'light' || storedTheme === 'dark')) {{
+          document.documentElement.setAttribute('data-theme', storedTheme);
+        }}
+      }} catch (error) {{}}
+    }})();
+  </script>
   <link rel="stylesheet" href="../css/site.css" />
 </head>
 <body>
   <header class="site-header" id="top">
     <div class="container nav-wrap">
       <a class="brand" href="../index.html#home">Wei You</a>
-      <button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="site-nav" aria-expanded="false">
-        <span></span>
-        <span></span>
-      </button>
-      <nav class="site-nav" id="site-nav" aria-label="Primary">
-        <a class="nav-link" href="../index.html#research">Research</a>
-        <a class="nav-link" href="../index.html#teaching">Teaching</a>
-        <a class="nav-link is-active" href="./index.html">Course Directory</a>
-        <a class="nav-link" href="../blogs/index.html">Blog</a>
-      </nav>
+      <div class="nav-controls">
+        <button class="theme-toggle" type="button" aria-label="Toggle theme" aria-pressed="false">
+          <span class="theme-toggle__text">Dark</span>
+        </button>
+        <button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="site-nav" aria-expanded="false">
+          <span></span>
+          <span></span>
+        </button>
+        <nav class="site-nav" id="site-nav" aria-label="Primary">
+          <a class="nav-link" href="../index.html#research">Research</a>
+          <a class="nav-link" href="../index.html#teaching">Teaching</a>
+          <a class="nav-link is-active" href="./index.html">Course Directory</a>
+          <a class="nav-link" href="../blogs/index.html">Blog</a>
+        </nav>
+      </div>
     </div>
   </header>
 
@@ -1241,7 +1450,7 @@ def teaching_course_template(course: dict[str, object], ga_id: str) -> str:
     </div>
   </footer>
 
-  <a class="back-to-top" href="#top" aria-label="Back to top">Top</a>
+  <button class="back-to-top" type="button" aria-label="Back to top">Top</button>
   <script src="../js/site.js" defer></script>
   <script>
     const yearNode = document.getElementById("year");
