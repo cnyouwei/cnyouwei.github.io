@@ -323,6 +323,7 @@ img {
   top: calc(100% + 0.35rem);
   left: 0;
   min-width: min(310px, 74vw);
+  max-width: calc(100vw - 1.2rem);
   display: grid;
   gap: 0.15rem;
   padding: 0.4rem;
@@ -341,6 +342,11 @@ img {
   transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
   z-index: 80;
   overflow: hidden;
+}
+
+.site-nav > .nav-dropdown:last-child > .nav-dropdown__menu {
+  left: auto;
+  right: 0;
 }
 
 .nav-dropdown__menu::before {
