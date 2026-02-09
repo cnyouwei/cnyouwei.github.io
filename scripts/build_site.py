@@ -138,6 +138,10 @@ def markdown_to_html(markdown: str) -> str:
     blocks: list[str] = []
     i = 0
 
+    def is_horizontal_rule(line: str) -> bool:
+        compact = re.sub(r"\s+", "", line.strip())
+        return bool(re.fullmatch(r"(-{3,}|\*{3,}|_{3,})", compact))
+
     def render_display_math(delimiter: str, expression: str) -> str:
         safe_expression = escape_html(expression.strip())
         if delimiter == "$$":
@@ -175,6 +179,8 @@ def markdown_to_html(markdown: str) -> str:
                 break
             if re.match(r"^>\s?", line):
                 break
+            if is_horizontal_rule(line):
+                break
             if stripped in (r"\[", "$$"):
                 break
             if parse_single_line_display_math(line):
@@ -196,6 +202,11 @@ def markdown_to_html(markdown: str) -> str:
             level = len(heading_match.group(1))
             title = inline_markdown_to_html(heading_match.group(2).strip())
             blocks.append(f"<h{level}>{title}</h{level}>")
+            i += 1
+            continue
+
+        if is_horizontal_rule(line):
+            blocks.append("<hr />")
             i += 1
             continue
 
@@ -652,6 +663,64 @@ def post_page_template(
   </script>
 """
 
+    highlight_stylesheet = ""
+    highlight_script = ""
+    if "<pre><code" in body_html:
+        highlight_stylesheet = (
+            '  <link rel="stylesheet" '
+            'href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.11.1/build/styles/atom-one-dark.min.css" />'
+        )
+        highlight_script = """  <script defer src=\"https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.11.1/build/highlight.min.js\"></script>
+  <script>
+    window.addEventListener('load', function () {
+      if (!window.hljs) return;
+
+      var languageAlias = {
+        latex: 'tex',
+        plain: 'plaintext',
+        text: 'plaintext',
+        shell: 'bash',
+        sh: 'bash',
+        zsh: 'bash'
+      };
+
+      var codeBlocks = Array.from(document.querySelectorAll('pre code'));
+      codeBlocks.forEach(function (block) {
+        var languageClass = '';
+        Array.from(block.classList).forEach(function (name) {
+          if (name.indexOf('language-') === 0) languageClass = name;
+        });
+
+        var language = languageClass ? languageClass.slice(9).toLowerCase() : '';
+        if (language === 'latex' || language === 'tex') {
+          if (languageClass) block.classList.remove(languageClass);
+          block.classList.add('language-plaintext');
+          return;
+        }
+
+        var mappedLanguage = languageAlias[language] || language;
+
+        if (mappedLanguage && window.hljs.getLanguage(mappedLanguage)) {
+          if (languageClass && mappedLanguage !== language) {
+            block.classList.remove(languageClass);
+            block.classList.add('language-' + mappedLanguage);
+          }
+          window.hljs.highlightElement(block);
+          return;
+        }
+
+        var source = block.textContent || '';
+        var auto = window.hljs.highlightAuto(source);
+        block.innerHTML = auto.value;
+        block.classList.add('hljs');
+        if (auto.language) {
+          block.classList.add('language-' + auto.language);
+        }
+      });
+    });
+  </script>
+"""
+
     teaching_dropdown_items = build_teaching_dropdown_items(
         directory_href="../teaching/index.html",
         course_href_prefix="../teaching/",
@@ -696,6 +765,7 @@ def post_page_template(
     }})();
   </script>
   <link rel=\"stylesheet\" href=\"../css/site.css\" />
+{highlight_stylesheet}
 {mermaid_stylesheet}
 </head>
 <body>
@@ -772,7 +842,7 @@ def post_page_template(
     }};
   </script>
   <script defer src=\"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js\"></script>
-{mermaid_script}  <script src=\"../js/site.js\" defer></script>
+{mermaid_script}{highlight_script}  <script src=\"../js/site.js\" defer></script>
   <script>
     const yearNode = document.getElementById(\"year\");
     if (yearNode) yearNode.textContent = String(new Date().getFullYear());

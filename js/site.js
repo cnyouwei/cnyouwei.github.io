@@ -387,6 +387,81 @@
     updateBackToTopVisibility();
   }
 
+  function copyTextToClipboard(text) {
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+      return navigator.clipboard.writeText(text);
+    }
+
+    return new Promise(function (resolve, reject) {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.setAttribute('readonly', '');
+      textArea.style.position = 'fixed';
+      textArea.style.top = '-9999px';
+      textArea.style.left = '-9999px';
+      document.body.appendChild(textArea);
+      textArea.select();
+
+      try {
+        const copied = document.execCommand('copy');
+        if (!copied) {
+          reject(new Error('Copy command failed'));
+          return;
+        }
+        resolve();
+      } catch (error) {
+        reject(error);
+      } finally {
+        textArea.remove();
+      }
+    });
+  }
+
+  function initCodeCopyButtons() {
+    const codeBlocks = Array.from(document.querySelectorAll('.post-body pre:not(.mermaid) > code'));
+    if (!codeBlocks.length) return;
+
+    codeBlocks.forEach(function (codeBlock) {
+      const pre = codeBlock.parentElement;
+      if (!(pre instanceof HTMLElement)) return;
+      if (pre.querySelector('.code-copy-btn')) return;
+
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'code-copy-btn';
+      button.textContent = 'Copy';
+      button.setAttribute('aria-label', 'Copy code to clipboard');
+
+      let resetTimer = 0;
+
+      function setButtonState(label, stateClass) {
+        button.textContent = label;
+        button.classList.remove('is-copied', 'is-failed');
+        if (stateClass) button.classList.add(stateClass);
+        if (resetTimer) window.clearTimeout(resetTimer);
+        resetTimer = window.setTimeout(function () {
+          button.textContent = 'Copy';
+          button.classList.remove('is-copied', 'is-failed');
+        }, 1600);
+      }
+
+      button.addEventListener('click', function () {
+        const source = codeBlock.textContent || '';
+        copyTextToClipboard(source)
+          .then(function () {
+            setButtonState('Copied', 'is-copied');
+          })
+          .catch(function () {
+            setButtonState('Failed', 'is-failed');
+          });
+      });
+
+      pre.appendChild(button);
+    });
+  }
+
+  initCodeCopyButtons();
+
   // Active nav link while scrolling sections.
   const navLinks = Array.from(document.querySelectorAll('.nav-link[href^="#"]'));
   const sections = navLinks

@@ -1197,12 +1197,52 @@ img {
   margin: 0.65rem 0;
 }
 
+.post-body hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 1rem 0;
+}
+
 .post-body pre {
+  position: relative;
   overflow-x: auto;
   background: #16202c;
   color: #f5f7fa;
   border-radius: 12px;
-  padding: 0.75rem;
+  padding: 2rem 0.75rem 0.75rem;
+}
+
+.post-body .code-copy-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.12);
+  color: #f5f7fa;
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  font: 600 0.72rem/1 var(--font-sans);
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+
+.post-body .code-copy-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.post-body .code-copy-btn:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.45);
+  outline-offset: 2px;
+}
+
+.post-body .code-copy-btn.is-copied {
+  background: rgba(107, 197, 135, 0.28);
+  border-color: rgba(153, 228, 173, 0.72);
+}
+
+.post-body .code-copy-btn.is-failed {
+  background: rgba(223, 108, 108, 0.26);
+  border-color: rgba(243, 138, 138, 0.78);
 }
 
 .post-body pre.mermaid {

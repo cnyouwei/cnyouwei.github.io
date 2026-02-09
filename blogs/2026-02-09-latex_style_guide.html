@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en" data-ga-id="G-W043BW5W9F">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LaTeX Style Guide for Operations Research | Wei You</title>
+  <meta name="description" content="A LaTeX style guide tailored to Operations Research papers." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
+  <script>
+    (function () {
+      try {
+        var storedTheme = localStorage.getItem('wy-theme');
+        var themeSource = localStorage.getItem('wy-theme-source');
+        if (themeSource === 'manual' && (storedTheme === 'light' || storedTheme === 'dark')) {
+          document.documentElement.setAttribute('data-theme', storedTheme);
+        }
+      } catch (error) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="../css/site.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.11.1/build/styles/atom-one-dark.min.css" />
+
+</head>
+<body>
+  <header class="site-header" id="top">
+    <div class="container nav-wrap">
+      <a class="brand" href="../index.html#home">Wei You</a>
+      <div class="nav-controls">
+        <button class="theme-toggle" type="button" aria-label="Toggle theme" aria-pressed="false">
+          <span class="theme-toggle__text">Dark</span>
+        </button>
+        <button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="site-nav" aria-expanded="false">
+          <span></span>
+          <span></span>
+        </button>
+        <nav class="site-nav" id="site-nav" aria-label="Primary">
+          <a class="nav-link" href="../index.html#home">Home</a>
+          <a class="nav-link" href="../index.html#research">Research</a>
+          <a class="nav-link" href="../index.html#talks">Talks</a>
+          <div class="nav-dropdown">
+            <button class="nav-link nav-dropdown__toggle" type="button" aria-haspopup="true" aria-expanded="false">Teaching</button>
+            <div class="nav-dropdown__menu" role="menu" aria-label="Teaching links">
+              <a class="nav-dropdown__item" href="../teaching/index.html">Course Directory</a>
+              <a class="nav-dropdown__item" href="../teaching/ieda2540.html">IEDA2540 Statistics for Engineers</a>
+              <a class="nav-dropdown__item" href="../teaching/real-analysis-2011.html">NJU Real Analysis Notes</a>
+            </div>
+          </div>
+          <a class="nav-link" href="../index.html#team">Team</a>
+          <a class="nav-link" href="../index.html#about">About</a>
+          <div class="nav-dropdown">
+            <button class="nav-link nav-dropdown__toggle is-active" type="button" aria-haspopup="true" aria-expanded="false">Blog</button>
+            <div class="nav-dropdown__menu" role="menu" aria-label="Blog links">
+              <a class="nav-dropdown__item is-active" href="./2026-02-09-latex_style_guide.html">LaTeX Style Guide for Operations Research</a>
+              <a class="nav-dropdown__item" href="./2026-02-07-real_analysis.html">A Real Analysis Note</a>
+              <a class="nav-dropdown__item" href="./index.html">View all posts</a>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="teaching-page">
+    <section class="container teaching-shell">
+      <header class="course-hero reveal-up">
+        <p class="eyebrow">Research Notes</p>
+        <h1>LaTeX Style Guide for Operations Research</h1>
+        <p class="blog-meta"><time datetime="2026-02-09">February 09, 2026</time><span class="blog-tag">latex</span><span class="blog-tag">notes</span><span class="blog-tag">operations research</span></p>
+        <p class="course-lead">A LaTeX style guide tailored to Operations Research papers.</p>
+      </header>
+
+      <section class="module-section reveal-up delay-1">
+        <article class="panel post-card">
+          <div class="post-body">
+<p>This is a LaTeX style guide tailored to Operations Research papers. It includes:</p>
+<ul><li>A <strong>plain <code>article</code> template</strong> you can use for drafts and preprints.</li><li>A <strong>package set</strong> and ordering rules that work well for OR.</li><li><strong>Notation + macro discipline</strong> (models, constraints, index sets, dual variables).</li><li><strong>Math typography</strong> and <strong>font styles</strong> (e.g., boldface vectors/matrices) in OR practice.</li><li>“Easy to ignore” <strong>English and typographic micro‑rules</strong>: punctuation, dashes, capitalization, spacing, etc.</li></ul>
+<blockquote>Venue note: if a journal/conference provides a <code>.cls</code>/author kit, <strong>use it</strong>. Keep the notation/macros from this guide; swap the class.</blockquote>
+<hr />
+<h2>Table of contents</h2>
+<ol><li><a href="#or-specific-principles">OR-specific principles</a></li><li><a href="#project-layout">Project layout</a></li><li><a href="#plain-or-paper-template">Plain OR paper template</a></li><li><a href="#packages-or-baseline-and-options">Packages: OR baseline and options</a></li><li><a href="#notation-and-macro-policy-for-or">Notation and macro policy for OR</a></li><li><a href="#optimization-model-formatting">Optimization model formatting</a></li><li><a href="#algorithms-and-pseudocode">Algorithms and pseudocode</a></li><li><a href="#theorems-propositions-lemmas-and-proofs">Theorems, propositions, lemmas, and proofs</a></li><li><a href="#math-typography-and-font-styles-in-or">Math typography and font styles in OR</a></li><li><a href="#probability-expectations-and-stochastic-models">Probability, expectations, and stochastic models</a></li><li><a href="#computational-experiments-reporting">Computational experiments reporting</a></li><li><a href="#figures-and-tables">Figures and tables</a></li><li><a href="#cross-references-and-hyperlinks">Cross-references and hyperlinks</a></li><li><a href="#bibliography-and-citations">Bibliography and citations</a></li><li><a href="#english--typographic-micro-rules-for-or-writing">English + typographic micro-rules for OR writing</a></li><li><a href="#build-and-reproducibility">Build and reproducibility</a></li><li><a href="#or-specific-checklist">OR-specific checklist</a></li><li><a href="#appendix-starter-macrostex-for-or">Appendix: starter <code>macros.tex</code> for OR</a></li></ol>
+<hr />
+<h2>Plain OR paper template</h2>
+<p>Paste into <code>main.tex</code>. It is a clean base for OR drafts, with OR-friendly theorem + algorithm support.</p>
+<pre><code class="language-latex">\documentclass[11pt]{article}
+
+% --------------------
+% Language
+% --------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[english]{babel}
+
+% --------------------
+% Layout + typography
+% --------------------
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{csquotes}
+\usepackage{xcolor}
+
+% --------------------
+% Math
+% --------------------
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{siunitx}
+
+% --------------------
+% Algorithms (choose ONE stack)
+% --------------------
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+% Alternative (not compatible with algorithmicx syntax):
+% \usepackage[ruled,vlined]{algorithm2e}
+
+% --------------------
+% Figures and tables
+% --------------------
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{booktabs}
+
+% --------------------
+% Lists
+% --------------------
+\usepackage{enumitem}
+\setlist[itemize]{topsep=4pt,itemsep=2pt}
+\setlist[enumerate]{topsep=4pt,itemsep=2pt}
+
+% --------------------
+% Hyperlinks: load late
+% --------------------
+\usepackage[colorlinks=true,allcolors=blue]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+% --------------------
+% Bibliography (draft-friendly)
+% --------------------
+\usepackage[
+  backend=biber,
+  style=authoryear,   % common in OR journals
+  sorting=nyt,
+  giveninits=true,
+  maxbibnames=99,
+  doi=true,
+  url=true,
+  isbn=false
+]{biblatex}
+\addbibresource{references.bib}
+
+% --------------------
+% OR theorem environments
+% --------------------
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{assumption}{Assumption}
+
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+% --------------------
+% Your notation
+% --------------------
+\input{macros.tex}
+
+\title{Your OR Paper Title}
+\author{First Author \and Second Author}
+\date{} % often left empty in submissions
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+State the problem, your contribution (model/algorithm/insight), and the key results (theoretical + computational).
+\end{abstract}
+
+\section{Introduction}
+Introduce the decision problem and motivate relevance. Summarize contributions crisply.
+
+\section{Model}
+An example model appears in \cref{prob:base}.
+
+\begin{subequations}\label{prob:base}
+\begin{align}
+\min_{\vect{x}} \quad &amp; \vect{c}^{\mathsf{T}}\vect{x} \label{prob:base:obj}\\
+\st \quad
+&amp; \mat{A}\vect{x} \ge \vect{b}, \label{prob:base:constr1}\\
+&amp; \vect{x} \in \Reals_+^n. \label{prob:base:dom}
+\end{align}
+\end{subequations}
+
+\section{Algorithm}
+\begin{algorithm}[t]
+\caption{Generic decomposition framework}
+\label{alg:decomp}
+\begin{algorithmic}[1]
+\State Initialize master problem.
+\While{termination criterion not met}
+  \State Solve master problem; obtain candidate solution.
+  \State Solve subproblem; generate cut if needed.
+\EndWhile
+\State \Return best feasible solution found.
+\end{algorithmic}
+\end{algorithm}
+
+\section{Theory}
+\begin{theorem}\label{thm:convergence}
+Under \cref{ass:regularity}, Algorithm~\ref{alg:decomp} terminates in finitely many iterations.
+\end{theorem}
+
+\begin{proof}
+Sketch the proof structure; avoid long narrative if a standard argument applies.
+\end{proof}
+
+\section{Computational experiments}
+Describe instances, parameter settings, hardware, solver versions, and evaluation protocol.
+
+\printbibliography
+
+\end{document}</code></pre>
+<hr />
+<h2>Packages: OR baseline and options</h2>
+<h3>Baseline (recommended for most OR drafts)</h3>
+<ul><li><strong>Math and structure</strong></li></ul>
+<p>- <code>amsmath, amssymb, amsthm</code>: models, proofs, theorem environments. - <code>mathtools</code>: improves <code>amsmath</code> (paired delimiters, etc.). - <code>bm</code>: reliable bold math (Greek, symbols). - <code>siunitx</code>: units/numbers (important for computational tables, time units).</p>
+<ul><li><strong>Algorithms</strong></li></ul>
+<p>- <code>algorithm</code> + <code>algpseudocode</code> (algorithmicx): flexible pseudocode. - <em>(Alternative)</em> <code>algorithm2e</code>: produces good-looking algorithms but has its own syntax. - Pick <strong>one</strong> to avoid conflicts.</p>
+<ul><li><strong>Figures/tables</strong></li></ul>
+<p>- <code>graphicx</code>, <code>subcaption</code>, <code>booktabs</code>.</p>
+<ul><li><strong>Refs</strong></li></ul>
+<p>- <code>hyperref</code> (late), then <code>cleveref</code> for “Eq./Alg./Thm.” automation.</p>
+<ul><li><strong>Bibliography</strong></li></ul>
+<p>- <code>biblatex</code> + <code>biber</code> in drafts; switch to venue style later if needed.</p>
+<h3>OR-useful optional packages</h3>
+<ul><li><strong>Optimization formulation helpers</strong></li></ul>
+<p>- <code>optidef</code>: nice “minimize / subject to” blocks (convenient, but check compatibility with venue). - If you keep the formulation in plain <code>align</code>, you’ll never be blocked by venue constraints.</p>
+<ul><li><strong>Diagrams</strong></li></ul>
+<p>- <code>tikz</code> / <code>pgfplots</code>: great for network flow diagrams or stylized plots, but can slow compilation. - Often best practice is: generate plots with Python/R/Matlab → include as PDF.</p>
+<ul><li><strong>Tables</strong></li></ul>
+<p>- <code>threeparttable</code> (notes under tables). - <code>tabularx</code> (automatic width). - <code>multirow</code>, <code>makecell</code> for complex headers (use sparingly).</p>
+<h3>Package ordering rules</h3>
+<ul><li>Fonts early, then math, then floats/tables, then <code>hyperref</code>, then <code>cleveref</code>.</li><li><code>\input{macros.tex}</code> after packages.</li><li>Avoid “mega-packages” that change defaults globally unless you must.</li></ul>
+<hr />
+<h2>Notation and macro policy for OR</h2>
+<p>OR papers often fail on one of two extremes:</p>
+<ul><li><strong>No macros</strong> → inconsistent notation and formatting drift.</li><li><strong>Too many macros</strong> → unreadable source and brittle compilation.</li></ul>
+<p>Aim for a small, semantic macro set.</p>
+<h3>Typical OR notation categories</h3>
+<p>A common, readable split:</p>
+<ul><li><strong>Sets</strong>: calligraphic, e.g., $\mathcal{I}, \mathcal{J}, \mathcal{A}$</li><li><strong>Indices</strong>: roman letters, e.g., $i \in \mathcal{I}$, $j \in \mathcal{J}$</li><li><strong>Decision variables</strong>: italic scalars ($x_{ij}$), bold vectors/matrices ($\bm{x}$, $\bm{A}$)</li><li><strong>Parameters</strong>: italic ($c_{ij}$), sometimes roman for fixed constants (taste/venue)</li><li><strong>Dual variables / multipliers</strong>: Greek letters (e.g., $\pi, \lambda$)</li><li><strong>Random variables</strong>: uppercase ($D$) or decorated (e.g., $\tilde{D}$); choose one convention</li></ul>
+<h3>Macro naming conventions (pragmatic)</h3>
+<ul><li><code>\setI</code>, <code>\setJ</code> for index sets (or <code>\mathcal{I}</code> inline if not repeated often).</li><li><code>\vect{}</code> and <code>\mat{}</code> for vectors/matrices.</li><li>Operators: <code>\argmin</code>, <code>\argmax</code>, <code>\st</code>, <code>\E</code>, <code>\Prob</code>.</li><li>Indicator function: <code>\ind{...}</code> or <code>\1{...}</code>.</li></ul>
+<p><strong>Do not</strong> redefine core symbols (<code>\le</code>, <code>\epsilon</code>, etc.) unless a strong reason exists.</p>
+<h3>Label namespaces (OR-friendly)</h3>
+<p>Choose label prefixes that match OR structure:</p>
+<ul><li><code>sec:...</code> — section</li><li><code>prob:...</code> — models/problems</li><li><code>eq:...</code> — single equations</li><li><code>con:...</code> — constraints (if you label constraints individually)</li><li><code>alg:...</code> — algorithms</li><li><code>thm:...</code>, <code>lem:...</code>, <code>prop:...</code>, <code>ass:...</code></li></ul>
+<p>Example:</p>
+<ul><li><code>\label{prob:facility}</code> for a facility location model</li><li><code>\label{prob:facility:cap}</code> for its capacity constraint</li></ul>
+<hr />
+<h2>Optimization model formatting</h2>
+<h3>Preferred structure: <code>subequations</code> + <code>align</code></h3>
+<p>This gives you:</p>
+<ul><li>A single “model number” (e.g., (1))</li><li>Constraint letters (e.g., (1a), (1b), …)</li><li>Individual constraint labels for precise referencing</li></ul>
+<p>Example: MILP model.</p>
+<pre><code class="language-latex">\begin{subequations}\label{prob:ufl}
+\begin{align}
+\min_{x,y} \quad
+&amp; \sum_{i\in\setI}\sum_{j\in\setJ} c_{ij} x_{ij} + \sum_{j\in\setJ} f_j y_j \label{prob:ufl:obj}\\
+\st \quad
+&amp; \sum_{j\in\setJ} x_{ij} = 1, &amp;&amp; \forall i\in\setI, \label{prob:ufl:assign}\\
+&amp; x_{ij} \le y_j, &amp;&amp; \forall i\in\setI,\, \forall j\in\setJ, \label{prob:ufl:open}\\
+&amp; x_{ij} \ge 0, &amp;&amp; \forall i\in\setI,\, \forall j\in\setJ, \label{prob:ufl:xdom}\\
+&amp; y_j \in \{0,1\}, &amp;&amp; \forall j\in\setJ. \label{prob:ufl:ydom}
+\end{align}
+\end{subequations}</code></pre>
+<p>Then reference:</p>
+<ul><li>“Model \cref{prob:ufl}”</li><li>“Constraint \cref{prob:ufl:open}”</li><li>“Constraints \cref{prob:ufl:assign,prob:ufl:open}”</li></ul>
+<h3>“s.t.” and quantifiers</h3>
+<ul><li>Write <strong>s.t.</strong> as text: <code>\st</code> macro (upright roman), not italic math letters.</li><li>In OR, quantifiers are often best as side conditions:</li></ul>
+<p>- <code>&amp;&amp; \forall i\in\setI</code> is clear and compact.</p>
+<ul><li>Avoid writing constraints with heavy logic symbols (<code>\forall</code>, <code>\exists</code>) inline unless needed.</li></ul>
+<h3>Punctuation</h3>
+<p>Treat the whole optimization block as part of a sentence. A common convention:</p>
+<ul><li>Put <strong>no period</strong> after the last constraint if followed by text immediately, or</li><li>Put a <strong>period</strong> after the final line if it ends the sentence.</li></ul>
+<p>Be consistent.</p>
+<h3>Naming models: (LP), (MIP), (SP), …</h3>
+<p>If you want named models like “(MIP)”, use <code>\tag{MIP}</code>:</p>
+<pre><code class="language-latex">\begin{align}
+\min_x \quad &amp; c^\top x \\
+\st \quad &amp; Ax \ge b, \tag{MIP}\label{prob:mip}
+\end{align}</code></pre>
+<p>Note: <code>\tag</code> is manual; use it sparingly and only if your venue supports it.</p>
+<h3>Dual variables and Lagrangian notation</h3>
+<p>Best practice in OR manuscripts:</p>
+<ul><li>Use <strong>explicit dual variable names</strong> with constraints (when deriving duals/KKT).</li><li>Keep a consistent mapping:</li></ul>
+<p>- primal constraints → dual multipliers (e.g., $\pi_i$) - variable bounds → multipliers (e.g., $\mu_j \ge 0$)</p>
+<p>If you annotate constraints with duals, do it cleanly:</p>
+<pre><code class="language-latex">&amp; \sum_{j\in\setJ} x_{ij} = 1, &amp;&amp; \forall i\in\setI, \quad (\pi_i) \\</code></pre>
+<p>Be careful: annotation is helpful in derivations, but can clutter final models.</p>
+<hr />
+<h2>Algorithms and pseudocode</h2>
+<p>OR papers often include decomposition, heuristics, DP, or metaheuristics. Keep algorithms <strong>precise and easy to cross-reference</strong>.</p>
+<h3>Use structured pseudocode with line numbers</h3>
+<p>With <code>algpseudocode</code>:</p>
+<pre><code class="language-latex">\begin{algorithm}[t]
+\caption{Benders decomposition (high-level)}
+\label{alg:benders}
+\begin{algorithmic}[1]
+\State Initialize master problem with no Benders cuts.
+\Repeat
+  \State Solve master; obtain $(\hat{y}, \hat{\theta})$.
+  \State Solve subproblem at $\hat{y}$.
+  \If{subproblem infeasible}
+    \State Add feasibility cut.
+  \Else
+    \State Add optimality cut and update incumbent.
+  \EndIf
+\Until{no violated cuts remain}
+\end{algorithmic}
+\end{algorithm}</code></pre>
+<p>Refer to <code>Algorithm~\ref{alg:benders}</code> (or <code>\cref{alg:benders}</code>).</p>
+<h3>Algorithm typography rules</h3>
+<ul><li>Algorithm captions should describe the method, not “Algorithm 1”.</li><li>Use consistent naming: “Procedure”, “Heuristic”, “Framework”, “Algorithm”.</li><li>Define termination criteria precisely (gap, iterations, time limit).</li></ul>
+<h3>Complexity statements</h3>
+<p>Write complexity as math:</p>
+<ul><li>$\mathcal{O}(n\log n)$, not “O(n log n)” in text mode.</li></ul>
+<p>Define an operator macro if you use it often:</p>
+<pre><code class="language-latex">\newcommand{\bigO}{\mathcal{O}}</code></pre>
+<hr />
+<h2>Theorems, propositions, lemmas, and proofs</h2>
+<p>OR papers frequently mix theory and computation. Theorem environments should look professional and be easy to reference.</p>
+<h3>Use <code>amsthm</code> styles intentionally</h3>
+<ul><li><code>plain</code> (italic body): theorem/lemma/proposition/corollary.</li><li><code>definition</code> (upright body): definitions/assumptions.</li><li><code>remark</code> (upright body): remarks.</li></ul>
+<h3>Label theorems and assumptions</h3>
+<p>✅</p>
+<pre><code class="language-latex">\begin{assumption}\label{ass:convex}
+The feasible region is nonempty and compact.
+\end{assumption}</code></pre>
+<p>Then: “Under \cref{ass:convex}, …”</p>
+<h3>Proof hygiene</h3>
+<ul><li>Use <code>\begin{proof}...\end{proof}</code>.</li><li>If you end with a displayed equation, use <code>\qedhere</code> to position the □ nicely.</li></ul>
+<p>✅</p>
+<pre><code class="language-latex">\begin{proof}
+...
+\begin{equation}
+  x^\star \in \argmin_{x\in X} f(x). \qedhere
+\end{equation}
+\end{proof}</code></pre>
+<p>Use clear structure:</p>
+<ol><li>State what you prove.</li><li>Give the main inequality or argument.</li><li>Close cleanly.</li></ol>
+<hr />
+<h2>Math typography and font styles in OR</h2>
+<p>This section is about <strong>meaning encoded in fonts</strong>—a major readability factor in OR.</p>
+<h3>Recommended OR typography conventions</h3>
+<p>While there’s variation by subfield, a robust and readable default is:</p>
+<ul><li>Scalars: italic ($x$, $c_{ij}$)</li><li>Vectors: <strong>bold italic</strong> ($\bm{x}$, $\bm{c}$)</li><li>Matrices: <strong>bold italic</strong> ($\bm{A}$) or bold uppercase (field preference)</li><li>Sets: calligraphic ($\mathcal{I}$)</li><li>Functions/operators: upright (<code>\min</code>, <code>\argmin</code>, <code>\log</code>)</li><li>Constants: upright when they are true constants ($\mathrm{e}$, $\mathrm{i}$)</li></ul>
+<h3>Implementing bold vectors/matrices</h3>
+<p>Use <code>bm</code> and define macros:</p>
+<pre><code class="language-latex">\newcommand{\vect}[1]{\bm{#1}}
+\newcommand{\mat}[1]{\bm{#1}}</code></pre>
+<p>Why <code>bm</code>?</p>
+<ul><li>It correctly bolds <strong>Greek</strong> and symbols (<code>\vect{\lambda}</code>), where <code>\mathbf</code> fails.</li></ul>
+<h3>Avoiding typography ambiguity in OR notation</h3>
+<p>OR manuscripts often overload symbols:</p>
+<ul><li>$c$ as cost <em>and</em> speed of light (rare, but the idea stands)</li><li>$T$ as time horizon and transpose</li><li>$\lambda$ as Lagrange multiplier and arrival rate (queueing)</li></ul>
+<p>Best practice:</p>
+<ul><li>Use <code>\top</code> for transpose (as a superscript), e.g., $\bm{c}^\top \bm{x}$.</li><li>If your subfield uses $\lambda$ heavily (queueing + duality), consider different Greek letters or explicit subscripts.</li></ul>
+<h3>Calligraphic, blackboard, fraktur</h3>
+<p>Use font families as <strong>semantic classes</strong>, not decoration:</p>
+<ul><li>$\mathcal{I}$ sets / index families</li><li>$\mathbb{R}$ number systems</li><li>$\mathfrak{g}$ (rare in OR; more common in algebra)</li></ul>
+<hr />
+<h2>Probability, expectations, and stochastic models</h2>
+<p>Many OR papers involve stochastic programming, MDPs, queueing, or robust optimization. Notation consistency is critical.</p>
+<h3>Expectation and probability operators</h3>
+<p>Define:</p>
+<pre><code class="language-latex">\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}</code></pre>
+<p>Conditional expectation should use <code>\mid</code> (proper spacing), not <code>|</code>:</p>
+<p>✅</p>
+<pre><code class="language-latex">\E[X \mid Y=y]
+\Prob(A \mid B)</code></pre>
+<p>If you use conditioning often, define a <code>\given</code> macro:</p>
+<pre><code class="language-latex">\newcommand{\given}{\,\middle|\,}</code></pre>
+<p>Then: <code>\E[X \given Y]</code>.</p>
+<h3>Random variables vs realizations</h3>
+<p>Pick one convention and state it:</p>
+<ul><li><strong>Convention A (common):</strong> random variables uppercase ($D$), realizations lowercase ($d$).</li><li><strong>Convention B:</strong> random variables decorated ($\tilde{D}$), decisions plain.</li></ul>
+<p>Avoid mixing conventions across sections.</p>
+<h3>Stochastic programming notation (typical)</h3>
+<ul><li>First-stage decision: $x$</li><li>Scenario set: $\Omega$</li><li>Scenario probability: $p_\omega$</li><li>Recourse function: $Q(x,\omega)$ or $Q(x,\xi)$</li></ul>
+<p>Example:</p>
+<pre><code class="language-latex">\min_{x\in X} \; c^\top x + \sum_{\omega\in\Omega} p_\omega Q(x,\omega).</code></pre>
+<h3>Robust optimization typography</h3>
+<ul><li>Uncertainty set: $\mathcal{U}$</li><li>Robust constraint: $\forall u\in\mathcal{U}$</li></ul>
+<p>Write robust constraints clearly:</p>
+<pre><code class="language-latex">a(u)^\top x \le b, \quad \forall u\in\mathcal{U}.</code></pre>
+<hr />
+<h2>Computational experiments reporting</h2>
+<p>This is OR-specific and often decisive in reviews.</p>
+<h3>Report what reviewers will look for</h3>
+<ul><li>Instance generation / source (public set, synthetic process, etc.)</li><li>Number of instances, size parameters</li><li>Hardware (CPU model, RAM), OS</li><li>Solver and version (e.g., Gurobi, CPLEX), parameter settings</li><li>Time limits, optimality gaps, random seeds</li><li>Baselines and fairness (same machine, same termination rules)</li></ul>
+<h3>Tables: align and compress without losing truth</h3>
+<p>Use <code>booktabs</code> + <code>siunitx</code> alignment.</p>
+<p>Include:</p>
+<ul><li>mean ± std (if randomized)</li><li>median + IQR (often robust)</li><li>best-known objective, gap, time</li></ul>
+<p>Avoid “too many decimals”:</p>
+<ul><li>pick meaningful precision (e.g., time to 0.01s may be nonsense if system noise is larger).</li></ul>
+<h3>When using performance profiles</h3>
+<p>If you include Dolan–Moré performance profiles or similar, ensure:</p>
+<ul><li>The metric and direction are explicit (lower is better? higher is better?)</li><li>Instances with timeouts are handled consistently</li></ul>
+<p>Often best to generate these plots externally and include as PDF.</p>
+<hr />
+<h2>Figures and tables</h2>
+<p>(Short version: same best practices as general scientific LaTeX, with OR emphasis on clarity and comparability.)</p>
+<h3>Figures in OR papers</h3>
+<ul><li>Prefer <strong>vector PDF</strong> for plots.</li><li>Label axes with units (use <code>siunitx</code> in plot labels if possible).</li><li>If you compare methods, keep line styles distinct and legends readable.</li></ul>
+<h3>Tables in OR papers</h3>
+<ul><li>Avoid vertical lines; use whitespace and <code>booktabs</code>.</li><li>Align numbers by decimal point (<code>S</code> columns).</li><li>Always specify what “gap” means (relative? absolute? vs best-known?).</li></ul>
+<hr />
+<h2>Cross-references and hyperlinks</h2>
+<p>OR manuscripts benefit disproportionately from good cross-referencing.</p>
+<ul><li>Use <code>\cref{...}</code> for:</li></ul>
+<p>- Models <code>\cref{prob:ufl}</code> - Constraints <code>\cref{prob:ufl:open}</code> - Algorithms <code>\cref{alg:benders}</code> - Theorems <code>\cref{thm:convergence}</code> - Assumptions <code>\cref{ass:convex}</code></p>
+<p>Nonbreaking spaces still matter if you ever use manual references:</p>
+<ul><li><code>Algorithm~\ref{alg:...}</code>, <code>Theorem~\ref{thm:...}</code></li></ul>
+<hr />
+<h2>Bibliography and citations</h2>
+<h3>Style choice in OR</h3>
+<ul><li>Many OR journals use <strong>author–year</strong> citations; some use numeric.</li><li>The safest draft choice is <code>biblatex</code> with <code>style=authoryear</code>.</li><li>Switch to venue-required style at submission time.</li></ul>
+<h3>Capitalization in titles</h3>
+<p>Protect acronyms and proper nouns in <code>.bib</code>:</p>
+<pre><code class="language-bibtex">title = {A {Benders} decomposition approach for {MILP} models},</code></pre>
+<h3>Citation commands</h3>
+<p>With <code>biblatex</code>:</p>
+<ul><li><code>\parencite{key}</code> → (Author, Year)</li><li><code>\textcite{key}</code> → Author (Year)</li></ul>
+<p>Use <code>\textcite</code> when the author name is grammatically part of the sentence.</p>
+<hr />
+<h2>English + typographic micro-rules for OR writing</h2>
+<p>These are the small things that make OR manuscripts feel “review-ready.”</p>
+<h3>Hyphenation in OR terms</h3>
+<p>Use hyphens consistently:</p>
+<ul><li>“mixed-integer linear program” (MILP)</li><li>“two-stage stochastic program”</li><li>“polynomial-time algorithm”</li><li>“cut-generating function” (if used adjectivally)</li></ul>
+<h3>Dashes (hyphen/en dash/em dash)</h3>
+<ul><li>Hyphen <code>-</code>: compound modifiers (“branch-and-cut”).</li><li>En dash <code>--</code>: ranges (“10--20”) and connections (“Dantzig--Wolfe”).</li><li>Em dash <code>---</code>: parenthetical breaks—use sparingly in formal OR writing.</li></ul>
+<h3>Common OR abbreviations and capitalization</h3>
+<ul><li>NP-hard (hyphenated, “NP” uppercase)</li><li>MIP/MILP/LP/QP/SDP (uppercase; define once)</li><li>KKT (uppercase)</li><li>“Benders decomposition,” “Dantzig–Wolfe decomposition” (proper nouns)</li></ul>
+<h3>“i.e.” and “e.g.”</h3>
+<ul><li>“e.g.,” and “i.e.,” often take a comma in US style: “e.g., we consider…”.</li><li>Avoid stuffing long lists after “e.g.,”; use “for example” if the sentence gets heavy.</li></ul>
+<h3>Optimization language: avoid ambiguity</h3>
+<p>Be explicit about what is being optimized and over what domain.</p>
+<p>Prefer:</p>
+<ul><li>“We solve the MILP in \cref{prob:ufl}.”</li><li>“We minimize expected cost over first-stage decisions.”</li></ul>
+<p>Avoid:</p>
+<ul><li>“We optimize the model.” (What objective? what constraints? what algorithm?)</li></ul>
+<h3>Equations are sentences</h3>
+<p>This is especially important in model-heavy OR writing.</p>
+<ul><li>Put commas and periods in displayed math when grammatically needed.</li><li>Don’t leave the reader guessing whether constraints are complete.</li></ul>
+<hr />
+<h2>OR-specific checklist</h2>
+<p><strong>Model and notation</strong></p>
+<ul><li>[ ] Sets/indices/parameters/variables are defined once, early (often in a “Notation” subsection).</li><li>[ ] Vectors/matrices use consistent typography (<code>\vect{}</code>, <code>\mat{}</code>).</li><li>[ ] Every model has a global label (<code>prob:...</code>) and key constraints have labels.</li><li>[ ] “s.t.” and quantifiers are formatted consistently.</li></ul>
+<p><strong>Theory</strong></p>
+<ul><li>[ ] Assumptions are explicitly stated and labeled.</li><li>[ ] Theorems/lemmas are labeled and referenced with <code>\cref</code>.</li><li>[ ] Proofs end cleanly, with <code>\qedhere</code> if needed.</li></ul>
+<p><strong>Algorithms</strong></p>
+<ul><li>[ ] Pseudocode has line numbers.</li><li>[ ] Termination criteria and complexity statements are explicit.</li></ul>
+<p><strong>Computation</strong></p>
+<ul><li>[ ] Instances, hardware, solver versions, and time limits are reported.</li><li>[ ] Metrics (gap, time, objective) are defined unambiguously.</li><li>[ ] Tables align decimals and avoid excessive precision.</li></ul>
+<hr />
+<h2>Appendix: starter <code>macros.tex</code> for OR</h2>
+<p>Paste into <code>macros.tex</code> and tailor.</p>
+<pre><code class="language-latex">% macros.tex — Operations Research notation
+
+% --- Number systems ---
+\newcommand{\Reals}{\mathbb{R}}
+\newcommand{\Integers}{\mathbb{Z}}
+\newcommand{\Realspos}{\Reals_{+}}
+\newcommand{\Integerspos}{\Integers_{+}}
+
+% --- Sets (use calligraphic for index sets) ---
+\newcommand{\setI}{\mathcal{I}}
+\newcommand{\setJ}{\mathcal{J}}
+\newcommand{\setK}{\mathcal{K}}
+\newcommand{\setA}{\mathcal{A}}
+\newcommand{\setN}{\mathcal{N}}
+\newcommand{\setU}{\mathcal{U}}
+\newcommand{\setO}{\Omega} % scenario set often denoted Omega
+
+% --- Linear algebra objects ---
+\newcommand{\vect}[1]{\bm{#1}} % bold italic vector
+\newcommand{\mat}[1]{\bm{#1}}  % bold italic matrix
+
+% --- Transpose and inner products ---
+\newcommand{\T}{^{\mathsf{T}}}
+\newcommand{\ip}[2]{\left\langle #1, #2 \right\rangle}
+
+% --- Optimization operators ---
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+% Subject-to (upright text) and &quot;min/max&quot; in model blocks
+\newcommand{\st}{\text{s.t.}}
+
+% --- Probability and expectation ---
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\operatorname{Var}}
+
+% Conditioning bar with good spacing
+\newcommand{\given}{\,\middle|\,}
+
+% --- Differential (if needed) ---
+\newcommand{\diff}{\mathop{}\!\mathrm{d}}
+
+% --- Complexity ---
+\newcommand{\bigO}{\mathcal{O}}
+
+% --- Norms / abs / floor / ceil ---
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+% Usage:
+% \abs{x}, \abs*{x} for auto sizing
+% \norm{x}, \ceil*{x}, etc.
+
+% --- Indicator function (choose one approach) ---
+% Option 1: bold 1 (portable)
+\newcommand{\ind}{\mathbf{1}}
+% Then write: \ind\{A\} or define a wrapper:
+\newcommand{\Ind}[1]{\ind\{#1\}}
+
+% If you prefer a blackboard 1, consider:
+% \usepackage{bbm}
+% \newcommand{\ind}{\mathbbm{1}}
+
+% --- Common constants (upright) ---
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\ii}{\mathrm{i}}</code></pre>
+<hr />
+<h2>Practical next steps</h2>
+<p>To align with a specific OR venue:</p>
+<ul><li>Replace <code>\documentclass{article}</code> with the venue class.</li><li>Adjust bibliography style to the required one (some venues require BibTeX styles).</li><li>Keep your <strong>notation macros</strong> stable; this is what preserves clarity across formats.</li></ul>
+          </div>
+        </article>
+      </section>
+
+      <div class="hero-links reveal-up delay-2">
+        <a class="chip" href="./index.html">All posts</a>
+        <a class="chip" href="../index.html#blog">Back to main site</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; <span id="year"></span> Wei You</p>
+      <p>Department of Industrial Engineering and Decision Analytics, HKUST</p>
+    </div>
+  </footer>
+
+  <button class="back-to-top" type="button" aria-label="Back to top">Top</button>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true
+      },
+      chtml: {
+        mtextInheritFont: true,
+        merrorInheritFont: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.11.1/build/highlight.min.js"></script>
+  <script>
+    window.addEventListener('load', function () {
+      if (!window.hljs) return;
+
+      var languageAlias = {
+        latex: 'tex',
+        plain: 'plaintext',
+        text: 'plaintext',
+        shell: 'bash',
+        sh: 'bash',
+        zsh: 'bash'
+      };
+
+      var codeBlocks = Array.from(document.querySelectorAll('pre code'));
+      codeBlocks.forEach(function (block) {
+        var languageClass = '';
+        Array.from(block.classList).forEach(function (name) {
+          if (name.indexOf('language-') === 0) languageClass = name;
+        });
+
+        var language = languageClass ? languageClass.slice(9).toLowerCase() : '';
+        if (language === 'latex' || language === 'tex') {
+          if (languageClass) block.classList.remove(languageClass);
+          block.classList.add('language-plaintext');
+          return;
+        }
+
+        var mappedLanguage = languageAlias[language] || language;
+
+        if (mappedLanguage && window.hljs.getLanguage(mappedLanguage)) {
+          if (languageClass && mappedLanguage !== language) {
+            block.classList.remove(languageClass);
+            block.classList.add('language-' + mappedLanguage);
+          }
+          window.hljs.highlightElement(block);
+          return;
+        }
+
+        var source = block.textContent || '';
+        var auto = window.hljs.highlightAuto(source);
+        block.innerHTML = auto.value;
+        block.classList.add('hljs');
+        if (auto.language) {
+          block.classList.add('language-' + auto.language);
+        }
+      });
+    });
+  </script>
+  <script src="../js/site.js" defer></script>
+  <script>
+    const yearNode = document.getElementById("year");
+    if (yearNode) yearNode.textContent = String(new Date().getFullYear());
+  </script>
+</body>
+</html>

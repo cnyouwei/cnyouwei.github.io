@@ -1,5 +1,16 @@
 [
   {
+    "title": "LaTeX Style Guide for Operations Research",
+    "slug": "2026-02-09-latex_style_guide",
+    "date": "2026-02-09",
+    "summary": "A LaTeX style guide tailored to Operations Research papers.",
+    "tags": [
+      "latex",
+      "notes",
+      "operations research"
+    ]
+  },
+  {
     "title": "A Real Analysis Note",
     "slug": "2026-02-07-real_analysis",
     "date": "2026-02-07",
