@@ -1,18 +1,89 @@
 # Wei You - Personal Research Website
 
-This repository contains a fully static personal research website.
+This repository contains a static personal research website.
 
 ## Structure
 
 - `index.html`: Main website (home, research, talks, teaching, team, about, blog preview).
-- `css/site.css`: Site styles.
-- `js/site.js`: Navigation, paper filter/search, and blog preview loader.
+- `css/site.css`: Site styles (single file, organized by tokens/base/layout/components/pages/media).
+- `js/site.js`: Thin runtime bootstrap.
+- `js/core/*.js`: Shared runtime features (theme, nav, analytics, back-to-top, utils).
+- `js/pages/*.js`: Page-scoped features (research controls, blog enhancements).
 - `content/research/papers.json`: Source of truth for working papers and publications.
 - `content/blog/*.md`: Source markdown files for blog posts.
 - `content/teaching/courses.json`: Source of truth for teaching directory and course pages.
-- `scripts/build_site.py`: Compiles research from `content/research/papers.json`, blog from `content/blog/*.md`, and teaching pages from `content/teaching/courses.json`.
+- `requirements.txt`: Optional Python build dependencies for simpler markdown/template rendering.
+- `scripts/build_site.py`: Public build entrypoint.
+- `scripts/site_build/`: Internal build modules.
+  - `cli.py`: Build orchestration.
+  - `common.py`: Shared constants and utility helpers.
+  - `index_ops.py`: Marker block replacement in `index.html`.
+  - `nav.py`: Shared nav dropdown rendering and index dropdown updates.
+  - `markdown_render.py`: Front matter parsing + markdown rendering (library-first, fallback parser).
+  - `blog.py`: Blog manifest generation and blog page rendering.
+  - `research.py`: Research section rendering and selected-paper updates.
+  - `teaching.py`: Teaching directory and per-course page rendering.
+  - `template_engine.py`: Template rendering (Jinja2 if installed, fallback renderer otherwise).
+  - `templates.py`: Shared injected snippet helpers (theme bootstrap, MathJax config, fonts).
+- `scripts/templates/`: HTML templates and partials used by the generator.
+- `scripts/parity_check.py`: Snapshot/check utility for generated-output parity.
 - `blogs/`: Generated blog output (`index.html`, post pages, `posts.json`, and `posts.js`).
 - `teaching/`: Generated teaching output (`index.html` and per-course pages).
+
+## Build
+
+Optional dependency install (recommended for simpler markdown/template pipeline):
+
+```bash
+python3 -m pip install -r requirements.txt
+```
+
+Build from repository root:
+
+```bash
+python3 scripts/build_site.py
+```
+
+This updates:
+
+- Blog outputs in `blogs/`
+- Teaching outputs in `teaching/`
+- Marker blocks in `index.html`
+
+Build command contract is unchanged:
+
+```bash
+python3 scripts/build_site.py
+```
+
+## Parity Workflow (High-Confidence Refactor Guard)
+
+1. Capture baseline snapshot:
+
+```bash
+python3 scripts/parity_check.py snapshot --output /tmp/site_parity_baseline.json
+```
+
+2. Run build:
+
+```bash
+python3 scripts/build_site.py
+```
+
+3. Verify parity against baseline:
+
+```bash
+python3 scripts/parity_check.py check --baseline /tmp/site_parity_baseline.json
+```
+
+The checker validates:
+
+- Generated artifact file set and SHA-256 hashes
+- Marker block contents in `index.html` for:
+  - `SELECTED-PAPERS`
+  - `RESEARCH-CONTENT`
+  - `NAV-TEACHING-DROPDOWN`
+  - `NAV-BLOG-DROPDOWN`
 
 ## Manage Research Papers
 
@@ -31,10 +102,6 @@ This repository contains a fully static personal research website.
 ```bash
 python3 scripts/build_site.py
 ```
-
-The script updates only the marker block in `index.html` between:
-- `<!-- RESEARCH-CONTENT:START -->`
-- `<!-- RESEARCH-CONTENT:END -->`
 
 ## Add a New Blog Post
 
@@ -75,6 +142,25 @@ python3 scripts/build_site.py
 ```bash
 python3 scripts/build_site.py
 ```
+
+## Safe Edit Zones
+
+- Content-only edits (lowest risk):
+  - `content/research/papers.json`
+  - `content/blog/*.md`
+  - `content/teaching/courses.json`
+- Build/template edits (generator behavior):
+  - `scripts/site_build/*.py`
+  - `scripts/build_site.py`
+- Runtime behavior/style edits (frontend behavior):
+  - `js/core/*.js`
+  - `js/pages/*.js`
+  - `js/site.js`
+  - `css/site.css`
+- Template/layout edits (page shell and generated markup):
+  - `scripts/templates/**/*.j2`
+
+When editing build/template or runtime files, use the parity workflow before and after changes.
 
 ## Local Preview
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-ga-id="G-W043BW5W9F">
+<html lang="en" data-ga-id="G-W043BW5W9F" data-page="teaching-index">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -20,14 +20,34 @@
     })();
   </script>
   <link rel="stylesheet" href="../css/site.css" />
+
+
 </head>
 <body>
   <header class="site-header" id="top">
     <div class="container nav-wrap">
       <a class="brand" href="../index.html#home">Wei You</a>
       <div class="nav-controls">
-        <button class="theme-toggle" type="button" aria-label="Toggle theme" aria-pressed="false">
-          <span class="theme-toggle__text">Dark</span>
+        <button class="theme-toggle" type="button" aria-label="Toggle theme" aria-pressed="false" data-active-icon="sun">
+          <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2.5V5.1"></path>
+              <path d="M12 18.9V21.5"></path>
+              <path d="M2.5 12H5.1"></path>
+              <path d="M18.9 12H21.5"></path>
+              <path d="M5.2 5.2L7 7"></path>
+              <path d="M17 17L18.8 18.8"></path>
+              <path d="M17 7L18.8 5.2"></path>
+              <path d="M5.2 18.8L7 17"></path>
+            </svg>
+          </span>
+          <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M20.4 14.2a8.7 8.7 0 0 1-10.6-10.6A9.5 9.5 0 1 0 20.4 14.2z"></path>
+            </svg>
+          </span>
+          <span class="sr-only theme-toggle__text">Toggle theme</span>
         </button>
         <button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="site-nav" aria-expanded="false">
           <span></span>
@@ -69,41 +89,41 @@
 
       <section class="module-section reveal-up delay-1">
         <div class="module-grid">
-<article class="module-card course-card">
-  <p class="timeline-year">2026–present</p>
-  <p class="course-status is-soon">Coming Soon</p>
-  <h3>IEDA3250 Stochastic Models</h3>
-  <p>Stochastic-process modeling methods for engineering systems.</p>
-  <p class="muted">Course page coming soon.</p>
-</article>
-<article class="module-card course-card">
-  <p class="timeline-year">2019–present</p>
-  <p class="course-status is-soon">Coming Soon</p>
-  <h3>IEDA5270 Engineering Statistics</h3>
-  <p>Graduate-level statistical methodology for data-driven engineering.</p>
-  <p class="muted">Course page coming soon.</p>
-</article>
-<article class="module-card course-card">
-  <p class="timeline-year">2020–2025</p>
-  <p class="course-status is-live">Published</p>
-  <h3>IEDA2540 Statistics for Engineers</h3>
-  <p>Core statistics for engineers: uncertainty modeling, estimation, inference, and regression.</p>
-  <a class="button" href="./ieda2540.html">Open course page</a>
-</article>
-<article class="module-card course-card">
-  <p class="timeline-year">2022</p>
-  <p class="course-status is-soon">Coming Soon</p>
-  <h3>EEMT5500 Applied Probability, Statistics and Data Analytics</h3>
-  <p>Applied probability and statistical methods for engineering management contexts.</p>
-  <p class="muted">Course page coming soon.</p>
-</article>
-<article class="module-card course-card">
-  <p class="timeline-year">2011</p>
-  <p class="course-status is-live">Published</p>
-  <h3>NJU Real Analysis Notes</h3>
-  <p>Real analysis notes written at Nanjing University, with an English translation and a companion blog post.</p>
-  <a class="button" href="./real-analysis-2011.html">Open course page</a>
-</article>
+          <article class="module-card course-card">
+            <p class="timeline-year">2026–present</p>
+            <p class="course-status is-soon">Coming Soon</p>
+            <h3>IEDA3250 Stochastic Models</h3>
+            <p>Stochastic-process modeling methods for engineering systems.</p>
+            <p class="muted">Course page coming soon.</p>
+          </article>
+          <article class="module-card course-card">
+            <p class="timeline-year">2019–present</p>
+            <p class="course-status is-soon">Coming Soon</p>
+            <h3>IEDA5270 Engineering Statistics</h3>
+            <p>Graduate-level statistical methodology for data-driven engineering.</p>
+            <p class="muted">Course page coming soon.</p>
+          </article>
+          <article class="module-card course-card">
+            <p class="timeline-year">2020–2025</p>
+            <p class="course-status is-live">Published</p>
+            <h3>IEDA2540 Statistics for Engineers</h3>
+            <p>Core statistics for engineers: uncertainty modeling, estimation, inference, and regression.</p>
+            <a class="button" href="./ieda2540.html">Open course page</a>
+          </article>
+          <article class="module-card course-card">
+            <p class="timeline-year">2022</p>
+            <p class="course-status is-soon">Coming Soon</p>
+            <h3>EEMT5500 Applied Probability, Statistics and Data Analytics</h3>
+            <p>Applied probability and statistical methods for engineering management contexts.</p>
+            <p class="muted">Course page coming soon.</p>
+          </article>
+          <article class="module-card course-card">
+            <p class="timeline-year">2011</p>
+            <p class="course-status is-live">Published</p>
+            <h3>NJU Real Analysis Notes</h3>
+            <p>Real analysis notes written at Nanjing University, with an English translation and a companion blog post.</p>
+            <a class="button" href="./real-analysis-2011.html">Open course page</a>
+          </article>
         </div>
       </section>
     </section>
@@ -117,10 +137,16 @@
   </footer>
 
   <button class="back-to-top" type="button" aria-label="Back to top">Top</button>
+
+
+  <script src="../js/core/utils.js" defer></script>
+  <script src="../js/core/theme.js" defer></script>
+  <script src="../js/core/nav.js" defer></script>
+  <script src="../js/core/analytics.js" defer></script>
+  <script src="../js/core/back_to_top.js" defer></script>
+  <script src="../js/pages/research.js" defer></script>
+  <script src="../js/pages/blog.js" defer></script>
   <script src="../js/site.js" defer></script>
-  <script>
-    const yearNode = document.getElementById("year");
-    if (yearNode) yearNode.textContent = String(new Date().getFullYear());
-  </script>
+
 </body>
 </html>

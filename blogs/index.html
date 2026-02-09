@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-ga-id="G-W043BW5W9F">
+<html lang="en" data-ga-id="G-W043BW5W9F" data-page="blog-index">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -20,14 +20,34 @@
     })();
   </script>
   <link rel="stylesheet" href="../css/site.css" />
+
+
 </head>
 <body>
   <header class="site-header" id="top">
     <div class="container nav-wrap">
       <a class="brand" href="../index.html#home">Wei You</a>
       <div class="nav-controls">
-        <button class="theme-toggle" type="button" aria-label="Toggle theme" aria-pressed="false">
-          <span class="theme-toggle__text">Dark</span>
+        <button class="theme-toggle" type="button" aria-label="Toggle theme" aria-pressed="false" data-active-icon="sun">
+          <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2.5V5.1"></path>
+              <path d="M12 18.9V21.5"></path>
+              <path d="M2.5 12H5.1"></path>
+              <path d="M18.9 12H21.5"></path>
+              <path d="M5.2 5.2L7 7"></path>
+              <path d="M17 17L18.8 18.8"></path>
+              <path d="M17 7L18.8 5.2"></path>
+              <path d="M5.2 18.8L7 17"></path>
+            </svg>
+          </span>
+          <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M20.4 14.2a8.7 8.7 0 0 1-10.6-10.6A9.5 9.5 0 1 0 20.4 14.2z"></path>
+            </svg>
+          </span>
+          <span class="sr-only theme-toggle__text">Toggle theme</span>
         </button>
         <button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="site-nav" aria-expanded="false">
           <span></span>
@@ -70,18 +90,18 @@
 
       <section class="module-section reveal-up delay-1">
         <div class="module-grid">
-<article class="module-card blog-card">
-  <div class="blog-meta"><time datetime="2026-02-09">February 09, 2026</time><span class="blog-tag">latex</span><span class="blog-tag">notes</span><span class="blog-tag">operations research</span></div>
-  <h3><a href="./2026-02-09-latex_style_guide.html">LaTeX Style Guide for Operations Research</a></h3>
-  <p>A LaTeX style guide tailored to Operations Research papers.</p>
-  <a class="button" href="./2026-02-09-latex_style_guide.html">Read post</a>
-</article>
-<article class="module-card blog-card">
-  <div class="blog-meta"><time datetime="2026-02-07">February 07, 2026</time><span class="blog-tag">math</span><span class="blog-tag">notes</span><span class="blog-tag">real analysis</span></div>
-  <h3><a href="./2026-02-07-real_analysis.html">A Real Analysis Note</a></h3>
-  <p>A real analysis note I wrote in Chinese in 2011, now refreshed with a complete English translation produced with ChatGPT.</p>
-  <a class="button" href="./2026-02-07-real_analysis.html">Read post</a>
-</article>
+          <article class="module-card blog-card">
+            <div class="blog-meta"><time datetime="2026-02-09">February 09, 2026</time><span class="blog-tag">latex</span><span class="blog-tag">notes</span><span class="blog-tag">operations research</span></div>
+            <h3><a href="./2026-02-09-latex_style_guide.html">LaTeX Style Guide for Operations Research</a></h3>
+            <p>A LaTeX style guide tailored to Operations Research papers.</p>
+            <a class="button" href="./2026-02-09-latex_style_guide.html">Read post</a>
+          </article>
+          <article class="module-card blog-card">
+            <div class="blog-meta"><time datetime="2026-02-07">February 07, 2026</time><span class="blog-tag">math</span><span class="blog-tag">notes</span><span class="blog-tag">real analysis</span></div>
+            <h3><a href="./2026-02-07-real_analysis.html">A Real Analysis Note</a></h3>
+            <p>A real analysis note I wrote in Chinese in 2011, now refreshed with a complete English translation produced with ChatGPT.</p>
+            <a class="button" href="./2026-02-07-real_analysis.html">Read post</a>
+          </article>
         </div>
       </section>
 
@@ -99,12 +119,16 @@
   </footer>
 
   <button class="back-to-top" type="button" aria-label="Back to top">Top</button>
+
   <script>
     window.MathJax = {
       tex: {
         inlineMath: [['$', '$'], ['\\(', '\\)']],
         displayMath: [['$$', '$$'], ['\\[', '\\]']],
-        processEscapes: true
+        processEscapes: true,
+        macros: {
+          bm: ['\\boldsymbol{#1}', 1]
+        }
       },
       chtml: {
         mtextInheritFont: true,
@@ -116,10 +140,14 @@
     };
   </script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  <script src="../js/core/utils.js" defer></script>
+  <script src="../js/core/theme.js" defer></script>
+  <script src="../js/core/nav.js" defer></script>
+  <script src="../js/core/analytics.js" defer></script>
+  <script src="../js/core/back_to_top.js" defer></script>
+  <script src="../js/pages/research.js" defer></script>
+  <script src="../js/pages/blog.js" defer></script>
   <script src="../js/site.js" defer></script>
-  <script>
-    const yearNode = document.getElementById("year");
-    if (yearNode) yearNode.textContent = String(new Date().getFullYear());
-  </script>
+
 </body>
 </html>

@@ -392,21 +392,19 @@ OR papers frequently mix theory and computation. Theorem environments should loo
 
 ### Label theorems and assumptions
 
-✅
 ```latex
 \begin{assumption}\label{ass:convex}
 The feasible region is nonempty and compact.
 \end{assumption}
 ```
 
-Then: “Under \cref{ass:convex}, …”
+Then: `Under \cref{ass:convex}, …`
 
 ### Proof hygiene
 
 - Use `\begin{proof}...\end{proof}`.
 - If you end with a displayed equation, use `\qedhere` to position the □ nicely.
 
-✅
 ```latex
 \begin{proof}
 ...
@@ -485,7 +483,6 @@ Define:
 
 Conditional expectation should use `\mid` (proper spacing), not `|`:
 
-✅
 ```latex
 \E[X \mid Y=y]
 \Prob(A \mid B)
@@ -507,30 +504,6 @@ Pick one convention and state it:
 - **Convention B:** random variables decorated ($\tilde{D}$), decisions plain.
 
 Avoid mixing conventions across sections.
-
-### Stochastic programming notation (typical)
-
-- First-stage decision: $x$
-- Scenario set: $\Omega$
-- Scenario probability: $p_\omega$
-- Recourse function: $Q(x,\omega)$ or $Q(x,\xi)$
-
-Example:
-
-```latex
-\min_{x\in X} \; c^\top x + \sum_{\omega\in\Omega} p_\omega Q(x,\omega).
-```
-
-### Robust optimization typography
-
-- Uncertainty set: $\mathcal{U}$
-- Robust constraint: $\forall u\in\mathcal{U}$
-
-Write robust constraints clearly:
-
-```latex
-a(u)^\top x \le b, \quad \forall u\in\mathcal{U}.
-```
 
 ---
 
@@ -558,14 +531,6 @@ Include:
 
 Avoid “too many decimals”:
 - pick meaningful precision (e.g., time to 0.01s may be nonsense if system noise is larger).
-
-### When using performance profiles
-
-If you include Dolan–Moré performance profiles or similar, ensure:
-- The metric and direction are explicit (lower is better? higher is better?)
-- Instances with timeouts are handled consistently
-
-Often best to generate these plots externally and include as PDF.
 
 ---
 

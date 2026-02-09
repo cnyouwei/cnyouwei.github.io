@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-ga-id="G-W043BW5W9F">
+<html lang="en" data-ga-id="G-W043BW5W9F" data-page="blog-post">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -20,7 +20,7 @@
     })();
   </script>
   <link rel="stylesheet" href="../css/site.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.11.1/build/styles/atom-one-dark.min.css" />
+
 
 </head>
 <body>
@@ -28,8 +28,26 @@
     <div class="container nav-wrap">
       <a class="brand" href="../index.html#home">Wei You</a>
       <div class="nav-controls">
-        <button class="theme-toggle" type="button" aria-label="Toggle theme" aria-pressed="false">
-          <span class="theme-toggle__text">Dark</span>
+        <button class="theme-toggle" type="button" aria-label="Toggle theme" aria-pressed="false" data-active-icon="sun">
+          <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2.5V5.1"></path>
+              <path d="M12 18.9V21.5"></path>
+              <path d="M2.5 12H5.1"></path>
+              <path d="M18.9 12H21.5"></path>
+              <path d="M5.2 5.2L7 7"></path>
+              <path d="M17 17L18.8 18.8"></path>
+              <path d="M17 7L18.8 5.2"></path>
+              <path d="M5.2 18.8L7 17"></path>
+            </svg>
+          </span>
+          <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M20.4 14.2a8.7 8.7 0 0 1-10.6-10.6A9.5 9.5 0 1 0 20.4 14.2z"></path>
+            </svg>
+          </span>
+          <span class="sr-only theme-toggle__text">Toggle theme</span>
         </button>
         <button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="site-nav" aria-expanded="false">
           <span></span>
@@ -76,7 +94,7 @@
 <aside class="panel post-toc" aria-label="Table of contents">
   <p class="post-toc__title">On this page</p>
   <nav class="post-toc__nav">
-    <ol><li class="post-toc__item"><a class="post-toc__link" href="#plain-or-paper-template">Plain OR paper template</a></li><li class="post-toc__item"><a class="post-toc__link" href="#packages-or-baseline-and-options">Packages: OR baseline and options</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#baseline-recommended-for-most-or-drafts">Baseline (recommended for most OR drafts)</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#or-useful-optional-packages">OR-useful optional packages</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#package-ordering-rules">Package ordering rules</a></li><li class="post-toc__item"><a class="post-toc__link" href="#notation-and-macro-policy-for-or">Notation and macro policy for OR</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#typical-or-notation-categories">Typical OR notation categories</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#macro-naming-conventions-pragmatic">Macro naming conventions (pragmatic)</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#label-namespaces">Label namespaces</a></li><li class="post-toc__item"><a class="post-toc__link" href="#optimization-model-formatting">Optimization model formatting</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#preferred-structure-subequations--align">Preferred structure: subequations + align</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#st-and-quantifiers">“s.t.” and quantifiers</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#punctuation">Punctuation</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#naming-models-lp-mip-sp">Naming models: (LP), (MIP), (SP), …</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#dual-variables-and-lagrangian-notation">Dual variables and Lagrangian notation</a></li><li class="post-toc__item"><a class="post-toc__link" href="#algorithms-and-pseudocode">Algorithms and pseudocode</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#use-structured-pseudocode-with-line-numbers">Use structured pseudocode with line numbers</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#algorithm-typography-rules">Algorithm typography rules</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#complexity-statements">Complexity statements</a></li><li class="post-toc__item"><a class="post-toc__link" href="#theorems-propositions-lemmas-and-proofs">Theorems, propositions, lemmas, and proofs</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#use-amsthm-styles-intentionally">Use amsthm styles intentionally</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#label-theorems-and-assumptions">Label theorems and assumptions</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#proof-hygiene">Proof hygiene</a></li><li class="post-toc__item"><a class="post-toc__link" href="#math-typography-and-font-styles-in-or">Math typography and font styles in OR</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#recommended-or-typography-conventions">Recommended OR typography conventions</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#implementing-bold-vectorsmatrices">Implementing bold vectors/matrices</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#avoiding-typography-ambiguity-in-or-notation">Avoiding typography ambiguity in OR notation</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#calligraphic-blackboard-fraktur">Calligraphic, blackboard, fraktur</a></li><li class="post-toc__item"><a class="post-toc__link" href="#probability-expectations-and-stochastic-models">Probability, expectations, and stochastic models</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#expectation-and-probability-operators">Expectation and probability operators</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#random-variables-vs-realizations">Random variables vs realizations</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#stochastic-programming-notation-typical">Stochastic programming notation (typical)</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#robust-optimization-typography">Robust optimization typography</a></li><li class="post-toc__item"><a class="post-toc__link" href="#computational-experiments-reporting">Computational experiments reporting</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#report-what-reviewers-will-look-for">Report what reviewers will look for</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#tables-align-and-compress-without-losing-truth">Tables: align and compress without losing truth</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#when-using-performance-profiles">When using performance profiles</a></li><li class="post-toc__item"><a class="post-toc__link" href="#figures-and-tables">Figures and tables</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#figures-in-or-papers">Figures in OR papers</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#tables-in-or-papers">Tables in OR papers</a></li><li class="post-toc__item"><a class="post-toc__link" href="#cross-references-and-hyperlinks">Cross-references and hyperlinks</a></li><li class="post-toc__item"><a class="post-toc__link" href="#bibliography-and-citations">Bibliography and citations</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#style-choice-in-or">Style choice in OR</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#capitalization-in-titles">Capitalization in titles</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#citation-commands">Citation commands</a></li><li class="post-toc__item"><a class="post-toc__link" href="#english--typographic-micro-rules-for-or-writing">English + typographic micro-rules for OR writing</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#hyphenation-in-or-terms">Hyphenation in OR terms</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#dashes-hyphenen-dashem-dash">Dashes (hyphen/en dash/em dash)</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#common-or-abbreviations-and-capitalization">Common OR abbreviations and capitalization</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#ie-and-eg">“i.e.” and “e.g.”</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#optimization-language-avoid-ambiguity">Optimization language: avoid ambiguity</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#equations-are-sentences">Equations are sentences</a></li><li class="post-toc__item"><a class="post-toc__link" href="#or-specific-checklist">OR-specific checklist</a></li><li class="post-toc__item"><a class="post-toc__link" href="#appendix-starter-macrostex-for-or">Appendix: starter macros.tex for OR</a></li><li class="post-toc__item"><a class="post-toc__link" href="#practical-next-steps">Practical next steps</a></li></ol>
+    <ol><li class="post-toc__item"><a class="post-toc__link" href="#plain-or-paper-template">Plain OR paper template</a></li><li class="post-toc__item"><a class="post-toc__link" href="#packages-or-baseline-and-options">Packages: OR baseline and options</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#baseline-recommended-for-most-or-drafts">Baseline (recommended for most OR drafts)</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#or-useful-optional-packages">OR-useful optional packages</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#package-ordering-rules">Package ordering rules</a></li><li class="post-toc__item"><a class="post-toc__link" href="#notation-and-macro-policy-for-or">Notation and macro policy for OR</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#typical-or-notation-categories">Typical OR notation categories</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#macro-naming-conventions-pragmatic">Macro naming conventions (pragmatic)</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#label-namespaces">Label namespaces</a></li><li class="post-toc__item"><a class="post-toc__link" href="#optimization-model-formatting">Optimization model formatting</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#preferred-structure-subequations--align">Preferred structure: subequations + align</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#st-and-quantifiers">“s.t.” and quantifiers</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#punctuation">Punctuation</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#naming-models-lp-mip-sp">Naming models: (LP), (MIP), (SP), …</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#dual-variables-and-lagrangian-notation">Dual variables and Lagrangian notation</a></li><li class="post-toc__item"><a class="post-toc__link" href="#algorithms-and-pseudocode">Algorithms and pseudocode</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#use-structured-pseudocode-with-line-numbers">Use structured pseudocode with line numbers</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#algorithm-typography-rules">Algorithm typography rules</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#complexity-statements">Complexity statements</a></li><li class="post-toc__item"><a class="post-toc__link" href="#theorems-propositions-lemmas-and-proofs">Theorems, propositions, lemmas, and proofs</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#use-amsthm-styles-intentionally">Use amsthm styles intentionally</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#label-theorems-and-assumptions">Label theorems and assumptions</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#proof-hygiene">Proof hygiene</a></li><li class="post-toc__item"><a class="post-toc__link" href="#math-typography-and-font-styles-in-or">Math typography and font styles in OR</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#recommended-or-typography-conventions">Recommended OR typography conventions</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#implementing-bold-vectorsmatrices">Implementing bold vectors/matrices</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#avoiding-typography-ambiguity-in-or-notation">Avoiding typography ambiguity in OR notation</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#calligraphic-blackboard-fraktur">Calligraphic, blackboard, fraktur</a></li><li class="post-toc__item"><a class="post-toc__link" href="#probability-expectations-and-stochastic-models">Probability, expectations, and stochastic models</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#expectation-and-probability-operators">Expectation and probability operators</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#random-variables-vs-realizations">Random variables vs realizations</a></li><li class="post-toc__item"><a class="post-toc__link" href="#computational-experiments-reporting">Computational experiments reporting</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#report-what-reviewers-will-look-for">Report what reviewers will look for</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#tables-align-and-compress-without-losing-truth">Tables: align and compress without losing truth</a></li><li class="post-toc__item"><a class="post-toc__link" href="#figures-and-tables">Figures and tables</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#figures-in-or-papers">Figures in OR papers</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#tables-in-or-papers">Tables in OR papers</a></li><li class="post-toc__item"><a class="post-toc__link" href="#cross-references-and-hyperlinks">Cross-references and hyperlinks</a></li><li class="post-toc__item"><a class="post-toc__link" href="#bibliography-and-citations">Bibliography and citations</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#style-choice-in-or">Style choice in OR</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#capitalization-in-titles">Capitalization in titles</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#citation-commands">Citation commands</a></li><li class="post-toc__item"><a class="post-toc__link" href="#english--typographic-micro-rules-for-or-writing">English + typographic micro-rules for OR writing</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#hyphenation-in-or-terms">Hyphenation in OR terms</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#dashes-hyphenen-dashem-dash">Dashes (hyphen/en dash/em dash)</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#common-or-abbreviations-and-capitalization">Common OR abbreviations and capitalization</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#ie-and-eg">“i.e.” and “e.g.”</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#optimization-language-avoid-ambiguity">Optimization language: avoid ambiguity</a></li><li class="post-toc__item post-toc__item--sub"><a class="post-toc__link" href="#equations-are-sentences">Equations are sentences</a></li><li class="post-toc__item"><a class="post-toc__link" href="#or-specific-checklist">OR-specific checklist</a></li><li class="post-toc__item"><a class="post-toc__link" href="#appendix-starter-macrostex-for-or">Appendix: starter macros.tex for OR</a></li><li class="post-toc__item"><a class="post-toc__link" href="#practical-next-steps">Practical next steps</a></li></ol>
   </nav>
 </aside>
 <article class="panel post-card">
@@ -346,14 +364,12 @@ Describe instances, parameter settings, hardware, solver versions, and evaluatio
 <h3 id="use-amsthm-styles-intentionally">Use <code>amsthm</code> styles intentionally</h3>
 <ul><li><code>plain</code> (italic body): theorem/lemma/proposition/corollary.</li><li><code>definition</code> (upright body): definitions/assumptions.</li><li><code>remark</code> (upright body): remarks.</li></ul>
 <h3 id="label-theorems-and-assumptions">Label theorems and assumptions</h3>
-<p>✅</p>
 <pre><code class="language-latex">\begin{assumption}\label{ass:convex}
 The feasible region is nonempty and compact.
 \end{assumption}</code></pre>
-<p>Then: “Under \cref{ass:convex}, …”</p>
+<p>Then: <code>Under \cref{ass:convex}, …</code></p>
 <h3 id="proof-hygiene">Proof hygiene</h3>
 <ul><li>Use <code>\begin{proof}...\end{proof}</code>.</li><li>If you end with a displayed equation, use <code>\qedhere</code> to position the □ nicely.</li></ul>
-<p>✅</p>
 <pre><code class="language-latex">\begin{proof}
 ...
 \begin{equation}
@@ -390,7 +406,6 @@ The feasible region is nonempty and compact.
 <pre><code class="language-latex">\newcommand{\Prob}{\mathbb{P}}
 \newcommand{\E}{\mathbb{E}}</code></pre>
 <p>Conditional expectation should use <code>\mid</code> (proper spacing), not <code>|</code>:</p>
-<p>✅</p>
 <pre><code class="language-latex">\E[X \mid Y=y]
 \Prob(A \mid B)</code></pre>
 <p>If you use conditioning often, define a <code>\given</code> macro:</p>
@@ -400,14 +415,6 @@ The feasible region is nonempty and compact.
 <p>Pick one convention and state it:</p>
 <ul><li><strong>Convention A (common):</strong> random variables uppercase ($D$), realizations lowercase ($d$).</li><li><strong>Convention B:</strong> random variables decorated ($\tilde{D}$), decisions plain.</li></ul>
 <p>Avoid mixing conventions across sections.</p>
-<h3 id="stochastic-programming-notation-typical">Stochastic programming notation (typical)</h3>
-<ul><li>First-stage decision: $x$</li><li>Scenario set: $\Omega$</li><li>Scenario probability: $p_\omega$</li><li>Recourse function: $Q(x,\omega)$ or $Q(x,\xi)$</li></ul>
-<p>Example:</p>
-<pre><code class="language-latex">\min_{x\in X} \; c^\top x + \sum_{\omega\in\Omega} p_\omega Q(x,\omega).</code></pre>
-<h3 id="robust-optimization-typography">Robust optimization typography</h3>
-<ul><li>Uncertainty set: $\mathcal{U}$</li><li>Robust constraint: $\forall u\in\mathcal{U}$</li></ul>
-<p>Write robust constraints clearly:</p>
-<pre><code class="language-latex">a(u)^\top x \le b, \quad \forall u\in\mathcal{U}.</code></pre>
 <hr />
 <h2 id="computational-experiments-reporting">Computational experiments reporting</h2>
 <p>This is OR-specific and often decisive in reviews.</p>
@@ -419,10 +426,6 @@ The feasible region is nonempty and compact.
 <ul><li>mean ± std (if randomized)</li><li>median + IQR (often robust)</li><li>best-known objective, gap, time</li></ul>
 <p>Avoid “too many decimals”:</p>
 <ul><li>pick meaningful precision (e.g., time to 0.01s may be nonsense if system noise is larger).</li></ul>
-<h3 id="when-using-performance-profiles">When using performance profiles</h3>
-<p>If you include Dolan–Moré performance profiles or similar, ensure:</p>
-<ul><li>The metric and direction are explicit (lower is better? higher is better?)</li><li>Instances with timeouts are handled consistently</li></ul>
-<p>Often best to generate these plots externally and include as PDF.</p>
 <hr />
 <h2 id="figures-and-tables">Figures and tables</h2>
 <p>(Short version: same best practices as general scientific LaTeX, with OR emphasis on clarity and comparability.)</p>
@@ -575,12 +578,16 @@ The feasible region is nonempty and compact.
   </footer>
 
   <button class="back-to-top" type="button" aria-label="Back to top">Top</button>
+
   <script>
     window.MathJax = {
       tex: {
         inlineMath: [['$', '$'], ['\\(', '\\)']],
         displayMath: [['$$', '$$'], ['\\[', '\\]']],
-        processEscapes: true
+        processEscapes: true,
+        macros: {
+          bm: ['\\boldsymbol{#1}', 1]
+        }
       },
       chtml: {
         mtextInheritFont: true,
@@ -592,59 +599,14 @@ The feasible region is nonempty and compact.
     };
   </script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.11.1/build/highlight.min.js"></script>
-  <script>
-    window.addEventListener('load', function () {
-      if (!window.hljs) return;
-
-      var languageAlias = {
-        latex: 'tex',
-        plain: 'plaintext',
-        text: 'plaintext',
-        shell: 'bash',
-        sh: 'bash',
-        zsh: 'bash'
-      };
-
-      var codeBlocks = Array.from(document.querySelectorAll('pre code'));
-      codeBlocks.forEach(function (block) {
-        var languageClass = '';
-        Array.from(block.classList).forEach(function (name) {
-          if (name.indexOf('language-') === 0) languageClass = name;
-        });
-
-        var language = languageClass ? languageClass.slice(9).toLowerCase() : '';
-        if (language === 'latex' || language === 'tex') {
-          if (languageClass) block.classList.remove(languageClass);
-          block.classList.add('language-plaintext');
-          return;
-        }
-
-        var mappedLanguage = languageAlias[language] || language;
-
-        if (mappedLanguage && window.hljs.getLanguage(mappedLanguage)) {
-          if (languageClass && mappedLanguage !== language) {
-            block.classList.remove(languageClass);
-            block.classList.add('language-' + mappedLanguage);
-          }
-          window.hljs.highlightElement(block);
-          return;
-        }
-
-        var source = block.textContent || '';
-        var auto = window.hljs.highlightAuto(source);
-        block.innerHTML = auto.value;
-        block.classList.add('hljs');
-        if (auto.language) {
-          block.classList.add('language-' + auto.language);
-        }
-      });
-    });
-  </script>
+  <script src="../js/core/utils.js" defer></script>
+  <script src="../js/core/theme.js" defer></script>
+  <script src="../js/core/nav.js" defer></script>
+  <script src="../js/core/analytics.js" defer></script>
+  <script src="../js/core/back_to_top.js" defer></script>
+  <script src="../js/pages/research.js" defer></script>
+  <script src="../js/pages/blog.js" defer></script>
   <script src="../js/site.js" defer></script>
-  <script>
-    const yearNode = document.getElementById("year");
-    if (yearNode) yearNode.textContent = String(new Date().getFullYear());
-  </script>
+
 </body>
 </html>
