@@ -184,6 +184,26 @@ def markdown_to_html(markdown: str) -> tuple[str, list[dict[str, object]]]:
 
         return None
 
+    def render_list_item(raw_item: str) -> tuple[str, bool]:
+        task_match = re.match(r"^\[( |x|X)\]\s+(.*)$", raw_item)
+        if not task_match:
+            return f"<li>{inline_markdown_to_html(raw_item)}</li>", False
+
+        checked = task_match.group(1).lower() == "x"
+        checked_attr = " checked" if checked else ""
+        item_content = inline_markdown_to_html(task_match.group(2).strip())
+        return (
+            (
+                '<li class="task-list-item">'
+                '<label class="task-list-label">'
+                f'<input class="task-list-checkbox" type="checkbox"{checked_attr} />'
+                f"<span>{item_content}</span>"
+                "</label>"
+                "</li>"
+            ),
+            True,
+        )
+
     def collect_paragraph(start: int) -> tuple[str, int]:
         paragraph_lines = []
         j = start
@@ -293,8 +313,15 @@ def markdown_to_html(markdown: str) -> tuple[str, list[dict[str, object]]]:
             while i < len(lines) and re.match(r"^[-*]\s+", lines[i]):
                 items.append(re.sub(r"^[-*]\s+", "", lines[i]).strip())
                 i += 1
-            li = "".join(f"<li>{inline_markdown_to_html(item)}</li>" for item in items)
-            blocks.append(f"<ul>{li}</ul>")
+            rendered_items = []
+            has_task_items = False
+            for item in items:
+                item_markup, is_task = render_list_item(item)
+                rendered_items.append(item_markup)
+                has_task_items = has_task_items or is_task
+            class_attr = ' class="task-list"' if has_task_items else ""
+            li = "".join(rendered_items)
+            blocks.append(f"<ul{class_attr}>{li}</ul>")
             continue
 
         if re.match(r"^\d+\.\s+", line):
@@ -340,9 +367,19 @@ def markdown_to_html(markdown: str) -> tuple[str, list[dict[str, object]]]:
 
                 items.append(item_text)
 
-            li = "".join(f"<li>{inline_markdown_to_html(item)}</li>" for item in items)
-            start_attr = f' start="{list_start}"' if list_start != 1 else ""
-            blocks.append(f"<ol{start_attr}>{li}</ol>")
+            rendered_items = []
+            has_task_items = False
+            for item in items:
+                item_markup, is_task = render_list_item(item)
+                rendered_items.append(item_markup)
+                has_task_items = has_task_items or is_task
+            attrs = ""
+            if list_start != 1:
+                attrs += f' start="{list_start}"'
+            if has_task_items:
+                attrs += ' class="task-list"'
+            li = "".join(rendered_items)
+            blocks.append(f"<ol{attrs}>{li}</ol>")
             continue
 
         if re.match(r"^>\s?", line):

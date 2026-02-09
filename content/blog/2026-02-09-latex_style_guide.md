@@ -240,14 +240,14 @@ A common, readable split:
 
 **Do not** redefine core symbols (`\le`, `\epsilon`, etc.) unless a strong reason exists.
 
-### Label namespaces (OR-friendly)
+### Label namespaces
 
-Choose label prefixes that match OR structure:
+Suggested label prefixes:
 
 - `sec:...` — section
 - `prob:...` — models/problems
 - `eq:...` — single equations
-- `con:...` — constraints (if you label constraints individually)
+- `fig:...` — figures
 - `alg:...` — algorithms
 - `thm:...`, `lem:...`, `prop:...`, `ass:...`
 
