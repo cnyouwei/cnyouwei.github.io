@@ -133,9 +133,33 @@ def inline_markdown_to_html(raw: str) -> str:
     return text
 
 
-def markdown_to_html(markdown: str) -> str:
+def strip_markdown(raw: str, *, collapse_spaces: bool = True) -> str:
+    text = html.unescape(raw)
+    text = re.sub(r"`([^`]+)`", r"\1", text)
+    text = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", r"\1", text)
+    text = re.sub(r"\*\*([^*]+)\*\*", r"\1", text)
+    text = re.sub(r"\*([^*]+)\*", r"\1", text)
+    text = text.replace("\\", "")
+    text = re.sub(r"<[^>]+>", "", text)
+    if collapse_spaces:
+        text = re.sub(r"\s+", " ", text)
+    return text.strip()
+
+
+def slugify_heading(raw_title: str) -> str:
+    cleaned = strip_markdown(raw_title, collapse_spaces=False).lower()
+    cleaned = cleaned.replace("_", "-")
+    cleaned = re.sub(r"[^\w\s-]", "", cleaned)
+    cleaned = re.sub(r"\s", "-", cleaned)
+    cleaned = cleaned.strip("-")
+    return cleaned or "section"
+
+
+def markdown_to_html(markdown: str) -> tuple[str, list[dict[str, object]]]:
     lines = markdown.replace("\r\n", "\n").split("\n")
     blocks: list[str] = []
+    toc_entries: list[dict[str, object]] = []
+    heading_ids: dict[str, int] = {}
     i = 0
 
     def is_horizontal_rule(line: str) -> bool:
@@ -200,8 +224,20 @@ def markdown_to_html(markdown: str) -> str:
         heading_match = re.match(r"^(#{1,6})\s+(.*)$", line)
         if heading_match:
             level = len(heading_match.group(1))
-            title = inline_markdown_to_html(heading_match.group(2).strip())
-            blocks.append(f"<h{level}>{title}</h{level}>")
+            raw_title = heading_match.group(2).strip()
+            heading_text = strip_markdown(raw_title)
+            title = inline_markdown_to_html(raw_title)
+            base_id = slugify_heading(raw_title)
+            count = heading_ids.get(base_id, 0)
+            heading_ids[base_id] = count + 1
+            heading_id = base_id if count == 0 else f"{base_id}-{count}"
+            blocks.append(f'<h{level} id="{escape_html(heading_id)}">{title}</h{level}>')
+            if (
+                heading_text
+                and level in (2, 3)
+                and heading_text.strip().lower() != "table of contents"
+            ):
+                toc_entries.append({"id": heading_id, "title": heading_text, "level": level})
             i += 1
             continue
 
@@ -323,7 +359,7 @@ def markdown_to_html(markdown: str) -> str:
             blocks.append(f"<p>{inline_markdown_to_html(paragraph)}</p>")
         i = next_index
 
-    return "\n".join(blocks)
+    return "\n".join(blocks), toc_entries
 
 
 def normalize_date(raw_value: str, fallback: str | None) -> str:
@@ -461,6 +497,44 @@ def build_blog_dropdown_items(
     return items
 
 
+def render_post_toc(toc_entries: list[dict[str, object]]) -> str:
+    if not toc_entries:
+        return ""
+
+    items: list[str] = []
+    for entry in toc_entries:
+        heading_id = str(entry.get("id", "")).strip()
+        title = str(entry.get("title", "")).strip()
+        level = int(entry.get("level", 2))
+        if not heading_id or not title:
+            continue
+        item_class = "post-toc__item"
+        if level >= 3:
+            item_class += " post-toc__item--sub"
+        items.append(
+            (
+                f'<li class="{item_class}">'
+                f'<a class="post-toc__link" href="#{escape_html(heading_id)}">'
+                f"{escape_html(title)}</a></li>"
+            )
+        )
+
+    if not items:
+        return ""
+
+    items_markup = "".join(items)
+    return "\n".join(
+        [
+            '<aside class="panel post-toc" aria-label="Table of contents">',
+            '  <p class="post-toc__title">On this page</p>',
+            '  <nav class="post-toc__nav">',
+            f"    <ol>{items_markup}</ol>",
+            "  </nav>",
+            "</aside>",
+        ]
+    )
+
+
 def update_index_nav_dropdowns(
     posts: list[dict[str, object]],
     courses: list[dict[str, object]],
@@ -500,6 +574,9 @@ def post_page_template(
 ) -> str:
     tags_markup = "".join(
         f'<span class="blog-tag">{escape_html(tag)}</span>' for tag in post["tags"]
+    )
+    toc_markup = render_post_toc(
+        [entry for entry in post.get("toc", []) if isinstance(entry, dict)]
     )
     mermaid_stylesheet = ""
     mermaid_script = ""
@@ -742,6 +819,26 @@ def post_page_template(
         active=True,
         active_href=f"./{str(post['slug']).strip()}.html",
     )
+    post_article_markup = "\n".join(
+        [
+            '<article class="panel post-card">',
+            '  <div class="post-body">',
+            body_html,
+            "  </div>",
+            "</article>",
+        ]
+    )
+    if toc_markup:
+        post_content_markup = "\n".join(
+            [
+                '<div class="post-layout">',
+                toc_markup,
+                post_article_markup,
+                "</div>",
+            ]
+        )
+    else:
+        post_content_markup = post_article_markup
 
     return f"""<!DOCTYPE html>
 <html lang=\"en\" data-ga-id=\"{escape_html(ga_id)}\">
@@ -803,11 +900,7 @@ def post_page_template(
       </header>
 
       <section class=\"module-section reveal-up delay-1\">
-        <article class=\"panel post-card\">
-          <div class=\"post-body\">
-{body_html}
-          </div>
-        </article>
+{post_content_markup}
       </section>
 
       <div class=\"hero-links reveal-up delay-2\">
@@ -1023,7 +1116,7 @@ def read_source_posts() -> list[dict[str, object]]:
         date = normalize_date(meta.get("date", "").strip(), date_from_name)
         summary = get_summary(meta.get("summary", "").strip(), body)
         tags = parse_tags(meta.get("tags", ""))
-        html_body = markdown_to_html(body)
+        html_body, toc_entries = markdown_to_html(body)
 
         posts.append(
             {
@@ -1033,6 +1126,7 @@ def read_source_posts() -> list[dict[str, object]]:
                 "summary": summary,
                 "tags": tags,
                 "html": html_body,
+                "toc": toc_entries,
             }
         )
 

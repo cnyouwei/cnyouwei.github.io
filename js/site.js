@@ -494,6 +494,77 @@
     });
   }
 
+  // Blog post table-of-contents scrollspy.
+  const tocLinks = Array.from(document.querySelectorAll('.post-toc__link[href^="#"]'));
+  const tocTargets = tocLinks
+    .map(function (link) {
+      const href = link.getAttribute('href');
+      if (!href || href.charAt(0) !== '#') return null;
+      const id = href.slice(1);
+      if (!id) return null;
+      return document.getElementById(id);
+    })
+    .filter(Boolean);
+
+  if (tocLinks.length > 0 && tocTargets.length > 0) {
+    function setActiveTocLink(hash) {
+      tocLinks.forEach(function (link) {
+        const isActive = link.getAttribute('href') === hash;
+        link.classList.toggle('is-active', isActive);
+        if (isActive) {
+          link.setAttribute('aria-current', 'true');
+        } else {
+          link.removeAttribute('aria-current');
+        }
+      });
+    }
+
+    function getBestVisibleHeadingId() {
+      const marker = 120;
+      let candidate = null;
+
+      tocTargets.forEach(function (target) {
+        const rect = target.getBoundingClientRect();
+        if (rect.top <= marker) {
+          candidate = target;
+        }
+      });
+
+      if (!candidate) candidate = tocTargets[0];
+      return candidate && candidate.id ? '#' + candidate.id : '';
+    }
+
+    const tocObserver = new IntersectionObserver(
+      function () {
+        const hash = getBestVisibleHeadingId();
+        if (hash) setActiveTocLink(hash);
+      },
+      {
+        rootMargin: '-15% 0px -70% 0px',
+        threshold: [0, 1],
+      }
+    );
+
+    tocTargets.forEach(function (target) {
+      tocObserver.observe(target);
+    });
+
+    tocLinks.forEach(function (link) {
+      link.addEventListener('click', function () {
+        const hash = link.getAttribute('href') || '';
+        if (hash) setActiveTocLink(hash);
+      });
+    });
+
+    const initialHash = window.location.hash;
+    if (initialHash && tocLinks.some(function (link) { return link.getAttribute('href') === initialHash; })) {
+      setActiveTocLink(initialHash);
+    } else {
+      const fallbackHash = getBestVisibleHeadingId();
+      if (fallbackHash) setActiveTocLink(fallbackHash);
+    }
+  }
+
   // Paper filter and search.
   const filterButtons = Array.from(document.querySelectorAll('.filter-btn'));
   const orderButtons = Array.from(document.querySelectorAll('.order-btn'));

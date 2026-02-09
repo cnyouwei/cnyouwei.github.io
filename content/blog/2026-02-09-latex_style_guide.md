@@ -17,29 +17,6 @@ This is a LaTeX style guide tailored to Operations Research papers. It includes:
 
 ---
 
-## Table of contents
-
-1. [OR-specific principles](#or-specific-principles)
-2. [Project layout](#project-layout)
-3. [Plain OR paper template](#plain-or-paper-template)
-4. [Packages: OR baseline and options](#packages-or-baseline-and-options)
-5. [Notation and macro policy for OR](#notation-and-macro-policy-for-or)
-6. [Optimization model formatting](#optimization-model-formatting)
-7. [Algorithms and pseudocode](#algorithms-and-pseudocode)
-8. [Theorems, propositions, lemmas, and proofs](#theorems-propositions-lemmas-and-proofs)
-9. [Math typography and font styles in OR](#math-typography-and-font-styles-in-or)
-10. [Probability, expectations, and stochastic models](#probability-expectations-and-stochastic-models)
-11. [Computational experiments reporting](#computational-experiments-reporting)
-12. [Figures and tables](#figures-and-tables)
-13. [Cross-references and hyperlinks](#cross-references-and-hyperlinks)
-14. [Bibliography and citations](#bibliography-and-citations)
-15. [English + typographic micro-rules for OR writing](#english--typographic-micro-rules-for-or-writing)
-16. [Build and reproducibility](#build-and-reproducibility)
-17. [OR-specific checklist](#or-specific-checklist)
-18. [Appendix: starter `macros.tex` for OR](#appendix-starter-macrostex-for-or)
-
----
-
 ## Plain OR paper template
 
 Paste into `main.tex`. It is a clean base for OR drafts, with OR-friendly theorem + algorithm support.
