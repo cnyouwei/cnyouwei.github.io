@@ -1040,7 +1040,7 @@ img {
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 }
 
@@ -1080,6 +1080,7 @@ img {
   grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
   gap: 0.9rem;
   align-items: start;
+  min-width: 0;
 }
 
 .post-toc {
@@ -1090,12 +1091,55 @@ img {
   padding: 0.8rem;
 }
 
+.post-toc__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
 .post-toc__title {
   margin: 0;
   font: 700 0.82rem/1.2 var(--font-sans);
   letter-spacing: 0.07em;
   text-transform: uppercase;
   color: var(--text-muted);
+}
+
+.post-toc__toggle {
+  display: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--primary-soft) 48%, transparent);
+  color: var(--text);
+  font: 700 0.72rem/1 var(--font-sans);
+  letter-spacing: 0.02em;
+  padding: 0.28rem 0.58rem;
+  cursor: pointer;
+}
+
+.post-toc__toggle:hover {
+  background: color-mix(in srgb, var(--primary-soft) 70%, transparent);
+}
+
+.post-toc__toggle:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+}
+
+.post-toc__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: color-mix(in srgb, var(--code-bg) 34%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.post-toc__backdrop.is-visible {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .post-toc__nav {
@@ -1146,10 +1190,12 @@ img {
 
 .post-card {
   padding: 1.1rem;
+  min-width: 0;
 }
 
 .post-body {
   color: var(--text);
+  min-width: 0;
 }
 
 .post-body h2,
@@ -1206,7 +1252,10 @@ img {
 
 .post-body pre {
   position: relative;
+  max-width: 100%;
+  box-sizing: border-box;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border-radius: 10px;
   background: var(--code-bg);
   color: var(--code-text);
@@ -1283,6 +1332,9 @@ img {
 }
 
 .post-body pre code {
+  display: block;
+  width: max-content;
+  min-width: 100%;
   background: none;
   padding: 0;
 }
@@ -1417,6 +1469,91 @@ img {
     position: static;
     max-height: none;
     order: -1;
+  }
+
+  body.is-toc-open {
+    overflow: hidden;
+  }
+
+  .post-toc.is-collapsible {
+    position: static;
+    order: 0;
+    max-height: none;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  .post-toc.is-collapsible .post-toc__title {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+  }
+
+  .post-toc.is-collapsible .post-toc__head {
+    display: block;
+  }
+
+  .post-toc__toggle.is-floating {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    left: max(0.8rem, env(safe-area-inset-left));
+    bottom: calc(0.9rem + env(safe-area-inset-bottom));
+    z-index: 72;
+    min-height: 40px;
+    padding: 0.42rem 0.74rem;
+    border-color: color-mix(in srgb, var(--line-strong) 80%, transparent);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+
+  .post-toc__toggle.is-floating.is-open {
+    color: #f8fafc;
+    background: var(--primary);
+    border-color: color-mix(in srgb, var(--primary) 84%, black);
+  }
+
+  .post-toc__nav.is-floating {
+    position: fixed;
+    left: max(0.72rem, env(safe-area-inset-left));
+    right: max(0.72rem, env(safe-area-inset-right));
+    bottom: calc(3.9rem + env(safe-area-inset-bottom));
+    z-index: 72;
+    max-height: min(68vh, 560px);
+    margin: 0;
+    padding: 0.7rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    overflow: hidden;
+  }
+
+  .post-toc__nav.is-floating ol {
+    max-height: calc(min(68vh, 560px) - 1.4rem);
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-right: 0.16rem;
+  }
+
+  .post-toc__nav.is-floating.is-open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
   }
 }
 
@@ -1564,5 +1701,21 @@ img {
     bottom: calc(0.76rem + env(safe-area-inset-bottom));
     min-width: 56px;
     padding: 0.4rem 0.65rem;
+  }
+
+  .post-card {
+    padding: 0.9rem;
+  }
+
+  .post-body pre {
+    padding: 0.72rem 0.58rem;
+    font-size: 0.9rem;
+  }
+
+  .post-body .code-copy-btn {
+    top: 0.42rem;
+    right: 0.42rem;
+    font-size: 0.66rem;
+    padding: 0.18rem 0.5rem;
   }
 }

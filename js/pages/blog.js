@@ -152,6 +152,136 @@
     }
   }
 
+  function initPostTocMobileToggle() {
+    var toc = SiteUtils.qs('.post-toc');
+    if (!(toc instanceof HTMLElement)) return;
+
+    var title = toc.querySelector('.post-toc__title');
+    var nav = toc.querySelector('.post-toc__nav');
+    if (!(title instanceof HTMLElement) || !(nav instanceof HTMLElement)) return;
+
+    var head = toc.querySelector('.post-toc__head');
+    if (!(head instanceof HTMLElement)) {
+      head = document.createElement('div');
+      head.className = 'post-toc__head';
+      toc.insertBefore(head, title);
+      head.appendChild(title);
+    } else if (title.parentElement !== head) {
+      head.insertBefore(title, head.firstChild);
+    }
+
+    var toggle = toc.querySelector('.post-toc__toggle');
+    if (!(toggle instanceof HTMLButtonElement)) {
+      toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'post-toc__toggle';
+      toggle.setAttribute('aria-label', 'Toggle table of contents');
+      head.appendChild(toggle);
+    } else if (toggle.parentElement !== head) {
+      head.appendChild(toggle);
+    }
+
+    if (!nav.id) nav.id = 'post-toc-nav';
+    toggle.setAttribute('aria-controls', nav.id);
+
+    var mobileQuery =
+      typeof window.matchMedia === 'function' ? window.matchMedia('(max-width: 1024px)') : null;
+
+    var backdrop = SiteUtils.qs('.post-toc__backdrop');
+    if (!(backdrop instanceof HTMLElement)) {
+      backdrop = document.createElement('div');
+      backdrop.className = 'post-toc__backdrop';
+      document.body.appendChild(backdrop);
+    }
+
+    function mountFloatingControls() {
+      if (!toggle.classList.contains('is-floating')) toggle.classList.add('is-floating');
+      if (!nav.classList.contains('is-floating')) nav.classList.add('is-floating');
+      if (toggle.parentElement !== document.body) document.body.appendChild(toggle);
+      if (nav.parentElement !== document.body) document.body.appendChild(nav);
+    }
+
+    function restoreInlineControls() {
+      toggle.classList.remove('is-floating');
+      nav.classList.remove('is-floating');
+
+      if (toggle.parentElement !== head) {
+        head.appendChild(toggle);
+      }
+
+      if (nav.parentElement !== toc || nav.previousElementSibling !== head) {
+        if (head.nextSibling) {
+          toc.insertBefore(nav, head.nextSibling);
+        } else {
+          toc.appendChild(nav);
+        }
+      }
+    }
+
+    function isMobileViewport() {
+      return !!mobileQuery && mobileQuery.matches;
+    }
+
+    function setOpen(isOpen) {
+      var open = !!isOpen;
+      var mobileActive = isMobileViewport();
+      toc.classList.toggle('is-open', open);
+      toggle.classList.toggle('is-open', open);
+      nav.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      toggle.textContent = open ? 'Close' : 'Contents';
+      backdrop.classList.toggle('is-visible', open && mobileActive);
+      document.body.classList.toggle('is-toc-open', open && mobileActive);
+    }
+
+    function setViewportState(closeOnMobile) {
+      if (isMobileViewport()) {
+        mountFloatingControls();
+        toc.classList.add('is-collapsible');
+        setOpen(!closeOnMobile && toc.classList.contains('is-open'));
+        return;
+      }
+
+      restoreInlineControls();
+      toc.classList.remove('is-collapsible');
+      setOpen(true);
+    }
+
+    SiteUtils.on(toggle, 'click', function () {
+      setOpen(!toc.classList.contains('is-open'));
+    });
+
+    SiteUtils.on(backdrop, 'click', function () {
+      if (isMobileViewport()) setOpen(false);
+    });
+
+    SiteUtils.on(document, 'keydown', function (event) {
+      if (event.key === 'Escape' && toc.classList.contains('is-open') && isMobileViewport()) {
+        setOpen(false);
+      }
+    });
+
+    SiteUtils.qsa('.post-toc__link[href^="#"]', toc).forEach(function (link) {
+      SiteUtils.on(link, 'click', function () {
+        if (isMobileViewport()) setOpen(false);
+      });
+    });
+
+    setViewportState(true);
+
+    if (mobileQuery) {
+      if (typeof mobileQuery.addEventListener === 'function') {
+        mobileQuery.addEventListener('change', function () {
+          setViewportState(true);
+        });
+      } else if (typeof mobileQuery.addListener === 'function') {
+        mobileQuery.addListener(function () {
+          setViewportState(true);
+        });
+      }
+    }
+  }
+
   function initRecentPosts() {
     var recentPostsRoot = document.getElementById('recentPosts');
     if (!recentPostsRoot) return;
@@ -440,6 +570,7 @@
 
   SiteApp.initBlog = function initBlog() {
     initCodeCopyButtons();
+    initPostTocMobileToggle();
     initPostTocScrollSpy();
     initRecentPosts();
     initHighlighting();
