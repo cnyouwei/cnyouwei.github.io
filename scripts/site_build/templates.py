@@ -6,11 +6,19 @@ def font_stylesheet_href(*, include_cn: bool = False) -> str:
         return (
             "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700"
             "&amp;family=Space+Grotesk:wght@400;500;600;700"
+            "&amp;family=Rajdhani:wght@500;600;700"
+            "&amp;family=Orbitron:wght@500;600;700"
+            "&amp;family=Source+Sans+3:wght@400;500;600;700"
+            "&amp;family=Merriweather:wght@400;700"
             "&amp;family=Noto+Sans+SC:wght@400;500;700&amp;display=swap"
         )
     return (
         "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700"
-        "&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap"
+        "&amp;family=Space+Grotesk:wght@400;500;600;700"
+        "&amp;family=Rajdhani:wght@500;600;700"
+        "&amp;family=Orbitron:wght@500;600;700"
+        "&amp;family=Source+Sans+3:wght@400;500;600;700"
+        "&amp;family=Merriweather:wght@400;700&amp;display=swap"
     )
 
 
@@ -20,7 +28,10 @@ def theme_bootstrap_script() -> str:
       try {
         var storedTheme = localStorage.getItem('wy-theme');
         var themeSource = localStorage.getItem('wy-theme-source');
-        if (themeSource === 'manual' && (storedTheme === 'light' || storedTheme === 'dark')) {
+        if (
+          themeSource === 'manual' &&
+          (storedTheme === 'cyberpunk' || storedTheme === 'solarized')
+        ) {
           document.documentElement.setAttribute('data-theme', storedTheme);
         }
       } catch (error) {}

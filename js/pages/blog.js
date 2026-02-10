@@ -1,6 +1,80 @@
 (function (window) {
   var SiteApp = window.SiteApp || {};
   var SiteUtils = window.SiteUtils;
+  var FALLBACK_THEME_META = {
+    light: {
+      highlightVariant: 'light',
+      mermaidVariant: 'default',
+    },
+    dark: {
+      highlightVariant: 'dark',
+      mermaidVariant: 'dark',
+    },
+    cyberpunk: {
+      highlightVariant: 'dark',
+      mermaidVariant: 'dark',
+    },
+    solarized: {
+      highlightVariant: 'light',
+      mermaidVariant: 'default',
+    },
+  };
+
+  function getSiteThemeApi() {
+    if (!window.SiteTheme || typeof window.SiteTheme !== 'object') return null;
+    return window.SiteTheme;
+  }
+
+  function resolveFallbackTheme() {
+    var explicitTheme = document.documentElement.getAttribute('data-theme');
+    if (Object.prototype.hasOwnProperty.call(FALLBACK_THEME_META, explicitTheme)) {
+      return explicitTheme;
+    }
+    if (
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches
+    ) {
+      return 'dark';
+    }
+    return 'light';
+  }
+
+  function resolveTheme() {
+    var siteTheme = getSiteThemeApi();
+    if (siteTheme && typeof siteTheme.resolveActiveTheme === 'function') {
+      return siteTheme.resolveActiveTheme();
+    }
+    return resolveFallbackTheme();
+  }
+
+  function resolveThemeFromEvent(event) {
+    var detailTheme = event && event.detail ? event.detail.theme : '';
+    var siteTheme = getSiteThemeApi();
+    if (
+      siteTheme &&
+      typeof siteTheme.isValidTheme === 'function' &&
+      siteTheme.isValidTheme(detailTheme)
+    ) {
+      return detailTheme;
+    }
+    if (Object.prototype.hasOwnProperty.call(FALLBACK_THEME_META, detailTheme)) {
+      return detailTheme;
+    }
+    return resolveTheme();
+  }
+
+  function resolveThemeMeta(theme) {
+    var siteTheme = getSiteThemeApi();
+    if (siteTheme && typeof siteTheme.getThemeMeta === 'function') {
+      var themeMeta = siteTheme.getThemeMeta(theme);
+      if (themeMeta) return themeMeta;
+    }
+    var resolvedTheme = theme;
+    if (!Object.prototype.hasOwnProperty.call(FALLBACK_THEME_META, resolvedTheme)) {
+      resolvedTheme = resolveTheme();
+    }
+    return FALLBACK_THEME_META[resolvedTheme] || FALLBACK_THEME_META.light;
+  }
 
   function copyTextToClipboard(text) {
     if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
@@ -495,20 +569,9 @@
       dark: 'https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.11.1/build/styles/atom-one-dark.min.css',
     };
 
-    function readActiveTheme() {
-      var explicitTheme = document.documentElement.getAttribute('data-theme');
-      if (explicitTheme === 'light' || explicitTheme === 'dark') return explicitTheme;
-      if (
-        typeof window.matchMedia === 'function' &&
-        window.matchMedia('(prefers-color-scheme: dark)').matches
-      ) {
-        return 'dark';
-      }
-      return 'light';
-    }
-
     function applyHighlightTheme(theme) {
-      var resolvedTheme = theme === 'dark' ? 'dark' : 'light';
+      var themeMeta = resolveThemeMeta(theme);
+      var resolvedTheme = themeMeta.highlightVariant === 'dark' ? 'dark' : 'light';
       var nextHref = hljsThemeHref[resolvedTheme];
       var link = SiteUtils.qs('link[data-hljs-theme="true"]');
       if (!(link instanceof HTMLLinkElement)) {
@@ -522,7 +585,7 @@
       }
     }
 
-    applyHighlightTheme(readActiveTheme());
+    applyHighlightTheme(resolveTheme());
 
     return SiteUtils.loadScript(
       'https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.11.1/build/highlight.min.js'
@@ -571,10 +634,7 @@
         });
 
         SiteUtils.on(window, 'themechange', function (event) {
-          var detailTheme = event && event.detail ? event.detail.theme : '';
-          var nextTheme =
-            detailTheme === 'light' || detailTheme === 'dark' ? detailTheme : readActiveTheme();
-          applyHighlightTheme(nextTheme);
+          applyHighlightTheme(resolveThemeFromEvent(event));
         });
       })
       .catch(function () {
@@ -616,26 +676,21 @@
           '--mermaid-littlewood-text': '#7c2d12',
         };
 
-        function readActiveTheme() {
-          var explicitTheme = document.documentElement.getAttribute('data-theme');
-          if (explicitTheme === 'light' || explicitTheme === 'dark') return explicitTheme;
-          if (
-            typeof window.matchMedia === 'function' &&
-            window.matchMedia('(prefers-color-scheme: dark)').matches
-          ) {
-            return 'dark';
-          }
-          return 'light';
-        }
-
         function getMermaidTheme(theme) {
-          return theme === 'dark' ? 'dark' : 'default';
+          var themeMeta = resolveThemeMeta(theme);
+          return themeMeta.mermaidVariant === 'dark' ? 'dark' : 'default';
         }
 
         function readMermaidColor(token) {
           var rootStyle = window.getComputedStyle(document.documentElement);
           var value = rootStyle.getPropertyValue(token).trim();
           return value || MERMAID_COLOR_FALLBACKS[token] || '#000000';
+        }
+
+        function readThemeFontFamily() {
+          var rootStyle = window.getComputedStyle(document.documentElement);
+          var value = rootStyle.getPropertyValue('--font-sans').trim();
+          return value || '"Space Grotesk", "Avenir Next", "Segoe UI", sans-serif';
         }
 
         function resolveMermaidCssVars(sourceText) {
@@ -658,10 +713,16 @@
             node.textContent = resolvedSource;
           });
 
+          var mermaidFontFamily = readThemeFontFamily();
+
           window.mermaid.initialize({
             startOnLoad: false,
             securityLevel: 'loose',
             theme: getMermaidTheme(theme),
+            fontFamily: mermaidFontFamily,
+            themeVariables: {
+              fontFamily: mermaidFontFamily,
+            },
             flowchart: { htmlLabels: true },
           });
 
@@ -677,13 +738,10 @@
           return renderQueue;
         }
 
-        queueRender(readActiveTheme());
+        queueRender(resolveTheme());
 
         SiteUtils.on(window, 'themechange', function (event) {
-          var detailTheme = event && event.detail ? event.detail.theme : '';
-          var nextTheme =
-            detailTheme === 'light' || detailTheme === 'dark' ? detailTheme : readActiveTheme();
-          queueRender(nextTheme);
+          queueRender(resolveThemeFromEvent(event));
         });
       })
       .catch(function () {
