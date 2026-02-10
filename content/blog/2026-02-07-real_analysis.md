@@ -1,6 +1,7 @@
 ---
 title: A Real Analysis Note
 date: 2026-02-07
+eyebrow: Teaching
 summary: A real analysis note I wrote in Chinese in 2011, now refreshed with a complete English translation produced with ChatGPT.
 tags: [math, notes, real analysis]
 ---

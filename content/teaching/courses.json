@@ -5,6 +5,7 @@
       "code": "IEDA3250",
       "title": "Stochastic Models",
       "period": "2026–present",
+      "institution": "HKUST, Department of Industrial Engineering and Decision Analytics",
       "summary": "Stochastic-process modeling methods for engineering systems.",
       "published": false
     },
@@ -13,6 +14,7 @@
       "code": "IEDA5270",
       "title": "Engineering Statistics",
       "period": "2019–present",
+      "institution": "HKUST, Department of Industrial Engineering and Decision Analytics",
       "summary": "Graduate-level statistical methodology for data-driven engineering.",
       "published": false
     },
@@ -21,6 +23,7 @@
       "code": "IEDA2540",
       "title": "Statistics for Engineers",
       "period": "2020–2025",
+      "institution": "HKUST, Department of Industrial Engineering and Decision Analytics",
       "summary": "Core statistics for engineers: uncertainty modeling, estimation, inference, and regression.",
       "published": true,
       "overview": "This course introduces statistical thinking for engineering systems: data description, probabilistic modeling, statistical estimation, uncertainty quantification, and evidence-based decisions.",
@@ -111,6 +114,7 @@
       "code": "EEMT5500",
       "title": "Applied Probability, Statistics and Data Analytics",
       "period": "2022",
+      "institution": "HKUST, Engineering Enterprise Management Program",
       "summary": "Applied probability and statistical methods for engineering management contexts.",
       "published": false
     },
@@ -119,6 +123,7 @@
       "code": "NJU",
       "title": "Real Analysis Notes",
       "period": "2011",
+      "institution": "Nanjing University, School of Mathematics",
       "summary": "Real analysis notes written at Nanjing University, with an English translation and a companion blog post.",
       "published": true,
       "overview": "A set of real analysis notes originally written in Chinese at Nanjing University in 2011 and later translated into English, with context and commentary in a companion blog post.",

@@ -1616,6 +1616,12 @@ img {
   text-transform: uppercase;
 }
 
+.course-institution {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.86rem;
+}
+
 .course-status.is-live {
   color: var(--primary);
 }

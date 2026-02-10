@@ -113,12 +113,15 @@ python3 scripts/build_site.py
 ---
 title: My New Note
 date: 2026-02-10
+eyebrow: Research Notes
 summary: One-sentence summary shown on the blog index and homepage.
 tags: [queueing, teaching]
 ---
 
 Write your post in markdown here.
 ```
+
+`eyebrow` is optional; if omitted, blog post pages use `Research Notes`.
 
 3. Build site pages:
 
@@ -135,7 +138,7 @@ python3 scripts/build_site.py
    - `published: true` to generate a course page at `teaching/<slug>.html`
    - `published: false` to show it as "Coming Soon" in the teaching directory
 3. For published courses, you can define:
-   - `overview`, `audience`, `prerequisites`, `outcomes`
+   - `institution`, `overview`, `audience`, `prerequisites`, `outcomes`
    - `modules` with `code`, `title`, `description`, `link_label`, and `link_url`
 4. Rebuild:
 

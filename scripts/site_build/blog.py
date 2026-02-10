@@ -147,6 +147,7 @@ def post_page_template(
     main_html = render_template(
         "pages/blog_post.html.j2",
         {
+            "post_eyebrow": escape_html(str(post.get("eyebrow", "Research Notes"))),
             "post_title": escape_html(str(post["title"])),
             "post_date_iso": escape_html(str(post["date"])),
             "post_date_label": format_date(str(post["date"])),
@@ -297,6 +298,7 @@ def read_source_posts() -> list[dict[str, object]]:
         date = normalize_date(meta.get("date", "").strip(), date_from_name)
         summary = get_summary(meta.get("summary", "").strip(), body)
         tags = parse_tags(meta.get("tags", ""))
+        eyebrow = meta.get("eyebrow", "").strip() or "Research Notes"
         html_body, toc_entries = markdown_to_html(body)
 
         posts.append(
@@ -306,6 +308,7 @@ def read_source_posts() -> list[dict[str, object]]:
                 "date": date,
                 "summary": summary,
                 "tags": tags,
+                "eyebrow": eyebrow,
                 "html": html_body,
                 "toc": toc_entries,
             }

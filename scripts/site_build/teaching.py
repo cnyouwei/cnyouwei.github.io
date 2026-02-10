@@ -62,6 +62,10 @@ def validate_course(course: dict[str, object]) -> None:
     if modules is not None and not isinstance(modules, list):
         raise ValueError(f"`modules` must be a list in course {slug}")
 
+    institution = course.get("institution", "")
+    if institution is not None and not isinstance(institution, str):
+        raise ValueError(f"`institution` must be a string in course {slug}")
+
     for module in modules:
         if not isinstance(module, dict):
             raise ValueError(f"Each module must be an object in course {slug}")
@@ -133,6 +137,7 @@ def teaching_index_template(
         code = escape_html(str(course["code"]))
         title = escape_html(str(course["title"]))
         period = escape_html(str(course["period"]))
+        institution = escape_html(str(course.get("institution", "")).strip() or "Institution TBD")
         summary = escape_html(str(course.get("summary", "")).strip() or "Course page in preparation.")
         slug = escape_html(str(course["slug"]))
         published = bool(course.get("published", False))
@@ -150,6 +155,7 @@ def teaching_index_template(
                 [
                     '<article class="module-card course-card">',
                     f'  <p class="timeline-year">{period}</p>',
+                    f'  <p class="course-institution">{institution}</p>',
                     f'  <p class="course-status {status_class}">{status}</p>',
                     f"  <h3>{code} {title}</h3>",
                     f"  <p>{summary}</p>",
@@ -215,6 +221,7 @@ def teaching_course_template(
     code = escape_html(str(course["code"]))
     title = escape_html(str(course["title"]))
     period = escape_html(str(course["period"]))
+    institution = escape_html(str(course.get("institution", "")).strip() or "Institution TBD")
     summary = escape_html(str(course.get("summary", "")).strip())
     overview = escape_html(str(course.get("overview", "")).strip() or str(course.get("summary", "")).strip())
     audience = escape_html(str(course.get("audience", "")).strip() or "Undergraduate/graduate students.")
@@ -283,6 +290,7 @@ def teaching_course_template(
         "pages/teaching_course.html.j2",
         {
             "course_heading": f"{code}: {title}",
+            "course_institution": institution,
             "course_overview": overview,
             "course_period": period,
             "course_audience": audience,

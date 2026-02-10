@@ -1,6 +1,7 @@
 ---
 title: LaTeX Style Guide for Operations Research
 date: 2026-02-09
+eyebrow: Writing
 summary: A LaTeX style guide tailored to Operations Research papers.
 tags: [latex, notes, operations research]
 ---

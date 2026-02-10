@@ -1,7 +1,7 @@
   <main class="teaching-page">
     <section class="container teaching-shell">
       <header class="course-hero reveal-up">
-        <p class="eyebrow">HKUST IEDA</p>
+        <p class="eyebrow">{{ course_institution }}</p>
         <h1>{{ course_heading }}</h1>
         <p class="course-lead">{{ course_overview }}</p>
         <div class="hero-links">
@@ -14,6 +14,7 @@
         <article class="panel">
           <h2>Course Snapshot</h2>
           <ul class="stack-list">
+            <li><strong>Institution:</strong> {{ course_institution }}</li>
             <li><strong>Period:</strong> {{ course_period }}</li>
             <li><strong>Audience:</strong> {{ course_audience }}</li>
             <li><strong>Prerequisites:</strong> {{ course_prerequisites }}</li>
