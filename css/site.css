@@ -1846,6 +1846,25 @@ img {
   }
 }
 
+@supports not (corner-shape: squircle) {
+  .hero-grid,
+  .spotlight,
+  .controls,
+  .feature-card,
+  .paper,
+  .panel,
+  .timeline-item,
+  .student-card,
+  .blog-card,
+  .post-card,
+  .course-hero,
+  .module-card,
+  .nav-dropdown__menu,
+  .post-body pre {
+    border-radius: clamp(8px, 2.4vw, 24px);
+  }
+}
+
 .post-body pre code {
   display: block;
   width: max-content;
