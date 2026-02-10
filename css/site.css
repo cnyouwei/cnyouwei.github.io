@@ -175,6 +175,12 @@ a:hover {
   color: var(--primary);
 }
 
+@media (hover: none) and (pointer: coarse) {
+  :where(a, button, input, select, textarea, summary, [role="button"], [tabindex]:not([tabindex="-1"])) {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
 img {
   display: block;
   max-width: 100%;
