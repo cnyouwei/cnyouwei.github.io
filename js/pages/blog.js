@@ -76,6 +76,7 @@
   }
 
   function initPostTocScrollSpy() {
+    var tocNav = SiteUtils.qs('.post-toc__nav');
     var tocLinks = SiteUtils.qsa('.post-toc__link[href^="#"]');
     var tocTargets = tocLinks
       .map(function (link) {
@@ -89,6 +90,67 @@
 
     if (!tocLinks.length || !tocTargets.length) return;
 
+    var tocGroupByHash = {};
+    var tocGroups = [];
+    var activeGroupIndex = -1;
+    var hoveredGroupIndex = -1;
+
+    if (tocNav instanceof HTMLElement) {
+      var currentGroup = null;
+
+      SiteUtils.qsa('.post-toc__item', tocNav).forEach(function (item) {
+        var link = item.querySelector('.post-toc__link[href^="#"]');
+        if (!(link instanceof HTMLAnchorElement)) return;
+
+        var hash = link.getAttribute('href') || '';
+        if (!hash) return;
+
+        if (item.classList.contains('post-toc__item--sub')) {
+          if (!currentGroup) return;
+          item.dataset.tocGroup = String(currentGroup.index);
+          currentGroup.subItems.push(item);
+          tocGroupByHash[hash] = currentGroup.index;
+          return;
+        }
+
+        var nextGroup = {
+          index: tocGroups.length,
+          parentItem: item,
+          subItems: [],
+        };
+        item.dataset.tocGroup = String(nextGroup.index);
+        tocGroupByHash[hash] = nextGroup.index;
+        tocGroups.push(nextGroup);
+        currentGroup = nextGroup;
+      });
+    }
+
+    var hasSubHeadings = tocGroups.some(function (group) {
+      return group.subItems.length > 0;
+    });
+
+    function syncExpandedGroups() {
+      if (!hasSubHeadings) return;
+      tocGroups.forEach(function (group) {
+        var expanded = group.index === activeGroupIndex || group.index === hoveredGroupIndex;
+        group.parentItem.classList.toggle('is-expanded', expanded);
+        group.subItems.forEach(function (item) {
+          item.classList.toggle('is-expanded', expanded);
+        });
+      });
+    }
+
+    function setActiveGroup(hash) {
+      if (!hasSubHeadings) return;
+      var nextGroupIndex = -1;
+      if (Object.prototype.hasOwnProperty.call(tocGroupByHash, hash)) {
+        nextGroupIndex = tocGroupByHash[hash];
+      }
+      if (nextGroupIndex === activeGroupIndex) return;
+      activeGroupIndex = nextGroupIndex;
+      syncExpandedGroups();
+    }
+
     function setActiveTocLink(hash) {
       tocLinks.forEach(function (link) {
         var isActive = link.getAttribute('href') === hash;
@@ -99,6 +161,7 @@
           link.removeAttribute('aria-current');
         }
       });
+      setActiveGroup(hash);
     }
 
     function getBestVisibleHeadingId() {
@@ -149,6 +212,29 @@
     } else {
       var fallbackHash = getBestVisibleHeadingId();
       if (fallbackHash) setActiveTocLink(fallbackHash);
+    }
+
+    if (hasSubHeadings && tocNav instanceof HTMLElement) {
+      tocNav.classList.add('post-toc__nav--grouped');
+      syncExpandedGroups();
+
+      SiteUtils.on(tocNav, 'mouseover', function (event) {
+        var target = event.target;
+        if (!(target instanceof Element)) return;
+        var item = target.closest('.post-toc__item');
+        if (!(item instanceof HTMLElement)) return;
+        var groupId = Number(item.dataset.tocGroup || '');
+        if (Number.isNaN(groupId)) return;
+        if (hoveredGroupIndex === groupId) return;
+        hoveredGroupIndex = groupId;
+        syncExpandedGroups();
+      });
+
+      SiteUtils.on(tocNav, 'mouseleave', function () {
+        if (hoveredGroupIndex === -1) return;
+        hoveredGroupIndex = -1;
+        syncExpandedGroups();
+      });
     }
   }
 
@@ -404,9 +490,39 @@
     var codeBlocks = SiteUtils.qsa('.post-body pre code');
     if (!codeBlocks.length) return Promise.resolve();
 
-    SiteUtils.loadStylesheet(
-      'https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.11.1/build/styles/atom-one-dark.min.css'
-    );
+    var hljsThemeHref = {
+      light: 'https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.11.1/build/styles/atom-one-light.min.css',
+      dark: 'https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.11.1/build/styles/atom-one-dark.min.css',
+    };
+
+    function readActiveTheme() {
+      var explicitTheme = document.documentElement.getAttribute('data-theme');
+      if (explicitTheme === 'light' || explicitTheme === 'dark') return explicitTheme;
+      if (
+        typeof window.matchMedia === 'function' &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches
+      ) {
+        return 'dark';
+      }
+      return 'light';
+    }
+
+    function applyHighlightTheme(theme) {
+      var resolvedTheme = theme === 'dark' ? 'dark' : 'light';
+      var nextHref = hljsThemeHref[resolvedTheme];
+      var link = SiteUtils.qs('link[data-hljs-theme="true"]');
+      if (!(link instanceof HTMLLinkElement)) {
+        link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.setAttribute('data-hljs-theme', 'true');
+        document.head.appendChild(link);
+      }
+      if (link.getAttribute('href') !== nextHref) {
+        link.setAttribute('href', nextHref);
+      }
+    }
+
+    applyHighlightTheme(readActiveTheme());
 
     return SiteUtils.loadScript(
       'https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.11.1/build/highlight.min.js'
@@ -452,6 +568,13 @@
           block.innerHTML = auto.value;
           block.classList.add('hljs');
           if (auto.language) block.classList.add('language-' + auto.language);
+        });
+
+        SiteUtils.on(window, 'themechange', function (event) {
+          var detailTheme = event && event.detail ? event.detail.theme : '';
+          var nextTheme =
+            detailTheme === 'light' || detailTheme === 'dark' ? detailTheme : readActiveTheme();
+          applyHighlightTheme(nextTheme);
         });
       })
       .catch(function () {

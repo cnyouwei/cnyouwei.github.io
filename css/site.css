@@ -1303,6 +1303,14 @@ img {
   margin: 0;
 }
 
+.post-toc__nav.post-toc__nav--grouped .post-toc__item--sub {
+  display: none;
+}
+
+.post-toc__nav.post-toc__nav--grouped .post-toc__item--sub.is-expanded {
+  display: block;
+}
+
 .post-toc__item--sub .post-toc__link {
   padding-left: 1rem;
   font-size: 0.9rem;
@@ -1411,6 +1419,10 @@ img {
   padding: 0.9rem 0.72rem;
 }
 
+.post-body pre:not(.mermaid) {
+  border: 1px solid transparent;
+}
+
 .post-body .code-copy-btn {
   position: absolute;
   top: 0.5rem;
@@ -1442,6 +1454,56 @@ img {
 .post-body .code-copy-btn.is-failed {
   background: rgba(223, 108, 108, 0.26);
   border-color: rgba(243, 138, 138, 0.78);
+}
+
+:root[data-theme="light"] .post-body pre:not(.mermaid) {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--surface-soft) 88%, var(--surface) 12%),
+    color-mix(in srgb, var(--surface-soft) 74%, var(--primary-soft) 26%)
+  );
+  color: #0f172a;
+  border-color: color-mix(in srgb, var(--line-strong) 52%, var(--line) 48%);
+}
+
+:root[data-theme="light"] .post-body .code-copy-btn {
+  border-color: color-mix(in srgb, #0f172a 24%, transparent);
+  background: color-mix(in srgb, #ffffff 82%, transparent);
+  color: #0f172a;
+}
+
+:root[data-theme="light"] .post-body .code-copy-btn:hover {
+  background: color-mix(in srgb, #ffffff 94%, transparent);
+}
+
+:root[data-theme="light"] .post-body .code-copy-btn:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--primary) 44%, transparent);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) .post-body pre:not(.mermaid) {
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--surface-soft) 88%, var(--surface) 12%),
+      color-mix(in srgb, var(--surface-soft) 74%, var(--primary-soft) 26%)
+    );
+    color: #0f172a;
+    border-color: color-mix(in srgb, var(--line-strong) 52%, var(--line) 48%);
+  }
+
+  :root:not([data-theme]) .post-body .code-copy-btn {
+    border-color: color-mix(in srgb, #0f172a 24%, transparent);
+    background: color-mix(in srgb, #ffffff 82%, transparent);
+    color: #0f172a;
+  }
+
+  :root:not([data-theme]) .post-body .code-copy-btn:hover {
+    background: color-mix(in srgb, #ffffff 94%, transparent);
+  }
+
+  :root:not([data-theme]) .post-body .code-copy-btn:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--primary) 44%, transparent);
+  }
 }
 
 .post-body pre.mermaid {
@@ -1765,6 +1827,14 @@ img {
   }
 
   .post-toc__toggle.is-floating:active {
+    transform: translateY(-1px) scale(0.99);
+  }
+
+  .back-to-top:hover {
+    transform: translateY(-2px) scale(1.03);
+  }
+
+  .back-to-top:active {
     transform: translateY(-1px) scale(0.99);
   }
 
