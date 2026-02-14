@@ -2354,6 +2354,7 @@ img {
     flex-direction: column;
     align-items: stretch;
     border-radius: var(--radius-md);
+    corner-shape: var(--corner-shape-card);
     padding: 0.52rem;
     border: 1px solid var(--glass-header-border);
     background: var(--glass-header-bg);
@@ -2363,6 +2364,12 @@ img {
     will-change: backdrop-filter;
     z-index: 55;
     overflow: hidden;
+  }
+
+  @supports not (corner-shape: squircle) {
+    .site-nav {
+      border-radius: var(--radius-sm);
+    }
   }
 
   .site-nav::before {
