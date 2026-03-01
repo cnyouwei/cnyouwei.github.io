@@ -2,6 +2,24 @@
   "highlight_authors": ["Wei You"],
   "papers": [
     {
+      "id": "robust-queueing-abandonment",
+      "section": "working",
+      "type": "working",
+      "year": 2026,
+      "title": "Robust Queueing for Single-Server Queues with Abandonment",
+      "selected": true,
+      "topic": "Queueing Theory",
+      "authors": ["Wei You"],
+      "note": "submitted.",
+      "abstract": "Single-server queues with customer abandonment arise in call centers and many service systems, but steady-state performance measures remain analytically intractable beyond Markovian assumptions. This paper develops Robust Queueing (RQ) approximations for the mean steady-state virtual waiting time (offered waiting time) in the $GI/GI/1{+}GI$ model. The approach starts from a reverse-time supremum representation of the virtual waiting time as the reflection of an effective net-input process that accounts for abandonments. We approximate effective net-input increments by their mean plus a robustness parameter times their standard deviation. For the drift, we introduce a Poisson-surrogate compensator and show that the associated correction term is asymptotically negligible in the long-patience regime. For variability, we propose two implementable surrogates: (i) a deterministic time-change approximation that yields a first RQ algorithm, and (ii) a refined algorithm based on a heavy-traffic limit that produces a scale-dependent variance function capturing the variance-reduction effect of abandonment. The resulting steady-state approximation reduces to a one-dimensional fixed point solvable by bisection and takes as input the arrival index of dispersion for counts (IDC), the service-time squared coefficient of variation, and the patience-time distribution. We further show how to extend the method to queues in series by feeding an approximation of the upstream departure IDC into the downstream RQ algorithm. Extensive numerical experiments demonstrate that the refined RQ approximation is accurate across underload, critical loading, and overload, and remains robust relative to existing heavy-traffic and hazard-rate-scaling benchmarks.",
+      "links": [
+        {
+          "label": "Preprint",
+          "url": "assets/papers/You_RQ_ab.pdf"
+        }
+      ]
+    },
+    {
       "id": "cost-aware-structured-bandits",
       "section": "working",
       "type": "working",
@@ -63,18 +81,6 @@
       "authors": ["Chenguang (Allen) Wu", "Wei You"],
       "note": "submitted.",
       "abstract": "We study the joint service rate and waiting time differentiation for homogeneous impatient customers in parallel server queueing systems. Customers are homogeneous at the time of arrival, but the system can differentiate them by assigning each of them to one of many service grades corresponding to different service rates. Customers not served immediately upon arrival wait in the queue corresponding to their grades, and they get further differentiated by their residual patience times as time elapses. We leverage these two dimensions of heterogeneity to propose implementable policies that differentiate customers on both service rates and waiting times. Our policy specifies the service rate of each grade, an allocation rule that assigns customers to grades, and a scheduling policy that routes idle servers to waiting customers using their grade and waiting time information. We show that the optimal policy has a very simple structure, creating at most two grades with different service rates or offered waits, and processing each grade in a First Come First Served manner. Our paper provides managers with ways of improving the quality of service through joint service rate and waiting time differentiation. Our policy can lead to significant cost and welfare improvement over policies without service rate differentiation.",
-      "links": []
-    },
-    {
-      "id": "robust-queueing-impatient-customers",
-      "section": "working",
-      "type": "working",
-      "year": 2024,
-      "title": "Robust Queueing for Queues with Impatient Customer",
-      "topic": "Queueing Theory",
-      "authors": ["Wei You"],
-      "note": "working paper.",
-      "abstract": "",
       "links": []
     },
     {
