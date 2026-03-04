@@ -77,7 +77,7 @@ python3 scripts/build_site.py
 
 Deploys are handled by `.github/workflows/pages.yml`.
 
-- Trigger: push to `main` (and manual dispatch).
+- Trigger: push to `master` or `main` (and manual dispatch).
 - Workflow builds the site with `python3 scripts/build_site.py`.
 - Workflow uploads a Pages artifact from generated outputs and deploys with `actions/deploy-pages`.
 
