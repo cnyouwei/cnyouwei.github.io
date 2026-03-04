@@ -1,16 +1,11 @@
 (function (window) {
   var SiteApp = window.SiteApp || {};
   var SiteUtils = window.SiteUtils;
-
-  function getSiteThemeApi() {
-    if (!window.SiteTheme || typeof window.SiteTheme !== 'object') return null;
-    return window.SiteTheme;
-  }
+  var SiteTheme = window.SiteTheme || null;
 
   function resolveTheme() {
-    var siteTheme = getSiteThemeApi();
-    if (siteTheme && typeof siteTheme.resolveActiveTheme === 'function') {
-      return siteTheme.resolveActiveTheme();
+    if (SiteTheme && typeof SiteTheme.resolveActiveTheme === 'function') {
+      return SiteTheme.resolveActiveTheme();
     }
     if (
       typeof window.matchMedia === 'function' &&
@@ -22,56 +17,19 @@
   }
 
   function resolveThemeFromEvent(event) {
-    var detailTheme = event && event.detail ? event.detail.theme : '';
-    var siteTheme = getSiteThemeApi();
-    if (
-      siteTheme &&
-      typeof siteTheme.isValidTheme === 'function' &&
-      siteTheme.isValidTheme(detailTheme)
-    ) {
-      return detailTheme;
+    if (SiteTheme && typeof SiteTheme.resolveThemeFromEvent === 'function') {
+      return SiteTheme.resolveThemeFromEvent(event);
     }
     return resolveTheme();
   }
 
   function resolveThemeMeta(theme) {
-    var siteTheme = getSiteThemeApi();
-    if (siteTheme && typeof siteTheme.getThemeMeta === 'function') {
-      return siteTheme.getThemeMeta(theme);
+    if (SiteTheme && typeof SiteTheme.getThemeMeta === 'function') {
+      return SiteTheme.getThemeMeta(theme);
     }
     return theme === 'dark' || theme === 'cyberpunk'
       ? { highlightVariant: 'dark', mermaidVariant: 'dark' }
       : { highlightVariant: 'light', mermaidVariant: 'default' };
-  }
-
-  function copyTextToClipboard(text) {
-    if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
-      return navigator.clipboard.writeText(text);
-    }
-
-    return new Promise(function (resolve, reject) {
-      var textArea = document.createElement('textarea');
-      textArea.value = text;
-      textArea.setAttribute('readonly', '');
-      textArea.style.position = 'fixed';
-      textArea.style.top = '-9999px';
-      textArea.style.left = '-9999px';
-      document.body.appendChild(textArea);
-      textArea.select();
-
-      try {
-        var copied = document.execCommand('copy');
-        if (!copied) {
-          reject(new Error('Copy command failed'));
-          return;
-        }
-        resolve();
-      } catch (error) {
-        reject(error);
-      } finally {
-        textArea.remove();
-      }
-    });
   }
 
   function initCodeCopyButtons() {
@@ -104,7 +62,11 @@
 
       SiteUtils.on(button, 'click', function () {
         var source = codeBlock.textContent || '';
-        copyTextToClipboard(source)
+        var copyPromise =
+          typeof SiteUtils.copyTextToClipboard === 'function'
+            ? SiteUtils.copyTextToClipboard(source)
+            : Promise.reject(new Error('Clipboard helper unavailable'));
+        copyPromise
           .then(function () {
             setButtonState('Copied', 'is-copied');
           })

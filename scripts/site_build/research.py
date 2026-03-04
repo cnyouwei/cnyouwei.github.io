@@ -5,13 +5,8 @@ import json
 from .common import (
     BADGE_LABELS,
     RESEARCH_DATA_PATH,
-    RESEARCH_END_MARKER,
-    RESEARCH_START_MARKER,
-    SELECTED_END_MARKER,
-    SELECTED_START_MARKER,
     escape_html,
 )
-from .index_ops import update_index_block
 
 def join_authors(authors: list[str]) -> str:
     if not authors:
@@ -260,15 +255,18 @@ def build_selected_papers_markup(papers: list[dict[str, object]]) -> str:
     lines.append("</ul>")
     return "\n".join(lines)
 
-def build_research() -> int:
+
+def render_research_sections() -> dict[str, object]:
     papers, highlighted = load_research_data()
-    selected_markup = build_selected_papers_markup(papers)
-    markup = build_research_markup(papers, highlighted)
-    update_index_block(SELECTED_START_MARKER, SELECTED_END_MARKER, selected_markup)
-    update_index_block(RESEARCH_START_MARKER, RESEARCH_END_MARKER, markup)
+    return {
+        "paper_count": len(papers),
+        "selected_markup": build_selected_papers_markup(papers),
+        "research_markup": build_research_markup(papers, highlighted),
+    }
 
-    print(f"Built research section from {len(papers)} entries.")
-    print("Updated: selected papers on home section.")
-    print("Updated: index.html")
-    return len(papers)
 
+def build_research() -> int:
+    payload = render_research_sections()
+    paper_count = int(payload["paper_count"])
+    print(f"Built research section from {paper_count} entries.")
+    return paper_count

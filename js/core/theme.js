@@ -65,6 +65,12 @@
     return getSystemThemePreference();
   }
 
+  function resolveThemeFromEvent(event) {
+    var detailTheme = event && event.detail ? event.detail.theme : '';
+    if (isValidTheme(detailTheme)) return detailTheme;
+    return resolveActiveTheme();
+  }
+
   function getThemeMeta(theme) {
     var resolvedTheme = isValidTheme(theme) ? theme : resolveActiveTheme();
     return THEME_METADATA[resolvedTheme] || THEME_METADATA[THEME_FALLBACK];
@@ -85,7 +91,9 @@
 
   window.SiteTheme = {
     isValidTheme: isValidTheme,
+    getSystemThemePreference: getSystemThemePreference,
     resolveActiveTheme: resolveActiveTheme,
+    resolveThemeFromEvent: resolveThemeFromEvent,
     getThemeMeta: getThemeMeta,
     nextTheme: nextTheme,
   };
@@ -343,16 +351,13 @@
     function applyThemePreference(theme, persist, source, options) {
       var settings = options || {};
       var previousTheme = activeTheme;
+      var resolvedTheme = isValidTheme(theme) ? theme : getSystemThemePreference();
 
-      if (isValidTheme(theme)) {
-        root.dataset.theme = theme;
-      } else {
-        delete root.dataset.theme;
-      }
+      root.dataset.theme = resolvedTheme;
 
       if (persist) saveThemePreference(theme, source);
 
-      activeTheme = resolveActiveTheme();
+      activeTheme = resolvedTheme;
       syncHiddenThemeMenuState();
       if (hiddenThemeMenuOpen) positionHiddenThemeMenu();
       if (settings.animate) startThemeTransition(previousTheme, activeTheme);

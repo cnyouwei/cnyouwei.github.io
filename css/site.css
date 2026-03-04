@@ -94,80 +94,6 @@
   --mermaid-littlewood-text: #7c2d12;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) {
-    color-scheme: dark;
-    --bg: #0f172a;
-    --bg-alt: #111c31;
-    --surface: #162136;
-    --surface-soft: #263752;
-    --text: #e5e7eb;
-    --text-muted: #cbd5e1;
-    --line: #334155;
-    --line-strong: #64748b;
-    --primary: #93c5fd;
-    --primary-soft: #1e3a5f;
-    --accent: #5eead4;
-    --accent-soft: #143d3a;
-    --pop-color: #5eead4;
-    --pop-color-hover: #99f6e4;
-    --ui-active-bg: color-mix(in srgb, var(--surface-soft) 72%, var(--primary-soft) 28%);
-    --ui-active-border: color-mix(in srgb, var(--primary) 62%, var(--line-strong) 38%);
-    --glass-header-bg: color-mix(in srgb, var(--surface) 60%, transparent);
-    --glass-header-border: color-mix(in srgb, #94a3b8 26%, transparent);
-    --glass-header-shadow: 0 10px 24px rgba(0, 0, 0, 0.34);
-    --glass-header-highlight: rgba(255, 255, 255, 0.1);
-    --glass-dropdown-bg: rgba(18, 30, 48, 0.3);
-    --glass-nav-bg: color-mix(in srgb, var(--surface) 56%, transparent);
-    --glass-nav-border: color-mix(in srgb, #94a3b8 24%, transparent);
-    --glass-control-bg: color-mix(in srgb, var(--surface) 58%, transparent);
-    --glass-filter-nav: blur(12px) saturate(130%);
-    --glass-filter-control: blur(10px) saturate(130%);
-    --glass-filter-menu: blur(14px) saturate(135%);
-    --glass-filter-mobile-nav: blur(16px) saturate(135%);
-    --glass-filter-floating: blur(16px) saturate(260%) contrast(128%) brightness(116%);
-    --glass-filter-floating-hover: blur(17px) saturate(290%) contrast(136%) brightness(122%);
-    --glass-filter-floating-panel: blur(18px) saturate(260%) contrast(128%) brightness(116%);
-    --glass-floating-shine: 0.26;
-    --glass-floating-shine-strong: 0.34;
-    --font-sans: "Google Sans Flex", "Avenir Next", "Segoe UI", sans-serif;
-    --badge-border: #475569;
-    --badge-text: #e2e8f0;
-    --badge-working-bg: #3b2f1a;
-    --badge-working-text: #fcd34d;
-    --badge-journal-bg: #1b314d;
-    --badge-journal-text: #bfdbfe;
-    --badge-conference-bg: #1b3a2d;
-    --badge-conference-text: #86efac;
-    --badge-thesis-bg: #31264a;
-    --badge-thesis-text: #ddd6fe;
-    --shadow: 0 12px 30px rgba(0, 0, 0, 0.32);
-    --code-bg: #020617;
-    --code-text: #cbd5e1;
-    --mermaid-ch1-fill: #1a2945;
-    --mermaid-ch1-stroke: #60a5fa;
-    --mermaid-ch1-text: #dbeafe;
-    --mermaid-ch2-fill: #123a3a;
-    --mermaid-ch2-stroke: #34d399;
-    --mermaid-ch2-text: #a7f3d0;
-    --mermaid-ch3-fill: #3a2f1b;
-    --mermaid-ch3-stroke: #f59e0b;
-    --mermaid-ch3-text: #fcd34d;
-    --mermaid-ch4-fill: #2f2350;
-    --mermaid-ch4-stroke: #a78bfa;
-    --mermaid-ch4-text: #ddd6fe;
-    --mermaid-ch5-fill: #3f1f2a;
-    --mermaid-ch5-stroke: #fb7185;
-    --mermaid-ch5-text: #fecdd3;
-    --mermaid-support-fill: #182438;
-    --mermaid-support-stroke: #64748b;
-    --mermaid-support-text: #e2e8f0;
-    --mermaid-littlewood-fill: #3a2819;
-    --mermaid-littlewood-stroke: #fb923c;
-    --mermaid-littlewood-text: #fed7aa;
-  }
-}
-
 :root[data-theme="dark"] {
   color-scheme: dark;
   --bg: #0f172a;
@@ -1715,8 +1641,7 @@ img {
   border-color: rgba(243, 138, 138, 0.78);
 }
 
-:root[data-theme="light"] .post-body pre:not(.mermaid),
-:root[data-theme="solarized"] .post-body pre:not(.mermaid) {
+:root:is([data-theme="light"], [data-theme="solarized"]) .post-body pre:not(.mermaid) {
   background: linear-gradient(
     180deg,
     color-mix(in srgb, var(--surface-soft) 88%, var(--surface) 12%),
@@ -1726,47 +1651,18 @@ img {
   border-color: color-mix(in srgb, var(--line-strong) 52%, var(--line) 48%);
 }
 
-:root[data-theme="light"] .post-body .code-copy-btn,
-:root[data-theme="solarized"] .post-body .code-copy-btn {
+:root:is([data-theme="light"], [data-theme="solarized"]) .post-body .code-copy-btn {
   border-color: color-mix(in srgb, #0f172a 24%, transparent);
   background: color-mix(in srgb, #ffffff 82%, transparent);
   color: #0f172a;
 }
 
-:root[data-theme="light"] .post-body .code-copy-btn:hover,
-:root[data-theme="solarized"] .post-body .code-copy-btn:hover {
+:root:is([data-theme="light"], [data-theme="solarized"]) .post-body .code-copy-btn:hover {
   background: color-mix(in srgb, #ffffff 94%, transparent);
 }
 
-:root[data-theme="light"] .post-body .code-copy-btn:focus-visible,
-:root[data-theme="solarized"] .post-body .code-copy-btn:focus-visible {
+:root:is([data-theme="light"], [data-theme="solarized"]) .post-body .code-copy-btn:focus-visible {
   outline: 2px solid color-mix(in srgb, var(--primary) 44%, transparent);
-}
-
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme]) .post-body pre:not(.mermaid) {
-    background: linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--surface-soft) 88%, var(--surface) 12%),
-      color-mix(in srgb, var(--surface-soft) 74%, var(--primary-soft) 26%)
-    );
-    color: #0f172a;
-    border-color: color-mix(in srgb, var(--line-strong) 52%, var(--line) 48%);
-  }
-
-  :root:not([data-theme]) .post-body .code-copy-btn {
-    border-color: color-mix(in srgb, #0f172a 24%, transparent);
-    background: color-mix(in srgb, #ffffff 82%, transparent);
-    color: #0f172a;
-  }
-
-  :root:not([data-theme]) .post-body .code-copy-btn:hover {
-    background: color-mix(in srgb, #ffffff 94%, transparent);
-  }
-
-  :root:not([data-theme]) .post-body .code-copy-btn:focus-visible {
-    outline: 2px solid color-mix(in srgb, var(--primary) 44%, transparent);
-  }
 }
 
 .post-body pre.mermaid {

@@ -1,0 +1,75 @@
+from __future__ import annotations
+
+from .common import INDEX_PATH, read_ga_measurement_id
+from .page_context import build_base_context
+from .template_engine import render_template
+from .templates import mathjax_config_script
+
+
+def home_page_template(
+    *,
+    ga_id: str,
+    selected_papers_html: str,
+    research_content_html: str,
+    teaching_home_content_html: str,
+) -> str:
+    main_html = render_template(
+        "pages/home.html.j2",
+        {
+            "selected_papers_html": selected_papers_html,
+            "research_content_html": research_content_html,
+            "teaching_home_content_html": teaching_home_content_html,
+        },
+    )
+
+    home_before_scripts = "\n".join(
+        [
+            mathjax_config_script(include_chtml=False),
+            '  <script src="blogs/posts.js"></script>',
+        ]
+    )
+
+    return render_template(
+        "base.html.j2",
+        build_base_context(
+            ga_id=ga_id,
+            page_id="home",
+            page_title="Wei You",
+            meta_description=(
+                "Wei You - Assistant Professor at HKUST. Research in stochastic models, "
+                "queueing theory, applied probability, and sequential decision-making."
+            ),
+            include_cn_fonts=True,
+            css_href="css/site.css",
+            js_prefix="js/",
+            brand_href="#home",
+            brand_aria_label="Go to home",
+            home_href="#home",
+            research_href="#research",
+            talks_href="#talks",
+            teaching_href="#teaching",
+            team_href="#team",
+            about_href="#about",
+            blog_href="#blog",
+            main_html=main_html,
+            page_scripts=["pages/research.js", "pages/blog_home.js"],
+            extra_before_scripts_html=home_before_scripts,
+        ),
+    )
+
+
+def build_home(
+    *,
+    selected_papers_html: str,
+    research_content_html: str,
+    teaching_home_content_html: str,
+) -> None:
+    ga_id = read_ga_measurement_id()
+    html = home_page_template(
+        ga_id=ga_id,
+        selected_papers_html=selected_papers_html,
+        research_content_html=research_content_html,
+        teaching_home_content_html=teaching_home_content_html,
+    )
+    INDEX_PATH.write_text(html, encoding="utf-8")
+    print("Updated: index.html")

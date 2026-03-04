@@ -30,15 +30,23 @@ def theme_bootstrap_script() -> str:
     return """  <script>
     (function () {
       try {
+        var root = document.documentElement;
         var storedTheme = localStorage.getItem('wy-theme');
         var themeSource = localStorage.getItem('wy-theme-source');
         if (
           themeSource === 'manual' &&
           (storedTheme === 'cyberpunk' || storedTheme === 'solarized')
         ) {
-          document.documentElement.setAttribute('data-theme', storedTheme);
+          root.setAttribute('data-theme', storedTheme);
+          return;
         }
-      } catch (error) {}
+        var prefersDark =
+          typeof window.matchMedia === 'function' &&
+          window.matchMedia('(prefers-color-scheme: dark)').matches;
+        root.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+      } catch (error) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
     })();
   </script>"""
 

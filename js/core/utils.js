@@ -34,6 +34,36 @@
       .replace(/'/g, '&#39;');
   };
 
+  SiteUtils.copyTextToClipboard = function (text) {
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+      return navigator.clipboard.writeText(text);
+    }
+
+    return new Promise(function (resolve, reject) {
+      var textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.setAttribute('readonly', '');
+      textArea.style.position = 'fixed';
+      textArea.style.top = '-9999px';
+      textArea.style.left = '-9999px';
+      document.body.appendChild(textArea);
+      textArea.select();
+
+      try {
+        var copied = document.execCommand('copy');
+        if (!copied) {
+          reject(new Error('Copy command failed'));
+          return;
+        }
+        resolve();
+      } catch (error) {
+        reject(error);
+      } finally {
+        textArea.remove();
+      }
+    });
+  };
+
   SiteUtils.loadScript = function (src, attrs) {
     return new Promise(function (resolve, reject) {
       if (SiteUtils.qs('script[data-src="' + src + '"]')) {

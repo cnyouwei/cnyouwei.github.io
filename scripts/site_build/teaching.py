@@ -5,15 +5,12 @@ import re
 
 from .common import (
     TEACHING_DATA_PATH,
-    TEACHING_HOME_END_MARKER,
-    TEACHING_HOME_START_MARKER,
     TEACHING_OUTPUT_DIR,
     escape_html,
     indent_block,
     read_ga_measurement_id,
 )
-from .index_ops import update_index_block
-from .page_context import build_base_context
+from .page_context import build_subpage_context
 from .template_engine import render_template
 
 
@@ -149,14 +146,6 @@ def render_home_teaching_markup(courses: list[dict[str, object]]) -> str:
     )
 
 
-def update_home_teaching_section(courses: list[dict[str, object]]) -> None:
-    update_index_block(
-        TEACHING_HOME_START_MARKER,
-        TEACHING_HOME_END_MARKER,
-        render_home_teaching_markup(courses),
-    )
-
-
 def teaching_course_template(
     course: dict[str, object],
     ga_id: str,
@@ -228,22 +217,11 @@ def teaching_course_template(
 
     return render_template(
         "base.html.j2",
-        build_base_context(
+        build_subpage_context(
             ga_id=ga_id,
             page_id="teaching-course",
             page_title=f"{raw_code} {raw_title} | Teaching",
             meta_description=summary_raw,
-            include_cn_fonts=True,
-            css_href="../css/site.css",
-            js_prefix="../js/",
-            brand_href="../index.html#home",
-            home_href="../index.html#home",
-            research_href="../index.html#research",
-            talks_href="../index.html#talks",
-            teaching_href="../index.html#teaching",
-            team_href="../index.html#team",
-            about_href="../index.html#about",
-            blog_href="../index.html#blog",
             main_html=main_html,
             page_scripts=[],
         ),
@@ -252,8 +230,6 @@ def teaching_course_template(
 
 def build_teaching(courses: list[dict[str, object]]) -> int:
     ga_id = read_ga_measurement_id()
-
-    update_home_teaching_section(courses)
 
     TEACHING_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     stale_index_path = TEACHING_OUTPUT_DIR / "index.html"
@@ -275,7 +251,6 @@ def build_teaching(courses: list[dict[str, object]]) -> int:
         )
         generated += 1
 
-    print(f"Built teaching home section from {len(courses)} course entry(ies).")
+    print(f"Loaded {len(courses)} teaching course entry(ies).")
     print(f"Generated: {generated} teaching course page(s).")
-    print("Updated: index.html")
     return len(courses)

@@ -14,13 +14,23 @@ from typing import Any
 ROOT_DIR = Path(__file__).resolve().parent.parent
 INDEX_PATH = ROOT_DIR / "index.html"
 
-MARKER_PAIRS = {
-    "selected_papers": ("<!-- SELECTED-PAPERS:START -->", "<!-- SELECTED-PAPERS:END -->"),
-    "research_content": ("<!-- RESEARCH-CONTENT:START -->", "<!-- RESEARCH-CONTENT:END -->"),
-    "teaching_home_content": (
-        "<!-- TEACHING-HOME-CONTENT:START -->",
-        "<!-- TEACHING-HOME-CONTENT:END -->",
-    ),
+INDEX_CONTRACT_PATTERNS = {
+    "home_page_attr": r'<html\b[^>]*\bdata-page="home"',
+    "ga_attr": r'<html\b[^>]*\bdata-ga-id="[^"]+"',
+    "section_home": r'<section\b[^>]*\bid="home"',
+    "section_research": r'<section\b[^>]*\bid="research"',
+    "section_talks": r'<section\b[^>]*\bid="talks"',
+    "section_teaching": r'<section\b[^>]*\bid="teaching"',
+    "section_team": r'<section\b[^>]*\bid="team"',
+    "section_about": r'<section\b[^>]*\bid="about"',
+    "section_blog": r'<section\b[^>]*\bid="blog"',
+    "recent_posts_mount": r'<div\b[^>]*\bid="recentPosts"',
+    "mathjax_config": r"window\.MathJax\s*=",
+    "posts_manifest_script": r'<script[^>]*\bsrc="blogs/posts\.js"[^>]*>',
+    "research_page_script": r'<script[^>]*\bsrc="js/pages/research\.js"[^>]*>',
+    "blog_home_page_script": r'<script[^>]*\bsrc="js/pages/blog_home\.js"[^>]*>',
+    "back_to_top_button": r'<button\b[^>]*\bclass="back-to-top"',
+    "clustrmaps": r'<script[^>]*\bid=["\']clustrmaps["\']',
 }
 
 
@@ -34,27 +44,15 @@ def generated_files() -> list[Path]:
     files.extend(sorted((ROOT_DIR / "blogs").glob("*.html")))
     files.extend(sorted((ROOT_DIR / "teaching").glob("*.html")))
     files.append(ROOT_DIR / "blogs" / "posts.js")
-    # De-duplicate and keep stable ordering.
     uniq = sorted({path.resolve() for path in files if path.exists()})
     return [Path(path) for path in uniq]
 
 
-def marker_bodies(index_text: str) -> dict[str, str | None]:
-    bodies: dict[str, str | None] = {}
-    for key, (start_marker, end_marker) in MARKER_PAIRS.items():
-        pattern = re.compile(
-            (
-                rf"^(?P<indent>[ \t]*){re.escape(start_marker)}\n"
-                rf"(?P<body>.*?)(?P=indent){re.escape(end_marker)}"
-            ),
-            re.DOTALL | re.MULTILINE,
-        )
-        match = pattern.search(index_text)
-        if not match:
-            bodies[key] = None
-            continue
-        bodies[key] = match.group("body")
-    return bodies
+def index_contract_flags(index_text: str) -> dict[str, bool]:
+    return {
+        key: bool(re.search(pattern, index_text, flags=re.IGNORECASE | re.MULTILINE))
+        for key, pattern in INDEX_CONTRACT_PATTERNS.items()
+    }
 
 
 def build_snapshot() -> dict[str, Any]:
@@ -68,7 +66,7 @@ def build_snapshot() -> dict[str, Any]:
             }
             for path in paths
         },
-        "markers": marker_bodies(index_text),
+        "index_contract": index_contract_flags(index_text),
     }
 
 
@@ -106,23 +104,19 @@ def compare_snapshots(baseline: dict[str, Any], current: dict[str, Any]) -> int:
         if base_hash != curr_hash:
             errors.append(f"Hash mismatch: {rel_path}\n  baseline={base_hash}\n  current={curr_hash}")
 
-    baseline_markers = baseline.get("markers", {})
-    current_markers = current.get("markers", {})
-    if not isinstance(baseline_markers, dict) or not isinstance(current_markers, dict):
-        print("Invalid snapshot format: expected `markers` object.", file=sys.stderr)
+    baseline_contract = baseline.get("index_contract", {})
+    current_contract = current.get("index_contract", {})
+    if not isinstance(baseline_contract, dict) or not isinstance(current_contract, dict):
+        print("Invalid snapshot format: expected `index_contract` object.", file=sys.stderr)
         return 2
 
-    for marker in sorted(MARKER_PAIRS):
-        base_body = baseline_markers.get(marker)
-        curr_body = current_markers.get(marker)
-        if base_body is None:
-            errors.append(f"Baseline snapshot missing marker block: {marker}")
-            continue
-        if curr_body is None:
-            errors.append(f"Current output missing marker block: {marker}")
-            continue
-        if base_body != curr_body:
-            errors.append(f"Marker block mismatch: {marker}")
+    for key in sorted(INDEX_CONTRACT_PATTERNS):
+        base_flag = bool(baseline_contract.get(key, False))
+        curr_flag = bool(current_contract.get(key, False))
+        if base_flag != curr_flag:
+            errors.append(
+                f"Index contract mismatch: {key}\n  baseline={base_flag}\n  current={curr_flag}"
+            )
 
     if errors:
         print("Parity check failed:")
@@ -130,7 +124,7 @@ def compare_snapshots(baseline: dict[str, Any], current: dict[str, Any]) -> int:
             print(f"- {error}")
         return 1
 
-    print("Parity check passed: generated artifacts and marker blocks match baseline.")
+    print("Parity check passed: generated artifacts and index contract match baseline.")
     return 0
 
 

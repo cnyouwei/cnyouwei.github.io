@@ -14,17 +14,17 @@ This repository contains a static personal research website.
 - `content/research/papers.json`: Source of truth for working papers and publications.
 - `content/blog/*.md`: Source markdown files for blog posts.
 - `content/teaching/courses.json`: Source of truth for home teaching hub cards and course pages.
-- `requirements.txt`: Optional Python build dependencies for simpler markdown/template rendering.
+- `requirements.txt`: Required Python build dependencies for markdown/template rendering.
 - `scripts/build_site.py`: Public build entrypoint.
 - `scripts/site_build/`: Internal build modules.
   - `cli.py`: Build orchestration.
   - `common.py`: Shared constants and utility helpers.
-  - `index_ops.py`: Marker block replacement in `index.html`.
-  - `markdown_render.py`: Front matter parsing + markdown rendering (library-first, fallback parser).
+  - `home.py`: Home page rendering (`index.html`) from templates plus generated research/teaching markup.
+  - `markdown_render.py`: Front matter parsing + markdown rendering (Python markdown library).
   - `blog.py`: Blog manifest generation and blog page rendering.
-  - `research.py`: Research section rendering and selected-paper updates.
-  - `teaching.py`: Home teaching hub rendering and per-course page rendering.
-  - `template_engine.py`: Template rendering (Jinja2 if installed, fallback renderer otherwise).
+  - `research.py`: Research section and selected-papers markup rendering.
+  - `teaching.py`: Teaching markup rendering and per-course page generation.
+  - `template_engine.py`: Template rendering (Jinja2).
   - `templates.py`: Shared injected snippet helpers (theme bootstrap, MathJax config, fonts).
 - `scripts/templates/`: HTML templates and partials used by the generator.
 - `scripts/parity_check.py`: Snapshot/check utility for generated-output parity.
@@ -33,10 +33,12 @@ This repository contains a static personal research website.
 
 ## Build
 
-Optional dependency install (recommended for simpler markdown/template pipeline):
+Install required dependencies (recommended in a virtual environment):
 
 ```bash
-python3 -m pip install -r requirements.txt
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
 ```
 
 Build from repository root:
@@ -49,7 +51,7 @@ This updates:
 
 - Blog outputs in `blogs/`
 - Teaching outputs in `teaching/`
-- Marker blocks in `index.html`
+- `index.html`
 
 Build command contract is unchanged:
 
@@ -80,10 +82,7 @@ python3 scripts/parity_check.py check --baseline /tmp/site_parity_baseline.json
 The checker validates:
 
 - Generated artifact file set and SHA-256 hashes
-- Marker block contents in `index.html` for:
-  - `SELECTED-PAPERS`
-  - `RESEARCH-CONTENT`
-  - `TEACHING-HOME-CONTENT`
+- Core `index.html` contract hooks (required page/section/script nodes)
 
 ## Manage Research Papers
 

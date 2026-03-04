@@ -11,7 +11,7 @@ from .markdown_render import (
     parse_front_matter,
     parse_tags,
 )
-from .page_context import build_base_context
+from .page_context import build_subpage_context
 from .template_engine import render_template
 from .templates import mathjax_config_script
 
@@ -102,27 +102,14 @@ def post_page_template(
 
     return render_template(
         "base.html.j2",
-        build_base_context(
+        build_subpage_context(
             ga_id=ga_id,
             page_id="blog-post",
             page_title=f"{str(post['title'])} | Wei You",
             meta_description=str(post["summary"]),
-            include_cn_fonts=True,
-            css_href="../css/site.css",
-            js_prefix="../js/",
-            brand_href="../index.html#home",
-            home_href="../index.html#home",
-            research_href="../index.html#research",
-            talks_href="../index.html#talks",
-            team_href="../index.html#team",
-            about_href="../index.html#about",
-            teaching_href="../index.html#teaching",
-            blog_href="../index.html#blog",
             main_html=main_html,
             page_scripts=["pages/blog_post.js"],
-            extra_head_html="",
             extra_before_scripts_html=mathjax_config_script(include_chtml=True),
-            extra_after_scripts_html="",
         ),
     )
 

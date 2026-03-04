@@ -1,6 +1,6 @@
   <header class="site-header" id="top">
     <div class="container nav-wrap">
-      <a class="brand" href="{{ brand_href }}">Wei You</a>
+      <a class="brand" href="{{ brand_href }}"{% if brand_aria_label %} aria-label="{{ brand_aria_label }}"{% endif %}>Wei You</a>
       <div class="nav-controls">
         <button class="theme-toggle" type="button" aria-label="Toggle theme" aria-pressed="false" data-active-icon="sun">
           <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">
