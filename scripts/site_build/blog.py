@@ -107,7 +107,7 @@ def post_page_template(
             page_id="blog-post",
             page_title=f"{str(post['title'])} | Wei You",
             meta_description=str(post["summary"]),
-            include_cn_fonts=False,
+            include_cn_fonts=True,
             css_href="../css/site.css",
             js_prefix="../js/",
             brand_href="../index.html#home",

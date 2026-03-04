@@ -534,7 +534,7 @@
         function readThemeFontFamily() {
           var rootStyle = window.getComputedStyle(document.documentElement);
           var value = rootStyle.getPropertyValue('--font-sans').trim();
-          return value || '"Space Grotesk", "Avenir Next", "Segoe UI", sans-serif';
+          return value || '"Google Sans Flex", "Avenir Next", "Segoe UI", sans-serif';
         }
 
         function resolveMermaidCssVars(sourceText) {

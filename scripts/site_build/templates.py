@@ -2,6 +2,7 @@ from __future__ import annotations
 
 BASE_FONT_FAMILIES = [
     "Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700",
+    "Google+Sans+Flex:opsz,wght@8..144,400..700",
     "Space+Grotesk:wght@400;500;600;700",
     "Rajdhani:wght@500;600;700",
     "Orbitron:wght@500;600;700",
