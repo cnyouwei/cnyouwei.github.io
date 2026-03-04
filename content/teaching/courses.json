@@ -16,7 +16,89 @@
       "period": "2019–present",
       "institution": "HKUST, Department of Industrial Engineering and Decision Analytics",
       "summary": "Graduate-level statistical methodology for data-driven engineering.",
-      "published": false
+      "published": true,
+      "overview": "This course develops a rigorous statistical toolkit for engineering data analytics, covering probability foundations, random-sample theory, estimation and inference, regression modeling, regularization, generalized linear models, and modern classification methods.",
+      "audience": "Graduate students in engineering and data analytics, and advanced undergraduates with strong quantitative backgrounds.",
+      "prerequisites": "Probability theory, linear algebra, calculus, and basic programming/statistical computing.",
+      "outcomes": [
+        "Formulate statistical inference problems and interpret assumptions in engineering contexts.",
+        "Construct and evaluate point estimators, hypothesis tests, and confidence sets.",
+        "Build and diagnose linear and generalized linear regression models.",
+        "Apply model selection, regularization, and cross-validation for predictive performance.",
+        "Compare and deploy classification methods based on data characteristics and evaluation metrics."
+      ],
+      "modules": [
+        {
+          "code": "CH1",
+          "title": "Review of Probability Theory",
+          "description": "Events, conditional probability, random variables, expectation, transformations, and multivariate distributions as the foundation for inference.",
+          "link_label": "Open Handout",
+          "link_url": "assets/teaching/IEDA5270/handout.pdf"
+        },
+        {
+          "code": "CH2",
+          "title": "Properties of a Random Sample",
+          "description": "Sampling distributions, moment generating functions, order statistics, LLN/CLT, and delta-method approximations.",
+          "link_label": "Open Handout",
+          "link_url": "assets/teaching/IEDA5270/handout.pdf"
+        },
+        {
+          "code": "CH3",
+          "title": "Principles of Data Reduction",
+          "description": "Sufficient, minimal sufficient, and complete statistics, with factorization and exponential-family perspectives.",
+          "link_label": "Open Handout",
+          "link_url": "assets/teaching/IEDA5270/handout.pdf"
+        },
+        {
+          "code": "CH4",
+          "title": "Point Estimation",
+          "description": "Method of moments, maximum likelihood, Fisher information, Cramer-Rao bounds, and unbiased estimation under sufficiency/completeness.",
+          "link_label": "Open Handout",
+          "link_url": "assets/teaching/IEDA5270/handout.pdf"
+        },
+        {
+          "code": "CH5",
+          "title": "Hypothesis Testing",
+          "description": "Test construction, simple and composite hypotheses, UMP tests, likelihood-ratio methods, and sequential testing principles.",
+          "link_label": "Open Handout",
+          "link_url": "assets/teaching/IEDA5270/handout.pdf"
+        },
+        {
+          "code": "CH6",
+          "title": "Confidence Set",
+          "description": "Confidence-set construction via pivotal quantities and test inversion, plus asymptotic, bootstrap, and Bayesian intervals.",
+          "link_label": "Open Handout",
+          "link_url": "assets/teaching/IEDA5270/handout.pdf"
+        },
+        {
+          "code": "CH7",
+          "title": "Regression Models",
+          "description": "Multiple linear regression, least squares theory, inference, nested model tests, diagnostics, Box-Cox transforms, spline, and robust methods.",
+          "link_label": "Open Handout",
+          "link_url": "assets/teaching/IEDA5270/handout.pdf"
+        },
+        {
+          "code": "CH8",
+          "title": "Model Selection and Regularization",
+          "description": "Subset selection, ridge and lasso shrinkage, model criteria (Adjusted R2/Cp/AIC/BIC), and cross-validation workflows.",
+          "link_label": "Open Handout",
+          "link_url": "assets/teaching/IEDA5270/handout.pdf"
+        },
+        {
+          "code": "CH9",
+          "title": "Generalized Linear Model",
+          "description": "Logistic and Poisson regression, exponential-family formulation, estimation algorithms, and GLM inference/testing.",
+          "link_label": "Open Handout",
+          "link_url": "assets/teaching/IEDA5270/handout.pdf"
+        },
+        {
+          "code": "CH10",
+          "title": "Classification Methods",
+          "description": "LDA/QDA, k-NN, tree-based ensembles, and SVM methods for supervised classification tasks.",
+          "link_label": "Open Handout",
+          "link_url": "assets/teaching/IEDA5270/handout.pdf"
+        }
+      ]
     },
     {
       "slug": "ieda2540",

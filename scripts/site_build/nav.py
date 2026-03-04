@@ -1,6 +1,10 @@
 from __future__ import annotations
 
+import re
+from html import unescape
+
 from .common import (
+    INDEX_PATH,
     NAV_BLOG_END_MARKER,
     NAV_BLOG_START_MARKER,
     NAV_TEACHING_END_MARKER,
@@ -110,6 +114,46 @@ def build_blog_dropdown_items(
     items.append({"href": blog_index_href, "label": "View all posts"})
     return items
 
+def _normalized_text(markup: str) -> str:
+    plain = re.sub(r"<[^>]+>", "", markup)
+    return " ".join(unescape(plain).split())
+
+def update_index_teaching_title_links(published_courses: list[dict[str, str]]) -> None:
+    label_to_href = {
+        str(course["label"]).strip(): f"teaching/{str(course['slug']).strip()}.html"
+        for course in published_courses
+        if str(course.get("label", "")).strip() and str(course.get("slug", "")).strip()
+    }
+    if not label_to_href:
+        return
+
+    html_text = INDEX_PATH.read_text(encoding="utf-8")
+
+    title_pattern = re.compile(
+        r'(?P<prefix><p class="timeline-title">)(?P<inner>.*?)(?P<suffix></p>)',
+        re.DOTALL,
+    )
+
+    changed = False
+
+    def _replace(match: re.Match[str]) -> str:
+        nonlocal changed
+        label = _normalized_text(match.group("inner"))
+        href = label_to_href.get(label)
+        if not href:
+            return match.group(0)
+
+        replacement = (
+            f'{match.group("prefix")}<a href="{escape_html(href)}">{escape_html(label)}</a>{match.group("suffix")}'
+        )
+        if replacement != match.group(0):
+            changed = True
+        return replacement
+
+    updated_html = title_pattern.sub(_replace, html_text)
+    if changed:
+        INDEX_PATH.write_text(updated_html, encoding="utf-8")
+
 def update_index_nav_dropdowns(
     posts: list[dict[str, object]],
     courses: list[dict[str, object]],
@@ -138,4 +182,4 @@ def update_index_nav_dropdowns(
         NAV_BLOG_END_MARKER,
         render_nav_dropdown_items(blog_items),
     )
-
+    update_index_teaching_title_links(published_courses)
