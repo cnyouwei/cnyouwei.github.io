@@ -450,12 +450,7 @@
       var handleColorSchemeChange = function () {
         applyThemePreference('', true, 'system', { animate: true });
       };
-
-      if (typeof colorSchemeQuery.addEventListener === 'function') {
-        colorSchemeQuery.addEventListener('change', handleColorSchemeChange);
-      } else if (typeof colorSchemeQuery.addListener === 'function') {
-        colorSchemeQuery.addListener(handleColorSchemeChange);
-      }
+      SiteUtils.onMediaQueryChange(colorSchemeQuery, handleColorSchemeChange);
     }
 
     SiteUtils.on(window, 'themechange', syncThemeAwareImages);

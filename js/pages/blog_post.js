@@ -1,34 +1,16 @@
 (function (window) {
   var SiteApp = window.SiteApp || {};
   var SiteUtils = window.SiteUtils;
-  var FALLBACK_THEME_META = {
-    light: {
-      highlightVariant: 'light',
-      mermaidVariant: 'default',
-    },
-    dark: {
-      highlightVariant: 'dark',
-      mermaidVariant: 'dark',
-    },
-    cyberpunk: {
-      highlightVariant: 'dark',
-      mermaidVariant: 'dark',
-    },
-    solarized: {
-      highlightVariant: 'light',
-      mermaidVariant: 'default',
-    },
-  };
 
   function getSiteThemeApi() {
     if (!window.SiteTheme || typeof window.SiteTheme !== 'object') return null;
     return window.SiteTheme;
   }
 
-  function resolveFallbackTheme() {
-    var explicitTheme = document.documentElement.getAttribute('data-theme');
-    if (Object.prototype.hasOwnProperty.call(FALLBACK_THEME_META, explicitTheme)) {
-      return explicitTheme;
+  function resolveTheme() {
+    var siteTheme = getSiteThemeApi();
+    if (siteTheme && typeof siteTheme.resolveActiveTheme === 'function') {
+      return siteTheme.resolveActiveTheme();
     }
     if (
       typeof window.matchMedia === 'function' &&
@@ -37,14 +19,6 @@
       return 'dark';
     }
     return 'light';
-  }
-
-  function resolveTheme() {
-    var siteTheme = getSiteThemeApi();
-    if (siteTheme && typeof siteTheme.resolveActiveTheme === 'function') {
-      return siteTheme.resolveActiveTheme();
-    }
-    return resolveFallbackTheme();
   }
 
   function resolveThemeFromEvent(event) {
@@ -57,23 +31,17 @@
     ) {
       return detailTheme;
     }
-    if (Object.prototype.hasOwnProperty.call(FALLBACK_THEME_META, detailTheme)) {
-      return detailTheme;
-    }
     return resolveTheme();
   }
 
   function resolveThemeMeta(theme) {
     var siteTheme = getSiteThemeApi();
     if (siteTheme && typeof siteTheme.getThemeMeta === 'function') {
-      var themeMeta = siteTheme.getThemeMeta(theme);
-      if (themeMeta) return themeMeta;
+      return siteTheme.getThemeMeta(theme);
     }
-    var resolvedTheme = theme;
-    if (!Object.prototype.hasOwnProperty.call(FALLBACK_THEME_META, resolvedTheme)) {
-      resolvedTheme = resolveTheme();
-    }
-    return FALLBACK_THEME_META[resolvedTheme] || FALLBACK_THEME_META.light;
+    return theme === 'dark' || theme === 'cyberpunk'
+      ? { highlightVariant: 'dark', mermaidVariant: 'dark' }
+      : { highlightVariant: 'light', mermaidVariant: 'default' };
   }
 
   function copyTextToClipboard(text) {
@@ -430,134 +398,10 @@
     setViewportState(true);
 
     if (mobileQuery) {
-      if (typeof mobileQuery.addEventListener === 'function') {
-        mobileQuery.addEventListener('change', function () {
-          setViewportState(true);
-        });
-      } else if (typeof mobileQuery.addListener === 'function') {
-        mobileQuery.addListener(function () {
-          setViewportState(true);
-        });
-      }
-    }
-  }
-
-  function initRecentPosts() {
-    var recentPostsRoot = document.getElementById('recentPosts');
-    if (!recentPostsRoot) return;
-
-    function formatDate(dateString) {
-      var date = new Date(dateString + 'T00:00:00');
-      if (Number.isNaN(date.getTime())) return dateString;
-      return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
+      SiteUtils.onMediaQueryChange(mobileQuery, function () {
+        setViewportState(true);
       });
     }
-
-    function escapeHtml(value) {
-      return String(value)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-    }
-
-    function typesetMathIn(node) {
-      if (!node) return;
-
-      function tryTypeset() {
-        if (!window.MathJax || typeof window.MathJax.typesetPromise !== 'function') return false;
-        window.MathJax.typesetPromise([node]).catch(function () {});
-        return true;
-      }
-
-      if (tryTypeset()) return;
-
-      var attempts = 0;
-      var timer = window.setInterval(function () {
-        attempts += 1;
-        if (tryTypeset() || attempts >= 12) {
-          window.clearInterval(timer);
-        }
-      }, 150);
-    }
-
-    function renderRecentPosts(posts) {
-      if (!posts.length) {
-        recentPostsRoot.innerHTML = '<article class="blog-card"><h3>No posts yet</h3><p>Run `python3 scripts/build_site.py` after adding your first markdown post.</p></article>';
-        return;
-      }
-
-      recentPostsRoot.innerHTML = posts
-        .slice(0, 3)
-        .map(function (post) {
-          var tags = Array.isArray(post.tags) ? post.tags.slice(0, 2) : [];
-          var tagMarkup = tags
-            .map(function (tag) {
-              return '<span class="blog-tag">' + tag + '</span>';
-            })
-            .join('');
-
-          return (
-            '<article class="blog-card">' +
-            '<div class="blog-meta"><time datetime="' + post.date + '">' + formatDate(post.date) + '</time>' + tagMarkup + '</div>' +
-            '<h3><a href="blogs/' + post.slug + '.html">' + escapeHtml(post.title) + '</a></h3>' +
-            '<p>' + escapeHtml(post.summary) + '</p>' +
-            '<a href="blogs/' + post.slug + '.html">Read post</a>' +
-            '</article>'
-          );
-        })
-        .join('');
-
-      typesetMathIn(recentPostsRoot);
-    }
-
-    function loadPostsFromScriptTag() {
-      if (!window.__BLOG_POSTS__ || !Array.isArray(window.__BLOG_POSTS__)) return [];
-      return window.__BLOG_POSTS__;
-    }
-
-    function fetchPostsWithFallback() {
-      var candidates = ['blogs/posts.json', './blogs/posts.json', '/blogs/posts.json'];
-      var index = 0;
-
-      function next() {
-        if (index >= candidates.length) {
-          return Promise.reject(new Error('No post index found'));
-        }
-
-        var url = candidates[index];
-        index += 1;
-
-        return fetch(url, { cache: 'no-store' })
-          .then(function (response) {
-            if (!response.ok) throw new Error('Fetch failed');
-            return response.json();
-          })
-          .catch(function () {
-            return next();
-          });
-      }
-
-      return next();
-    }
-
-    var scriptPosts = loadPostsFromScriptTag();
-    if (scriptPosts.length > 0) {
-      renderRecentPosts(scriptPosts);
-      return;
-    }
-
-    fetchPostsWithFallback()
-      .then(function (posts) {
-        renderRecentPosts(Array.isArray(posts) ? posts : []);
-      })
-      .catch(function () {
-        recentPostsRoot.innerHTML = '<article class="blog-card"><h3>Blog unavailable</h3><p>The post index could not be loaded. Run `python3 scripts/build_site.py` and serve the site from the repository root.</p></article>';
-      });
   }
 
   function initHighlighting() {
@@ -749,11 +593,10 @@
       });
   }
 
-  SiteApp.initBlog = function initBlog() {
+  SiteApp.initBlogPost = function initBlogPost() {
     initCodeCopyButtons();
     initPostTocMobileToggle();
     initPostTocScrollSpy();
-    initRecentPosts();
     initHighlighting();
     initMermaid();
   };

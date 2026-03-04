@@ -14,6 +14,26 @@
     target.addEventListener(eventName, handler, options || false);
   };
 
+  SiteUtils.onMediaQueryChange = function (query, handler) {
+    if (!query || typeof handler !== 'function') return;
+    if (typeof query.addEventListener === 'function') {
+      query.addEventListener('change', handler);
+      return;
+    }
+    if (typeof query.addListener === 'function') {
+      query.addListener(handler);
+    }
+  };
+
+  SiteUtils.escapeHtml = function (value) {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  };
+
   SiteUtils.loadScript = function (src, attrs) {
     return new Promise(function (resolve, reject) {
       if (SiteUtils.qs('script[data-src="' + src + '"]')) {

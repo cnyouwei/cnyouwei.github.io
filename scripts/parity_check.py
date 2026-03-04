@@ -17,11 +17,10 @@ INDEX_PATH = ROOT_DIR / "index.html"
 MARKER_PAIRS = {
     "selected_papers": ("<!-- SELECTED-PAPERS:START -->", "<!-- SELECTED-PAPERS:END -->"),
     "research_content": ("<!-- RESEARCH-CONTENT:START -->", "<!-- RESEARCH-CONTENT:END -->"),
-    "nav_teaching_dropdown": (
-        "<!-- NAV-TEACHING-DROPDOWN:START -->",
-        "<!-- NAV-TEACHING-DROPDOWN:END -->",
+    "teaching_home_content": (
+        "<!-- TEACHING-HOME-CONTENT:START -->",
+        "<!-- TEACHING-HOME-CONTENT:END -->",
     ),
-    "nav_blog_dropdown": ("<!-- NAV-BLOG-DROPDOWN:START -->", "<!-- NAV-BLOG-DROPDOWN:END -->"),
 }
 
 
@@ -34,7 +33,6 @@ def generated_files() -> list[Path]:
     files = [INDEX_PATH]
     files.extend(sorted((ROOT_DIR / "blogs").glob("*.html")))
     files.extend(sorted((ROOT_DIR / "teaching").glob("*.html")))
-    files.append(ROOT_DIR / "blogs" / "posts.json")
     files.append(ROOT_DIR / "blogs" / "posts.js")
     # De-duplicate and keep stable ordering.
     uniq = sorted({path.resolve() for path in files if path.exists()})

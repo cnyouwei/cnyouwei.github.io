@@ -63,29 +63,10 @@
           <a class="nav-link" href="#home">Home</a>
           <a class="nav-link" href="#research">Research</a>
           <a class="nav-link" href="#talks">Talks</a>
-          <div class="nav-dropdown">
-            <button class="nav-link nav-dropdown__toggle" type="button" aria-haspopup="true" aria-expanded="false">Teaching</button>
-            <div class="nav-dropdown__menu" role="menu" aria-label="Teaching links">
-              <!-- NAV-TEACHING-DROPDOWN:START -->
-              <a class="nav-dropdown__item" href="teaching/index.html">Course Directory</a>
-              <a class="nav-dropdown__item" href="teaching/ieda5270.html">IEDA5270 Engineering Statistics</a>
-              <a class="nav-dropdown__item" href="teaching/ieda2540.html">IEDA2540 Statistics for Engineers</a>
-              <a class="nav-dropdown__item" href="teaching/real-analysis-2011.html">NJU Real Analysis Notes</a>
-              <!-- NAV-TEACHING-DROPDOWN:END -->
-            </div>
-          </div>
+          <a class="nav-link" href="#teaching">Teaching</a>
           <a class="nav-link" href="#team">Team</a>
           <a class="nav-link" href="#about">About</a>
-          <div class="nav-dropdown">
-            <button class="nav-link nav-dropdown__toggle" type="button" aria-haspopup="true" aria-expanded="false">Blog</button>
-            <div class="nav-dropdown__menu" role="menu" aria-label="Blog links">
-              <!-- NAV-BLOG-DROPDOWN:START -->
-              <a class="nav-dropdown__item" href="blogs/2026-02-09-latex_style_guide.html">LaTeX Style Guide for Operations Research</a>
-              <a class="nav-dropdown__item" href="blogs/2026-02-07-real_analysis.html">A Real Analysis Note</a>
-              <a class="nav-dropdown__item" href="blogs/index.html">View all posts</a>
-              <!-- NAV-BLOG-DROPDOWN:END -->
-            </div>
-          </div>
+          <a class="nav-link" href="#blog">Blog</a>
         </nav>
       </div>
     </div>
@@ -454,44 +435,55 @@
         <header class="section-header reveal-up">
           <p class="eyebrow">Courses</p>
           <h2>Teaching</h2>
-          <p class="section-copy">Visit the <a href="teaching/index.html">teaching directory</a> for course pages and materials.</p>
+          <p class="section-copy">Course pages and teaching materials.</p>
         </header>
 
-        <div class="split-grid reveal-up delay-1">
-          <article class="panel">
-            <h3>Courses</h3>
-            <div class="timeline">
-              <div class="timeline-item">
-                <p class="timeline-year">2026-present</p>
-                <p class="timeline-title">IEDA3250 Stochastic Models</p>
-              </div>
-              <div class="timeline-item">
-                <p class="timeline-year">2019-2025</p>
-                <p class="timeline-title"><a href="teaching/ieda5270.html">IEDA5270 Engineering Statistics</a></p>
-              </div>
-              <div class="timeline-item">
-                <p class="timeline-year">2020-present</p>
-                <p class="timeline-title"><a href="teaching/ieda2540.html">IEDA2540 Statistics for Engineers</a></p>
-              </div>
-              <div class="timeline-item">
-                <p class="timeline-year">2022</p>
-                <p class="timeline-title">EEMT5500 Applied Probability, Statistics and Data Analytics</p>
-              </div>
-            </div>
-          </article>
-
-          <article class="panel">
-            <h3>Lecture Notes</h3>
-            <div class="timeline">
-              <div class="timeline-item">
-                <p class="timeline-year">2011</p>
-                <p class="timeline-title"><a href="teaching/real-analysis-2011.html">Real Analysis</a></p>
-                <p class="timeline-copy">A set of real analysis notes originally written in Chinese at Nanjing University in 2011 and later translated into English.</p>
-                <div class="paper-links"><a href="assets/papers/Real_analysis.pdf" target="_blank" rel="noopener noreferrer">Original Chinese PDF</a><a href="assets/papers/Real_analysis_en.pdf" target="_blank" rel="noopener noreferrer">English version translated by ChatGPT in 2026</a></div>
-              </div>
-            </div>
-          </article>
-        </div>
+        <!-- TEACHING-HOME-CONTENT:START -->
+        <section class="module-section reveal-up delay-1" aria-label="Teaching courses">
+          <div class="module-grid">
+            <article class="module-card course-card">
+              <p class="timeline-year">2026–present</p>
+              <p class="course-institution">HKUST, Department of Industrial Engineering and Decision Analytics</p>
+              <p class="course-status is-soon">Coming Soon</p>
+              <h3>IEDA3250 Stochastic Models</h3>
+              <p>Stochastic-process modeling methods for engineering systems.</p>
+              <p class="muted">Course page coming soon.</p>
+            </article>
+            <article class="module-card course-card">
+              <p class="timeline-year">2019–present</p>
+              <p class="course-institution">HKUST, Department of Industrial Engineering and Decision Analytics</p>
+              <p class="course-status is-live">Published</p>
+              <h3>IEDA5270 Engineering Statistics</h3>
+              <p>Graduate-level statistical methodology for data-driven engineering.</p>
+              <a class="button" href="teaching/ieda5270.html">Open course page</a>
+            </article>
+            <article class="module-card course-card">
+              <p class="timeline-year">2020–2025</p>
+              <p class="course-institution">HKUST, Department of Industrial Engineering and Decision Analytics</p>
+              <p class="course-status is-live">Published</p>
+              <h3>IEDA2540 Statistics for Engineers</h3>
+              <p>Core statistics for engineers: uncertainty modeling, estimation, inference, and regression.</p>
+              <a class="button" href="teaching/ieda2540.html">Open course page</a>
+            </article>
+            <article class="module-card course-card">
+              <p class="timeline-year">2022</p>
+              <p class="course-institution">HKUST, Engineering Enterprise Management Program</p>
+              <p class="course-status is-soon">Coming Soon</p>
+              <h3>EEMT5500 Applied Probability, Statistics and Data Analytics</h3>
+              <p>Applied probability and statistical methods for engineering management contexts.</p>
+              <p class="muted">Course page coming soon.</p>
+            </article>
+            <article class="module-card course-card">
+              <p class="timeline-year">2011</p>
+              <p class="course-institution">Nanjing University, School of Mathematics</p>
+              <p class="course-status is-live">Published</p>
+              <h3>NJU Real Analysis Notes</h3>
+              <p>Real analysis notes written at Nanjing University, with an English translation and a companion blog post.</p>
+              <a class="button" href="teaching/real-analysis-2011.html">Open course page</a>
+            </article>
+          </div>
+        </section>
+        <!-- TEACHING-HOME-CONTENT:END -->
       </div>
     </section>
 
@@ -595,10 +587,6 @@
         </header>
 
         <div class="blog-grid" id="recentPosts" aria-live="polite"></div>
-
-        <div class="blog-actions reveal-up delay-1">
-          <a class="button" href="blogs/index.html">View all posts</a>
-        </div>
       </div>
     </section>
   </main>
@@ -639,7 +627,7 @@
   <script src="js/core/analytics.js" defer></script>
   <script src="js/core/back_to_top.js" defer></script>
   <script src="js/pages/research.js" defer></script>
-  <script src="js/pages/blog.js" defer></script>
+  <script src="js/pages/blog_home.js" defer></script>
   <script src="js/site.js" defer></script>
 </body>
 </html>

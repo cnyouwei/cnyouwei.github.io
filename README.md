@@ -4,31 +4,32 @@ This repository contains a static personal research website.
 
 ## Structure
 
-- `index.html`: Main website (home, research, talks, teaching, team, about, blog preview).
+- `index.html`: Main website (home, research, talks, teaching, team, about, blog).
 - `css/site.css`: Site styles (single file, organized by tokens/base/layout/components/pages/media).
 - `js/site.js`: Thin runtime bootstrap.
 - `js/core/*.js`: Shared runtime features (theme, nav, analytics, back-to-top, utils).
-- `js/pages/*.js`: Page-scoped features (research controls, blog enhancements).
+- `js/pages/research.js`: Home research filters/search/ordering behavior.
+- `js/pages/blog_home.js`: Home blog-card rendering from `window.__BLOG_POSTS__`.
+- `js/pages/blog_post.js`: Blog post enhancements (TOC, copy buttons, highlighting, Mermaid).
 - `content/research/papers.json`: Source of truth for working papers and publications.
 - `content/blog/*.md`: Source markdown files for blog posts.
-- `content/teaching/courses.json`: Source of truth for teaching directory and course pages.
+- `content/teaching/courses.json`: Source of truth for home teaching hub cards and course pages.
 - `requirements.txt`: Optional Python build dependencies for simpler markdown/template rendering.
 - `scripts/build_site.py`: Public build entrypoint.
 - `scripts/site_build/`: Internal build modules.
   - `cli.py`: Build orchestration.
   - `common.py`: Shared constants and utility helpers.
   - `index_ops.py`: Marker block replacement in `index.html`.
-  - `nav.py`: Shared nav dropdown rendering and index dropdown updates.
   - `markdown_render.py`: Front matter parsing + markdown rendering (library-first, fallback parser).
   - `blog.py`: Blog manifest generation and blog page rendering.
   - `research.py`: Research section rendering and selected-paper updates.
-  - `teaching.py`: Teaching directory and per-course page rendering.
+  - `teaching.py`: Home teaching hub rendering and per-course page rendering.
   - `template_engine.py`: Template rendering (Jinja2 if installed, fallback renderer otherwise).
   - `templates.py`: Shared injected snippet helpers (theme bootstrap, MathJax config, fonts).
 - `scripts/templates/`: HTML templates and partials used by the generator.
 - `scripts/parity_check.py`: Snapshot/check utility for generated-output parity.
-- `blogs/`: Generated blog output (`index.html`, post pages, `posts.json`, and `posts.js`).
-- `teaching/`: Generated teaching output (`index.html` and per-course pages).
+- `blogs/`: Generated blog output (post pages and `posts.js` manifest).
+- `teaching/`: Generated teaching output (per-course pages only).
 
 ## Build
 
@@ -82,8 +83,7 @@ The checker validates:
 - Marker block contents in `index.html` for:
   - `SELECTED-PAPERS`
   - `RESEARCH-CONTENT`
-  - `NAV-TEACHING-DROPDOWN`
-  - `NAV-BLOG-DROPDOWN`
+  - `TEACHING-HOME-CONTENT`
 
 ## Manage Research Papers
 
@@ -114,7 +114,7 @@ python3 scripts/build_site.py
 title: My New Note
 date: 2026-02-10
 eyebrow: Research Notes
-summary: One-sentence summary shown on the blog index and homepage.
+summary: One-sentence summary shown on the homepage blog section.
 tags: [queueing, teaching]
 ---
 
@@ -136,7 +136,7 @@ python3 scripts/build_site.py
 1. Edit `content/teaching/courses.json`.
 2. For each course, set:
    - `published: true` to generate a course page at `teaching/<slug>.html`
-   - `published: false` to show it as "Coming Soon" in the teaching directory
+   - `published: false` to show it as "Coming Soon" in the home `#teaching` hub
 3. For published courses, you can define:
    - `institution`, `overview`, `audience`, `prerequisites`, `outcomes`
    - `modules` with `code`, `title`, `description`, `link_label`, and `link_url`

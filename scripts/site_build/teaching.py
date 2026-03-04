@@ -3,15 +3,18 @@ from __future__ import annotations
 import json
 import re
 
-from .common import TEACHING_DATA_PATH, TEACHING_OUTPUT_DIR, escape_html, indent_block, read_ga_measurement_id
-from .nav import (
-    build_blog_dropdown_items,
-    build_teaching_dropdown_items,
-    published_courses_for_nav,
-    render_nav_dropdown,
+from .common import (
+    TEACHING_DATA_PATH,
+    TEACHING_HOME_END_MARKER,
+    TEACHING_HOME_START_MARKER,
+    TEACHING_OUTPUT_DIR,
+    escape_html,
+    indent_block,
+    read_ga_measurement_id,
 )
+from .index_ops import update_index_block
+from .page_context import build_base_context
 from .template_engine import render_template
-from .templates import font_stylesheet_href, theme_bootstrap_script
 
 
 def ensure_list_of_strings(value: object) -> list[str]:
@@ -93,46 +96,9 @@ def load_teaching_data() -> list[dict[str, object]]:
     return normalized
 
 
-def _base_context(
-    *,
-    ga_id: str,
-    page_id: str,
-    page_title: str,
-    meta_description: str,
-    nav_teaching_html: str,
-    nav_blog_html: str,
-    main_html: str,
-) -> dict[str, str]:
-    return {
-        "ga_id": escape_html(ga_id),
-        "page_id": escape_html(page_id),
-        "page_title": page_title,
-        "meta_description": meta_description,
-        "fonts_href": font_stylesheet_href(include_cn=True),
-        "theme_bootstrap_html": theme_bootstrap_script(),
-        "css_href": "../css/site.css",
-        "brand_href": "../index.html#home",
-        "home_href": "../index.html#home",
-        "research_href": "../index.html#research",
-        "talks_href": "../index.html#talks",
-        "team_href": "../index.html#team",
-        "about_href": "../index.html#about",
-        "nav_teaching_html": indent_block(nav_teaching_html, "          "),
-        "nav_blog_html": indent_block(nav_blog_html, "          "),
-        "main_html": main_html,
-        "js_prefix": "../js/",
-        "extra_head_html": "",
-        "extra_before_scripts_html": "",
-        "extra_after_scripts_html": "",
-    }
-
-
-def teaching_index_template(
-    courses: list[dict[str, object]],
-    ga_id: str,
-    recent_posts: list[dict[str, str]],
-) -> str:
+def render_home_teaching_markup(courses: list[dict[str, object]]) -> str:
     cards: list[str] = []
+
     for course in courses:
         code = escape_html(str(course["code"]))
         title = escape_html(str(course["title"]))
@@ -143,7 +109,7 @@ def teaching_index_template(
         published = bool(course.get("published", False))
 
         action = (
-            f'<a class="button" href="./{slug}.html">Open course page</a>'
+            f'<a class="button" href="teaching/{slug}.html">Open course page</a>'
             if published
             else '<p class="muted">Course page coming soon.</p>'
         )
@@ -165,65 +131,45 @@ def teaching_index_template(
             )
         )
 
-    cards_html = "\n".join(cards)
-    if not cards_html:
-        cards_html = (
+    if not cards:
+        cards.append(
             '<article class="module-card course-card"><h3>No courses yet</h3>'
-            "<p>Add entries to content/teaching/courses.json and rebuild.</p></article>"
+            '<p>Add entries to content/teaching/courses.json and rebuild.</p></article>'
         )
 
-    teaching_dropdown_items = build_teaching_dropdown_items(
-        directory_href="./index.html",
-        course_href_prefix="./",
-        published_courses=published_courses_for_nav(courses),
-    )
-    blog_dropdown_items = build_blog_dropdown_items(
-        blog_index_href="../blogs/index.html",
-        post_href_prefix="../blogs/",
-        recent_posts=recent_posts,
-    )
-
-    teaching_dropdown = render_nav_dropdown(
-        "Teaching",
-        teaching_dropdown_items,
-        active=True,
-        active_href="./index.html",
-    )
-    blog_dropdown = render_nav_dropdown("Blog", blog_dropdown_items)
-
-    main_html = render_template(
-        "pages/teaching_index.html.j2",
-        {
-            "cards_html": indent_block(cards_html, "          "),
-        },
+    cards_html = "\n".join(cards)
+    return "\n".join(
+        [
+            '<section class="module-section reveal-up delay-1" aria-label="Teaching courses">',
+            '  <div class="module-grid">',
+            indent_block(cards_html, "    "),
+            "  </div>",
+            "</section>",
+        ]
     )
 
-    return render_template(
-        "base.html.j2",
-        _base_context(
-            ga_id=ga_id,
-            page_id="teaching-index",
-            page_title="Teaching | Wei You",
-            meta_description="Course pages and teaching materials by Wei You.",
-            nav_teaching_html=teaching_dropdown,
-            nav_blog_html=blog_dropdown,
-            main_html=main_html,
-        ),
+
+def update_home_teaching_section(courses: list[dict[str, object]]) -> None:
+    update_index_block(
+        TEACHING_HOME_START_MARKER,
+        TEACHING_HOME_END_MARKER,
+        render_home_teaching_markup(courses),
     )
 
 
 def teaching_course_template(
     course: dict[str, object],
     ga_id: str,
-    recent_posts: list[dict[str, str]],
-    published_courses: list[dict[str, str]],
 ) -> str:
-    code = escape_html(str(course["code"]))
-    title = escape_html(str(course["title"]))
+    raw_code = str(course["code"]).strip()
+    raw_title = str(course["title"]).strip()
+    code = escape_html(raw_code)
+    title = escape_html(raw_title)
     period = escape_html(str(course["period"]))
     institution = escape_html(str(course.get("institution", "")).strip() or "Institution TBD")
-    summary = escape_html(str(course.get("summary", "")).strip())
-    overview = escape_html(str(course.get("overview", "")).strip() or str(course.get("summary", "")).strip())
+    summary_raw = str(course.get("summary", "")).strip()
+    summary = escape_html(summary_raw)
+    overview = escape_html(str(course.get("overview", "")).strip() or summary_raw)
     audience = escape_html(str(course.get("audience", "")).strip() or "Undergraduate/graduate students.")
     prerequisites = escape_html(str(course.get("prerequisites", "")).strip() or "See syllabus.")
 
@@ -266,26 +212,6 @@ def teaching_course_template(
     if not outcomes_items:
         outcomes_items = "<li>Learning outcomes will be posted soon.</li>"
 
-    current_slug = str(course["slug"]).strip()
-    teaching_dropdown_items = build_teaching_dropdown_items(
-        directory_href="./index.html",
-        course_href_prefix="./",
-        published_courses=published_courses,
-    )
-    blog_dropdown_items = build_blog_dropdown_items(
-        blog_index_href="../blogs/index.html",
-        post_href_prefix="../blogs/",
-        recent_posts=recent_posts,
-    )
-
-    teaching_dropdown = render_nav_dropdown(
-        "Teaching",
-        teaching_dropdown_items,
-        active=True,
-        active_href=f"./{current_slug}.html",
-    )
-    blog_dropdown = render_nav_dropdown("Blog", blog_dropdown_items)
-
     main_html = render_template(
         "pages/teaching_course.html.j2",
         {
@@ -302,27 +228,37 @@ def teaching_course_template(
 
     return render_template(
         "base.html.j2",
-        _base_context(
+        build_base_context(
             ga_id=ga_id,
             page_id="teaching-course",
-            page_title=f"{code} {title} | Teaching",
-            meta_description=summary,
-            nav_teaching_html=teaching_dropdown,
-            nav_blog_html=blog_dropdown,
+            page_title=f"{raw_code} {raw_title} | Teaching",
+            meta_description=summary_raw,
+            include_cn_fonts=True,
+            css_href="../css/site.css",
+            js_prefix="../js/",
+            brand_href="../index.html#home",
+            home_href="../index.html#home",
+            research_href="../index.html#research",
+            talks_href="../index.html#talks",
+            teaching_href="../index.html#teaching",
+            team_href="../index.html#team",
+            about_href="../index.html#about",
+            blog_href="../index.html#blog",
             main_html=main_html,
+            page_scripts=[],
         ),
     )
 
 
-def build_teaching(courses: list[dict[str, object]], recent_posts: list[dict[str, str]]) -> int:
+def build_teaching(courses: list[dict[str, object]]) -> int:
     ga_id = read_ga_measurement_id()
-    published_courses = published_courses_for_nav(courses)
+
+    update_home_teaching_section(courses)
 
     TEACHING_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    (TEACHING_OUTPUT_DIR / "index.html").write_text(
-        teaching_index_template(courses, ga_id, recent_posts),
-        encoding="utf-8",
-    )
+    stale_index_path = TEACHING_OUTPUT_DIR / "index.html"
+    if stale_index_path.exists():
+        stale_index_path.unlink()
 
     generated = 0
     for course in courses:
@@ -334,13 +270,12 @@ def build_teaching(courses: list[dict[str, object]], recent_posts: list[dict[str
             teaching_course_template(
                 course,
                 ga_id,
-                recent_posts,
-                published_courses,
             ),
             encoding="utf-8",
         )
         generated += 1
 
-    print(f"Built teaching directory from {len(courses)} course entry(ies).")
-    print(f"Generated: teaching/index.html and {generated} course page(s).")
+    print(f"Built teaching home section from {len(courses)} course entry(ies).")
+    print(f"Generated: {generated} teaching course page(s).")
+    print("Updated: index.html")
     return len(courses)
