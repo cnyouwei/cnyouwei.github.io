@@ -16,6 +16,11 @@
   --pop-color-hover: #0f766e;
   --ui-active-bg: #c5defd;
   --ui-active-border: #0b3f6f;
+  --ui-selector-hover-bg: color-mix(in srgb, var(--surface-soft) 82%, var(--surface) 18%);
+  --ui-selector-hover-contour: color-mix(in srgb, var(--line) 74%, var(--line-strong) 26%);
+  --ui-selector-active-bg: color-mix(in srgb, var(--surface-soft) 58%, var(--line) 42%);
+  --ui-selector-active-contour: color-mix(in srgb, var(--line-strong) 68%, var(--text) 32%);
+  --ui-selector-active-ring: color-mix(in srgb, var(--ui-selector-active-contour) 32%, transparent);
   --toc-floating-tint: var(--accent);
   --toc-floating-accent: var(--primary);
   --glass-header-bg: color-mix(in srgb, var(--surface) 66%, transparent);
@@ -562,10 +567,18 @@ img {
   cursor: pointer;
 }
 
-.nav-link:hover,
+.nav-link:hover {
+  color: var(--text);
+  background: var(--ui-selector-hover-bg);
+  box-shadow: inset 0 0 0 1px var(--ui-selector-hover-contour);
+}
+
 .nav-link.is-active {
   color: var(--text);
-  background: var(--ui-active-bg);
+  background: var(--ui-selector-active-bg);
+  box-shadow:
+    inset 0 0 0 1px var(--ui-selector-active-contour),
+    0 0 0 1px var(--ui-selector-active-ring);
 }
 
 .theme-toggle,
@@ -673,11 +686,17 @@ img {
 }
 
 .theme-hidden-menu__item:hover,
-.theme-hidden-menu__item:focus-visible,
+.theme-hidden-menu__item:focus-visible {
+  color: var(--text);
+  background: var(--ui-selector-hover-bg);
+  border-color: var(--ui-selector-hover-contour);
+}
+
 .theme-hidden-menu__item.is-active {
   color: var(--text);
-  background: var(--ui-active-bg);
-  border-color: color-mix(in srgb, var(--ui-active-border) 45%, var(--line) 55%);
+  background: var(--ui-selector-active-bg);
+  border-color: var(--ui-selector-active-contour);
+  box-shadow: 0 0 0 1px var(--ui-selector-active-ring);
 }
 
 .theme-hidden-menu__item:focus-visible {
@@ -798,8 +817,9 @@ img {
 
 .hero-note {
   margin-top: 1rem;
-  border-left: 3px solid var(--ui-active-border);
-  background: var(--ui-active-bg);
+  border-left: 3px solid color-mix(in srgb, var(--line-strong) 52%, var(--line) 48%);
+  background: color-mix(in srgb, var(--surface-soft) 54%, var(--surface) 46%);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--line) 62%, transparent);
   border-radius: var(--radius-0) var(--radius-2) var(--radius-2) var(--radius-0);
   padding: 0.7rem 0.9rem;
 }
@@ -902,12 +922,21 @@ img {
 }
 
 .filter-btn:hover,
+.order-btn:hover {
+  color: var(--text);
+  border-color: var(--ui-selector-hover-contour);
+  background: var(--ui-selector-hover-bg);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ui-selector-hover-contour) 42%, transparent);
+}
+
 .filter-btn.active,
-.order-btn:hover,
 .order-btn.active {
   color: var(--text);
-  border-color: var(--ui-active-border);
-  background: var(--ui-active-bg);
+  border-color: var(--ui-selector-active-contour);
+  background: var(--ui-selector-active-bg);
+  box-shadow:
+    inset 0 0 0 1px var(--ui-selector-active-contour),
+    0 0 0 1px var(--ui-selector-active-ring);
 }
 
 .search input {
@@ -1557,7 +1586,8 @@ img {
 
 .post-toc__link:hover {
   color: var(--text);
-  background: var(--ui-active-bg);
+  background: var(--ui-selector-hover-bg);
+  box-shadow: inset 0 0 0 1px var(--ui-selector-hover-contour);
 }
 
 .post-toc__link:focus-visible {
@@ -1567,7 +1597,10 @@ img {
 
 .post-toc__link.is-active {
   color: var(--text);
-  background: var(--ui-active-bg);
+  background: var(--ui-selector-active-bg);
+  box-shadow:
+    inset 0 0 0 1px var(--ui-selector-active-contour),
+    0 0 0 1px var(--ui-selector-active-ring);
   font-weight: 700;
 }
 
@@ -1924,6 +1957,20 @@ img {
   gap: 0.42rem;
 }
 
+.course-card .button:hover {
+  background: var(--ui-selector-hover-bg);
+  border-color: var(--ui-selector-hover-contour);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ui-selector-hover-contour) 42%, transparent);
+}
+
+.course-card .button:active {
+  background: var(--ui-selector-active-bg);
+  border-color: var(--ui-selector-active-contour);
+  box-shadow:
+    inset 0 0 0 1px var(--ui-selector-active-contour),
+    0 0 0 1px var(--ui-selector-active-ring);
+}
+
 .course-status {
   margin: 0;
   font-size: 0.76rem;
@@ -2249,8 +2296,11 @@ img {
   }
 
   .post-toc__nav.is-floating .post-toc__link.is-active {
-    background: var(--surface-soft);
+    background: var(--ui-selector-active-bg);
     color: var(--text);
+    box-shadow:
+      inset 0 0 0 1px var(--ui-selector-active-contour),
+      0 0 0 1px var(--ui-selector-active-ring);
   }
 
   :root[data-theme="solarized"] .back-to-top {
