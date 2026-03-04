@@ -59,10 +59,17 @@ Build command contract is unchanged:
 python3 scripts/build_site.py
 ```
 
-Optional GA configuration (for non-placeholder analytics IDs):
+Default GA configuration:
 
 ```bash
-export WY_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+# Defaults to G-W043BW5W9F when WY_GA_MEASUREMENT_ID is unset.
+python3 scripts/build_site.py
+```
+
+Optional override:
+
+```bash
+export WY_GA_MEASUREMENT_ID=G-YYYYYYYYYY
 python3 scripts/build_site.py
 ```
 

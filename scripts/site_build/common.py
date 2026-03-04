@@ -20,6 +20,7 @@ TEACHING_DATA_PATH = ROOT_DIR / "content" / "teaching" / "courses.json"
 TEACHING_OUTPUT_DIR = ROOT_DIR / "teaching"
 
 GA_ID_PLACEHOLDER = "G-XXXXXXXXXX"
+GA_ID_DEFAULT = "G-W043BW5W9F"
 GA_MEASUREMENT_ID_ENV = "WY_GA_MEASUREMENT_ID"
 
 BADGE_LABELS = {
@@ -34,7 +35,7 @@ def escape_html(text: str) -> str:
 
 def read_ga_measurement_id() -> str:
     value = os.environ.get(GA_MEASUREMENT_ID_ENV, "").strip()
-    return value if value else GA_ID_PLACEHOLDER
+    return value if value else GA_ID_DEFAULT
 
 def format_date(date_string: str) -> str:
     try:
