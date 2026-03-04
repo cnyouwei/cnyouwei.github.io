@@ -33,7 +33,7 @@
         </div>
       </div>
 
-      <div class="container spotlight reveal-up delay-2">
+      <div class="container spotlight card-surface reveal-up delay-2">
         <h2>Selected Papers</h2>
         {{ selected_papers_html }}
       </div>
@@ -46,7 +46,7 @@
           <h2>Research</h2>
         </header>
 
-        <div class="controls reveal-up delay-1">
+        <div class="controls card-surface reveal-up delay-1">
           <div class="filters" role="tablist" aria-label="Paper filters">
             <button class="filter-btn active" type="button" data-filter="all">All</button>
             <button class="filter-btn" type="button" data-filter="working">Working</button>
@@ -75,7 +75,7 @@
         </header>
 
         <div class="split-grid reveal-up delay-1">
-          <article class="panel">
+          <article class="panel card-surface">
             <h3>Conference Talks</h3>
             <p class="muted">(* Presented by co-authors)</p>
             <ul class="stack-list">
@@ -96,7 +96,7 @@
             </ul>
           </article>
 
-          <article class="panel">
+          <article class="panel card-surface">
             <h3>Invited Talks</h3>
             <ul class="stack-list">
               <li>Miami Herbert Business School, University of Miami, 2025</li>
@@ -140,25 +140,25 @@
         </header>
 
         <div class="team-wrap reveal-up delay-1">
-          <article class="panel">
+          <article class="panel card-surface">
             <h3>Current Students</h3>
             <div class="student-grid">
-              <div class="student-card"><p class="student-name">Xinyu Liu</p><p class="student-note">Ph.D. (2024-present)</p></div>
-              <div class="student-card"><p class="student-name">Yueying Hu</p><p class="student-note">Ph.D. (2024-present)</p></div>
-              <div class="student-card"><p class="student-name">Qiaoqiao Wang</p><p class="student-note">Ph.D. (2023-present)</p></div>
-              <div class="student-card"><p class="student-name">Ke Lu</p><p class="student-note">MPhil (2023-present)</p></div>
+              <div class="student-card card-surface"><p class="student-name">Xinyu Liu</p><p class="student-note">Ph.D. (2024-present)</p></div>
+              <div class="student-card card-surface"><p class="student-name">Yueying Hu</p><p class="student-note">Ph.D. (2024-present)</p></div>
+              <div class="student-card card-surface"><p class="student-name">Qiaoqiao Wang</p><p class="student-note">Ph.D. (2023-present)</p></div>
+              <div class="student-card card-surface"><p class="student-name">Ke Lu</p><p class="student-note">MPhil (2023-present)</p></div>
             </div>
           </article>
 
-          <article class="panel">
+          <article class="panel card-surface">
             <h3>Former Students</h3>
             <div class="student-grid">
-              <div class="student-card">
+              <div class="student-card card-surface">
                 <p class="student-name">Zihao Wang</p>
                 <p class="student-note">Ph.D. (2019-2023)</p>
                 <p class="student-placement">First placement: Equity Derivatives Quant, Bank of America.</p>
               </div>
-              <div class="student-card">
+              <div class="student-card card-surface">
                 <p class="student-name">Yingxian Wu</p>
                 <p class="student-note">MPhil at HKUST(GZ) (2020-2022), co-advised with Sisi Jian</p>
                 <p class="student-placement">First placement: Investment Risk Management Assistant, E Fund Management Co., LTD.</p>
@@ -177,7 +177,7 @@
         </header>
 
         <div class="split-grid reveal-up delay-1">
-          <article class="panel">
+          <article class="panel card-surface">
             <h3>Bio</h3>
             <p>
               Wei You is an assistant professor of <a href="https://ieda.ust.hk/" target="_blank" rel="noopener noreferrer">Industrial Engineering and Decision Analytics</a>
@@ -192,15 +192,15 @@
             </p>
           </article>
 
-          <article class="panel">
+          <article class="panel card-surface">
             <h3>Education</h3>
             <div class="timeline">
-              <div class="timeline-item">
+              <div class="timeline-item card-surface">
                 <p class="timeline-year">2014-2019</p>
                 <p class="timeline-title">Ph.D. in Operations Research</p>
                 <p class="timeline-copy">Columbia University, New York, NY, USA. Thesis: <a href="assets/papers/Thesis_WYou.pdf" target="_blank" rel="noopener noreferrer">A Robust Queueing Network Analyzer Based on Indices of Dispersion</a>.</p>
               </div>
-              <div class="timeline-item">
+              <div class="timeline-item card-surface">
                 <p class="timeline-year">2010-2014</p>
                 <p class="timeline-title">B.S. in Mathematics</p>
                 <p class="timeline-copy">Nanjing University, Nanjing, China.</p>
@@ -209,7 +209,7 @@
           </article>
         </div>
 
-        <article class="panel about-interests reveal-up delay-2">
+        <article class="panel card-surface about-interests reveal-up delay-2">
           <h3>Research Interests</h3>
           <div class="tag-cloud">
             <span class="tag">Stochastic Models</span>
@@ -231,7 +231,9 @@
           <!-- <p class="section-copy">Research notes, teaching reflections, and project updates.</p> -->
         </header>
 
-        <div class="blog-grid" id="recentPosts" aria-live="polite"></div>
+        <div class="blog-grid" id="recentPosts" aria-live="polite">
+{{ recent_posts_html }}
+        </div>
       </div>
     </section>
   </main>

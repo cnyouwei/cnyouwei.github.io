@@ -1,0 +1,9 @@
+<ul class="simple-list">
+{% for paper in selected_papers %}
+{% if paper.url %}
+  <li><span class="paper-year">{{ paper.year }}</span> <a href="{{ paper.url }}" target="_blank" rel="noopener noreferrer">{{ paper.title }}</a></li>
+{% else %}
+  <li><span class="paper-year">{{ paper.year }}</span> {{ paper.title }}</li>
+{% endif %}
+{% endfor %}
+</ul>

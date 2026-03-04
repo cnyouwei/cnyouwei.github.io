@@ -27,7 +27,7 @@
     if (SiteTheme && typeof SiteTheme.getThemeMeta === 'function') {
       return SiteTheme.getThemeMeta(theme);
     }
-    return theme === 'dark' || theme === 'cyberpunk'
+    return theme === 'dark'
       ? { highlightVariant: 'dark', mermaidVariant: 'dark' }
       : { highlightVariant: 'light', mermaidVariant: 'default' };
   }
@@ -277,72 +277,32 @@
     var mobileQuery =
       typeof window.matchMedia === 'function' ? window.matchMedia('(max-width: 1024px)') : null;
 
-    var backdrop = SiteUtils.qs('.post-toc__backdrop');
-    if (!(backdrop instanceof HTMLElement)) {
-      backdrop = document.createElement('div');
-      backdrop.className = 'post-toc__backdrop';
-      document.body.appendChild(backdrop);
-    }
-
-    function mountFloatingControls() {
-      if (!toggle.classList.contains('is-floating')) toggle.classList.add('is-floating');
-      if (!nav.classList.contains('is-floating')) nav.classList.add('is-floating');
-      if (toggle.parentElement !== document.body) document.body.appendChild(toggle);
-      if (nav.parentElement !== document.body) document.body.appendChild(nav);
-    }
-
-    function restoreInlineControls() {
-      toggle.classList.remove('is-floating');
-      nav.classList.remove('is-floating');
-
-      if (toggle.parentElement !== head) {
-        head.appendChild(toggle);
-      }
-
-      if (nav.parentElement !== toc || nav.previousElementSibling !== head) {
-        if (head.nextSibling) {
-          toc.insertBefore(nav, head.nextSibling);
-        } else {
-          toc.appendChild(nav);
-        }
-      }
-    }
-
     function isMobileViewport() {
       return !!mobileQuery && mobileQuery.matches;
     }
 
     function setOpen(isOpen) {
       var open = !!isOpen;
-      var mobileActive = isMobileViewport();
       toc.classList.toggle('is-open', open);
       toggle.classList.toggle('is-open', open);
       nav.classList.toggle('is-open', open);
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
       toggle.textContent = open ? 'Close' : 'Contents';
-      backdrop.classList.toggle('is-visible', open && mobileActive);
-      document.body.classList.toggle('is-toc-open', open && mobileActive);
     }
 
-    function setViewportState(closeOnMobile) {
+    function setViewportState() {
       if (isMobileViewport()) {
-        mountFloatingControls();
         toc.classList.add('is-collapsible');
-        setOpen(!closeOnMobile && toc.classList.contains('is-open'));
+        setOpen(toc.classList.contains('is-open'));
         return;
       }
 
-      restoreInlineControls();
       toc.classList.remove('is-collapsible');
       setOpen(true);
     }
 
     SiteUtils.on(toggle, 'click', function () {
       setOpen(!toc.classList.contains('is-open'));
-    });
-
-    SiteUtils.on(backdrop, 'click', function () {
-      if (isMobileViewport()) setOpen(false);
     });
 
     SiteUtils.on(document, 'keydown', function (event) {
@@ -357,11 +317,11 @@
       });
     });
 
-    setViewportState(true);
+    setViewportState();
 
     if (mobileQuery) {
       SiteUtils.onMediaQueryChange(mobileQuery, function () {
-        setViewportState(true);
+        setViewportState();
       });
     }
   }

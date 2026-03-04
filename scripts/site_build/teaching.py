@@ -3,13 +3,7 @@ from __future__ import annotations
 import json
 import re
 
-from .common import (
-    TEACHING_DATA_PATH,
-    TEACHING_OUTPUT_DIR,
-    escape_html,
-    indent_block,
-    read_ga_measurement_id,
-)
+from .common import TEACHING_DATA_PATH, TEACHING_OUTPUT_DIR, escape_html
 from .page_context import build_subpage_context
 from .template_engine import render_template
 
@@ -94,55 +88,31 @@ def load_teaching_data() -> list[dict[str, object]]:
 
 
 def render_home_teaching_markup(courses: list[dict[str, object]]) -> str:
-    cards: list[str] = []
+    normalized_courses: list[dict[str, object]] = []
 
     for course in courses:
         code = escape_html(str(course["code"]))
         title = escape_html(str(course["title"]))
-        period = escape_html(str(course["period"]))
-        institution = escape_html(str(course.get("institution", "")).strip() or "Institution TBD")
-        summary = escape_html(str(course.get("summary", "")).strip() or "Course page in preparation.")
-        slug = escape_html(str(course["slug"]))
-        published = bool(course.get("published", False))
-
-        action = (
-            f'<a class="button" href="teaching/{slug}.html">Open course page</a>'
-            if published
-            else '<p class="muted">Course page coming soon.</p>'
-        )
-        status = "Published" if published else "Coming Soon"
-        status_class = "is-live" if published else "is-soon"
-
-        cards.append(
-            "\n".join(
-                [
-                    '<article class="module-card course-card">',
-                    f'  <p class="timeline-year">{period}</p>',
-                    f'  <p class="course-institution">{institution}</p>',
-                    f'  <p class="course-status {status_class}">{status}</p>',
-                    f"  <h3>{code} {title}</h3>",
-                    f"  <p>{summary}</p>",
-                    f"  {action}",
-                    "</article>",
-                ]
-            )
+        normalized_courses.append(
+            {
+                "period": escape_html(str(course["period"])),
+                "institution": escape_html(
+                    str(course.get("institution", "")).strip() or "Institution TBD"
+                ),
+                "status": "Published" if bool(course.get("published", False)) else "Coming Soon",
+                "status_class": "is-live" if bool(course.get("published", False)) else "is-soon",
+                "heading": f"{code} {title}",
+                "summary": escape_html(
+                    str(course.get("summary", "")).strip() or "Course page in preparation."
+                ),
+                "slug": escape_html(str(course["slug"])),
+                "published": bool(course.get("published", False)),
+            }
         )
 
-    if not cards:
-        cards.append(
-            '<article class="module-card course-card"><h3>No courses yet</h3>'
-            '<p>Add entries to content/teaching/courses.json and rebuild.</p></article>'
-        )
-
-    cards_html = "\n".join(cards)
-    return "\n".join(
-        [
-            '<section class="module-section reveal-up delay-1" aria-label="Teaching courses">',
-            '  <div class="module-grid">',
-            indent_block(cards_html, "    "),
-            "  </div>",
-            "</section>",
-        ]
+    return render_template(
+        "partials/teaching_home_cards.html.j2",
+        {"courses": normalized_courses},
     )
 
 
@@ -157,49 +127,39 @@ def teaching_course_template(
     period = escape_html(str(course["period"]))
     institution = escape_html(str(course.get("institution", "")).strip() or "Institution TBD")
     summary_raw = str(course.get("summary", "")).strip()
-    summary = escape_html(summary_raw)
     overview = escape_html(str(course.get("overview", "")).strip() or summary_raw)
     audience = escape_html(str(course.get("audience", "")).strip() or "Undergraduate/graduate students.")
     prerequisites = escape_html(str(course.get("prerequisites", "")).strip() or "See syllabus.")
 
-    outcomes = ensure_list_of_strings(course.get("outcomes", []))
-    modules = course.get("modules", [])
-    if not isinstance(modules, list):
-        modules = []
+    outcomes = [escape_html(item) for item in ensure_list_of_strings(course.get("outcomes", []))]
 
-    module_cards: list[str] = []
-    for module in modules:
-        if not isinstance(module, dict):
-            continue
-        module_code = escape_html(str(module.get("code", "")).strip())
-        module_title = escape_html(str(module.get("title", "")).strip())
-        module_desc = escape_html(str(module.get("description", "")).strip())
-        link_label = escape_html(str(module.get("link_label", "")).strip() or "Open resource")
-        link_url = normalize_teaching_path(str(module.get("link_url", "")).strip())
-        safe_url = escape_html(link_url)
-        module_cards.append(
-            "\n".join(
-                [
-                    '<article class="module-card">',
-                    f'  <p class="module-code">{module_code}</p>',
-                    f"  <h3>{module_title}</h3>",
-                    f"  <p>{module_desc}</p>",
-                    f'  <a class="button" href="{safe_url}" target="_blank" rel="noopener noreferrer">{link_label}</a>',
-                    "</article>",
-                ]
+    modules_raw = course.get("modules", [])
+    modules: list[dict[str, str]] = []
+    if isinstance(modules_raw, list):
+        for module in modules_raw:
+            if not isinstance(module, dict):
+                continue
+            link_url = normalize_teaching_path(str(module.get("link_url", "")).strip())
+            modules.append(
+                {
+                    "code": escape_html(str(module.get("code", "")).strip()),
+                    "title": escape_html(str(module.get("title", "")).strip()),
+                    "description": escape_html(str(module.get("description", "")).strip()),
+                    "link_label": escape_html(
+                        str(module.get("link_label", "")).strip() or "Open resource"
+                    ),
+                    "url": escape_html(link_url),
+                }
             )
-        )
 
-    modules_html = "\n".join(module_cards)
-    if not modules_html:
-        modules_html = (
-            '<article class="module-card"><h3>No modules published yet</h3>'
-            "<p>Materials will be added here when available.</p></article>"
-        )
-
-    outcomes_items = "".join(f"<li>{escape_html(item)}</li>" for item in outcomes)
-    if not outcomes_items:
-        outcomes_items = "<li>Learning outcomes will be posted soon.</li>"
+    outcomes_items_html = render_template(
+        "partials/teaching_outcomes_items.html.j2",
+        {"outcomes": outcomes},
+    )
+    modules_html = render_template(
+        "partials/teaching_module_cards.html.j2",
+        {"modules": modules},
+    )
 
     main_html = render_template(
         "pages/teaching_course.html.j2",
@@ -210,8 +170,8 @@ def teaching_course_template(
             "course_period": period,
             "course_audience": audience,
             "course_prerequisites": prerequisites,
-            "outcomes_items_html": indent_block(outcomes_items, "            "),
-            "modules_html": indent_block(modules_html, "          "),
+            "outcomes_items_html": outcomes_items_html,
+            "modules_html": modules_html,
         },
     )
 
@@ -228,13 +188,20 @@ def teaching_course_template(
     )
 
 
-def build_teaching(courses: list[dict[str, object]]) -> int:
-    ga_id = read_ga_measurement_id()
-
+def build_teaching(courses: list[dict[str, object]], ga_id: str) -> int:
     TEACHING_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     stale_index_path = TEACHING_OUTPUT_DIR / "index.html"
     if stale_index_path.exists():
         stale_index_path.unlink()
+
+    expected_html_files = {
+        f"{str(course['slug']).strip()}.html"
+        for course in courses
+        if bool(course.get("published", False))
+    }
+    for existing in TEACHING_OUTPUT_DIR.glob("*.html"):
+        if existing.name not in expected_html_files:
+            existing.unlink()
 
     generated = 0
     for course in courses:

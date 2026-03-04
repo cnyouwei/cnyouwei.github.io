@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import json
 import re
 
-from .common import BLOG_OUTPUT_DIR, BLOG_SOURCE_DIR, escape_html, format_date, read_ga_measurement_id
+from .common import BLOG_OUTPUT_DIR, BLOG_SOURCE_DIR, escape_html, format_date
 from .markdown_render import (
     get_summary,
     markdown_to_html,
@@ -16,11 +15,8 @@ from .template_engine import render_template
 from .templates import mathjax_config_script
 
 
-def render_post_toc(toc_entries: list[dict[str, object]]) -> str:
-    if not toc_entries:
-        return ""
-
-    items: list[str] = []
+def _normalized_toc_entries(toc_entries: list[dict[str, object]]) -> list[dict[str, object]]:
+    items: list[dict[str, object]] = []
     for entry in toc_entries:
         heading_id = str(entry.get("id", "")).strip()
         title = str(entry.get("title", "")).strip()
@@ -31,27 +27,39 @@ def render_post_toc(toc_entries: list[dict[str, object]]) -> str:
         if level >= 3:
             item_class += " post-toc__item--sub"
         items.append(
-            (
-                f'<li class="{item_class}">'
-                f'<a class="post-toc__link" href="#{escape_html(heading_id)}">'
-                f"{escape_html(title)}</a></li>"
-            )
+            {
+                "item_class": item_class,
+                "heading_id": escape_html(heading_id),
+                "title": escape_html(title),
+            }
         )
+    return items
 
+
+def render_post_toc(toc_entries: list[dict[str, object]]) -> str:
+    items = _normalized_toc_entries(toc_entries)
     if not items:
         return ""
+    return render_template("partials/blog_post_toc.html.j2", {"toc_items": items})
 
-    items_markup = "".join(items)
-    return "\n".join(
-        [
-            '<aside class="panel post-toc" aria-label="Table of contents">',
-            '  <p class="post-toc__title">On this page</p>',
-            '  <nav class="post-toc__nav">',
-            f"    <ol>{items_markup}</ol>",
-            "  </nav>",
-            "</aside>",
-        ]
-    )
+
+def render_recent_posts_markup(posts: list[dict[str, object]]) -> str:
+    normalized_posts: list[dict[str, object]] = []
+    for post in posts:
+        tags = post.get("tags", [])
+        post_tags = [escape_html(str(tag)) for tag in tags[:2]] if isinstance(tags, list) else []
+        normalized_posts.append(
+            {
+                "title": escape_html(str(post.get("title", ""))),
+                "slug": escape_html(str(post.get("slug", ""))),
+                "date_iso": escape_html(str(post.get("date", ""))),
+                "date_label": format_date(str(post.get("date", ""))),
+                "summary": escape_html(str(post.get("summary", ""))),
+                "tags": post_tags,
+            }
+        )
+
+    return render_template("partials/blog_recent_posts.html.j2", {"posts": normalized_posts})
 
 
 def post_page_template(
@@ -60,32 +68,11 @@ def post_page_template(
     ga_id: str,
 ) -> str:
     tags_markup = "".join(
-        f'<span class="blog-tag">{escape_html(tag)}</span>' for tag in post["tags"]
+        f'<span class="blog-tag">{escape_html(str(tag))}</span>' for tag in post["tags"]
     )
     toc_markup = render_post_toc(
         [entry for entry in post.get("toc", []) if isinstance(entry, dict)]
     )
-
-    post_article_markup = "\n".join(
-        [
-            '<article class="panel post-card">',
-            '  <div class="post-body">',
-            body_html,
-            "  </div>",
-            "</article>",
-        ]
-    )
-    if toc_markup:
-        post_content_markup = "\n".join(
-            [
-                '<div class="post-layout">',
-                toc_markup,
-                post_article_markup,
-                "</div>",
-            ]
-        )
-    else:
-        post_content_markup = post_article_markup
 
     main_html = render_template(
         "pages/blog_post.html.j2",
@@ -96,7 +83,9 @@ def post_page_template(
             "post_date_label": format_date(str(post["date"])),
             "tags_html": tags_markup,
             "post_summary": escape_html(str(post["summary"])),
-            "post_content_html": post_content_markup,
+            "post_body_html": body_html,
+            "post_toc_html": toc_markup,
+            "has_post_toc": bool(toc_markup),
         },
     )
 
@@ -152,31 +141,23 @@ def read_source_posts() -> list[dict[str, object]]:
     return posts
 
 
-def write_blog_output(posts: list[dict[str, object]]) -> None:
+def write_blog_output(posts: list[dict[str, object]], ga_id: str) -> None:
     BLOG_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    ga_id = read_ga_measurement_id()
 
-    manifest = [
-        {
-            "title": post["title"],
-            "slug": post["slug"],
-            "date": post["date"],
-            "summary": post["summary"],
-            "tags": post["tags"],
-        }
-        for post in posts
-    ]
-
-    (BLOG_OUTPUT_DIR / "posts.js").write_text(
-        "window.__BLOG_POSTS__ = " + json.dumps(manifest, ensure_ascii=False) + ";\n",
-        encoding="utf-8",
-    )
-    stale_manifest_path = BLOG_OUTPUT_DIR / "posts.json"
+    stale_manifest_path = BLOG_OUTPUT_DIR / "posts.js"
     if stale_manifest_path.exists():
         stale_manifest_path.unlink()
+    stale_json_manifest_path = BLOG_OUTPUT_DIR / "posts.json"
+    if stale_json_manifest_path.exists():
+        stale_json_manifest_path.unlink()
     stale_index_path = BLOG_OUTPUT_DIR / "index.html"
     if stale_index_path.exists():
         stale_index_path.unlink()
+
+    expected_html_files = {f"{post['slug']}.html" for post in posts}
+    for existing in BLOG_OUTPUT_DIR.glob("*.html"):
+        if existing.name not in expected_html_files:
+            existing.unlink()
 
     for post in posts:
         output_path = BLOG_OUTPUT_DIR / f"{post['slug']}.html"
@@ -190,9 +171,8 @@ def write_blog_output(posts: list[dict[str, object]]) -> None:
         )
 
 
-def build_blog(posts: list[dict[str, object]]) -> int:
-    write_blog_output(posts)
+def build_blog(posts: list[dict[str, object]], ga_id: str) -> int:
+    write_blog_output(posts, ga_id)
 
     print(f"Built {len(posts)} blog post(s).")
-    print("Generated: blogs/posts.js")
     return len(posts)

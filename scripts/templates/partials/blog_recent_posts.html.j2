@@ -1,0 +1,12 @@
+{% if posts %}
+{% for post in posts %}
+<article class="blog-card card-surface">
+  <div class="blog-meta"><time datetime="{{ post.date_iso }}">{{ post.date_label }}</time>{% for tag in post.tags %}<span class="blog-tag">{{ tag }}</span>{% endfor %}</div>
+  <h3><a href="blogs/{{ post.slug }}.html">{{ post.title }}</a></h3>
+  <p>{{ post.summary }}</p>
+  <a href="blogs/{{ post.slug }}.html">Read post</a>
+</article>
+{% endfor %}
+{% else %}
+<article class="blog-card card-surface"><h3>No posts yet</h3><p>Add a markdown file to <code>content/blog/</code> and run <code>python3 scripts/build_site.py</code>.</p></article>
+{% endif %}

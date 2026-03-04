@@ -4,12 +4,10 @@ This repository contains a static personal research website.
 
 ## Structure
 
-- `index.html`: Main website (home, research, talks, teaching, team, about, blog).
 - `css/site.css`: Site styles (single file, organized by tokens/base/layout/components/pages/media).
 - `js/site.js`: Thin runtime bootstrap.
 - `js/core/*.js`: Shared runtime features (theme, nav, analytics, back-to-top, utils).
 - `js/pages/research.js`: Home research filters/search/ordering behavior.
-- `js/pages/blog_home.js`: Home blog-card rendering from `window.__BLOG_POSTS__`.
 - `js/pages/blog_post.js`: Blog post enhancements (TOC, copy buttons, highlighting, Mermaid).
 - `content/research/papers.json`: Source of truth for working papers and publications.
 - `content/blog/*.md`: Source markdown files for blog posts.
@@ -21,14 +19,15 @@ This repository contains a static personal research website.
   - `common.py`: Shared constants and utility helpers.
   - `home.py`: Home page rendering (`index.html`) from templates plus generated research/teaching markup.
   - `markdown_render.py`: Front matter parsing + markdown rendering (Python markdown library).
-  - `blog.py`: Blog manifest generation and blog page rendering.
+  - `blog.py`: Blog page rendering and home recent-post markup generation.
   - `research.py`: Research section and selected-papers markup rendering.
   - `teaching.py`: Teaching markup rendering and per-course page generation.
   - `template_engine.py`: Template rendering (Jinja2).
   - `templates.py`: Shared injected snippet helpers (theme bootstrap, MathJax config, fonts).
 - `scripts/templates/`: HTML templates and partials used by the generator.
 - `scripts/parity_check.py`: Snapshot/check utility for generated-output parity.
-- `blogs/`: Generated blog output (post pages and `posts.js` manifest).
+- `.github/workflows/pages.yml`: Build-and-deploy pipeline for GitHub Pages.
+- `blogs/`: Generated blog output (post pages).
 - `teaching/`: Generated teaching output (per-course pages only).
 
 ## Build
@@ -47,17 +46,33 @@ Build from repository root:
 python3 scripts/build_site.py
 ```
 
-This updates:
+This generates:
 
 - Blog outputs in `blogs/`
 - Teaching outputs in `teaching/`
 - `index.html`
+- and does not require committing generated files.
 
 Build command contract is unchanged:
 
 ```bash
 python3 scripts/build_site.py
 ```
+
+Optional GA configuration (for non-placeholder analytics IDs):
+
+```bash
+export WY_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+python3 scripts/build_site.py
+```
+
+## Deployment (GitHub Pages Actions)
+
+Deploys are handled by `.github/workflows/pages.yml`.
+
+- Trigger: push to `main` (and manual dispatch).
+- Workflow builds the site with `python3 scripts/build_site.py`.
+- Workflow uploads a Pages artifact from generated outputs and deploys with `actions/deploy-pages`.
 
 ## Parity Workflow (High-Confidence Refactor Guard)
 
@@ -127,8 +142,6 @@ Write your post in markdown here.
 ```bash
 python3 scripts/build_site.py
 ```
-
-4. Commit both the markdown source and generated files under `blogs/`.
 
 ## Add or Update Course Pages
 

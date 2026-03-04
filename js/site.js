@@ -12,7 +12,7 @@
     'initBackToTop',
   ];
   var pageInitializers = {
-    home: ['initResearch', 'initBlogHome'],
+    home: ['initResearch'],
     'blog-post': ['initBlogPost'],
     'teaching-course': [],
   };

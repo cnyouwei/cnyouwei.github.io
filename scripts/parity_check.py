@@ -26,9 +26,7 @@ INDEX_CONTRACT_PATTERNS = {
     "section_blog": r'<section\b[^>]*\bid="blog"',
     "recent_posts_mount": r'<div\b[^>]*\bid="recentPosts"',
     "mathjax_config": r"window\.MathJax\s*=",
-    "posts_manifest_script": r'<script[^>]*\bsrc="blogs/posts\.js"[^>]*>',
     "research_page_script": r'<script[^>]*\bsrc="js/pages/research\.js"[^>]*>',
-    "blog_home_page_script": r'<script[^>]*\bsrc="js/pages/blog_home\.js"[^>]*>',
     "back_to_top_button": r'<button\b[^>]*\bclass="back-to-top"',
     "clustrmaps": r'<script[^>]*\bid=["\']clustrmaps["\']',
 }
@@ -43,7 +41,6 @@ def generated_files() -> list[Path]:
     files = [INDEX_PATH]
     files.extend(sorted((ROOT_DIR / "blogs").glob("*.html")))
     files.extend(sorted((ROOT_DIR / "teaching").glob("*.html")))
-    files.append(ROOT_DIR / "blogs" / "posts.js")
     uniq = sorted({path.resolve() for path in files if path.exists()})
     return [Path(path) for path in uniq]
 

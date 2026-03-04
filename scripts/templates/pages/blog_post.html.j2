@@ -1,6 +1,6 @@
   <main class="teaching-page">
     <section class="container teaching-shell">
-      <header class="course-hero reveal-up">
+      <header class="course-hero card-surface reveal-up">
         <p class="eyebrow">{{ post_eyebrow }}</p>
         <h1>{{ post_title }}</h1>
         <p class="blog-meta"><time datetime="{{ post_date_iso }}">{{ post_date_label }}</time>{{ tags_html }}</p>
@@ -8,7 +8,22 @@
       </header>
 
       <section class="module-section reveal-up delay-1">
-{{ post_content_html }}
+{% if has_post_toc %}
+<div class="post-layout">
+{{ post_toc_html }}
+  <article class="panel post-card card-surface">
+    <div class="post-body">
+{{ post_body_html }}
+    </div>
+  </article>
+</div>
+{% else %}
+<article class="panel post-card card-surface">
+  <div class="post-body">
+{{ post_body_html }}
+  </div>
+</article>
+{% endif %}
       </section>
 
       <div class="hero-links reveal-up delay-2">

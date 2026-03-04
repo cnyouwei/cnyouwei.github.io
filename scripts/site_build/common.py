@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime as dt
 import html
-import re
+import os
 from pathlib import Path
 
 ROOT_DIR = Path(__file__).resolve().parent.parent.parent
@@ -20,6 +20,7 @@ TEACHING_DATA_PATH = ROOT_DIR / "content" / "teaching" / "courses.json"
 TEACHING_OUTPUT_DIR = ROOT_DIR / "teaching"
 
 GA_ID_PLACEHOLDER = "G-XXXXXXXXXX"
+GA_MEASUREMENT_ID_ENV = "WY_GA_MEASUREMENT_ID"
 
 BADGE_LABELS = {
     "working": "Working",
@@ -32,15 +33,7 @@ def escape_html(text: str) -> str:
     return html.escape(text, quote=True)
 
 def read_ga_measurement_id() -> str:
-    if not INDEX_PATH.exists():
-        return GA_ID_PLACEHOLDER
-
-    index_html = INDEX_PATH.read_text(encoding="utf-8")
-    match = re.search(r'<html\b[^>]*\bdata-ga-id="([^"]+)"', index_html, flags=re.IGNORECASE)
-    if not match:
-        return GA_ID_PLACEHOLDER
-
-    value = match.group(1).strip()
+    value = os.environ.get(GA_MEASUREMENT_ID_ENV, "").strip()
     return value if value else GA_ID_PLACEHOLDER
 
 def format_date(date_string: str) -> str:

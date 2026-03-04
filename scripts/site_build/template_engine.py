@@ -14,8 +14,9 @@ except Exception as exc:  # pragma: no cover - required dependency
         "Install build requirements with: python3 -m pip install -r requirements.txt"
     ) from exc
 
+_ENV = Environment(loader=FileSystemLoader(str(TEMPLATE_DIR)), autoescape=False)
+
 
 def render_template(template_name: str, context: dict[str, object]) -> str:
-    env = Environment(loader=FileSystemLoader(str(TEMPLATE_DIR)), autoescape=False)
-    template = env.get_template(template_name)
+    template = _ENV.get_template(template_name)
     return template.render(**context)

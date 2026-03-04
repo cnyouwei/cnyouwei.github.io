@@ -33,10 +33,7 @@ def theme_bootstrap_script() -> str:
         var root = document.documentElement;
         var storedTheme = localStorage.getItem('wy-theme');
         var themeSource = localStorage.getItem('wy-theme-source');
-        if (
-          themeSource === 'manual' &&
-          (storedTheme === 'cyberpunk' || storedTheme === 'solarized')
-        ) {
+        if (themeSource === 'manual' && (storedTheme === 'light' || storedTheme === 'dark')) {
           root.setAttribute('data-theme', storedTheme);
           return;
         }

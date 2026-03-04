@@ -1,6 +1,6 @@
   <main class="teaching-page">
     <section class="container teaching-shell">
-      <header class="course-hero reveal-up">
+      <header class="course-hero card-surface reveal-up">
         <p class="eyebrow">{{ course_institution }}</p>
         <h1>{{ course_heading }}</h1>
         <p class="course-lead">{{ course_overview }}</p>
@@ -10,7 +10,7 @@
       </header>
 
       <section class="course-snapshot reveal-up delay-1" aria-label="Course snapshot">
-        <article class="panel">
+        <article class="panel card-surface">
           <h2>Course Snapshot</h2>
           <ul class="stack-list">
             <li><strong>Institution:</strong> {{ course_institution }}</li>
@@ -19,7 +19,7 @@
             <li><strong>Prerequisites:</strong> {{ course_prerequisites }}</li>
           </ul>
         </article>
-        <article class="panel">
+        <article class="panel card-surface">
           <h2>Learning Outcomes</h2>
           <ul class="stack-list">
 {{ outcomes_items_html }}
