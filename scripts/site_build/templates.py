@@ -37,10 +37,7 @@ def theme_bootstrap_script() -> str:
           root.setAttribute('data-theme', storedTheme);
           return;
         }
-        var prefersDark =
-          typeof window.matchMedia === 'function' &&
-          window.matchMedia('(prefers-color-scheme: dark)').matches;
-        root.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+        root.setAttribute('data-theme', 'light');
       } catch (error) {
         document.documentElement.setAttribute('data-theme', 'light');
       }

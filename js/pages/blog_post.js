@@ -7,12 +7,6 @@
     if (SiteTheme && typeof SiteTheme.resolveActiveTheme === 'function') {
       return SiteTheme.resolveActiveTheme();
     }
-    if (
-      typeof window.matchMedia === 'function' &&
-      window.matchMedia('(prefers-color-scheme: dark)').matches
-    ) {
-      return 'dark';
-    }
     return 'light';
   }
 

@@ -30,8 +30,7 @@
   }
 
   function getSystemThemePreference() {
-    if (typeof window.matchMedia !== 'function') return THEME_FALLBACK;
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : THEME_FALLBACK;
+    return THEME_FALLBACK;
   }
 
   function resolveActiveTheme() {
