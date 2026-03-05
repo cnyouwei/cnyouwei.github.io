@@ -96,6 +96,31 @@
       "links": []
     },
     {
+      "id": "stochastic-compositional-optimization",
+      "section": "publication",
+      "type": "journal",
+      "year": 2026,
+      "title": "Stochastic Compositional Optimization with Compositional Constraints",
+      "topic": "Stochastic Optimization",
+      "authors": ["Shuoguang Yang", "Wei You", "Zhe Zhang", "Ethan X. Fang"],
+      "venue": "INFORMS Journal on Optimization",
+      "abstract": "Stochastic compositional optimization (SCO) has attracted considerable attention due to its broad applicability to important real-world problems. However, existing work on SCO typically assumes that the projection within a solution update is straightforward, which is not the case for problem instances where constraints are in the form of expectations, such as empirical conditional value-at-risk constraints. In this paper, we introduce a novel model that integrates single-level expected value and two-level compositional constraints into the existing SCO framework. Our model has wide applicability to data-driven optimization, fairness optimization, and risk management, including risk-averse optimization and high-moment portfolio selection, and is capable of handling multiple constraints. Additionally, we propose a class of primal-dual algorithms that generate sequences converging to the optimal solution at a rate of $\\mathcal{O}(1/\\sqrt{N})$ under both single-level and two-level compositional expected-value constraints, where $N$ is the iteration counter, thus establishing benchmarks in expected value constrained SCO. Numerical experiments show the efficiency of our algorithm over real-world applications.",
+      "links": [
+        {
+          "label": "Journal",
+          "url": "https://pubsonline.informs.org/doi/full/10.1287/ijoo.2023.0024"
+        },
+        {
+          "label": "arXiv",
+          "url": "https://arxiv.org/abs/2209.04086"
+        },
+        {
+          "label": "Code",
+          "url": "https://github.com/cnyouwei/ECSCGD.git"
+        }
+      ]
+    },
+    {
       "id": "minimax-contextual-dynamic-pricing",
       "section": "publication",
       "type": "journal",
@@ -144,31 +169,6 @@
         {
           "label": "Code",
           "url": "https://github.com/cnyouwei/PE.git"
-        }
-      ]
-    },
-    {
-      "id": "stochastic-compositional-optimization",
-      "section": "publication",
-      "type": "journal",
-      "year": 2025,
-      "title": "Stochastic Compositional Optimization with Compositional Constraints",
-      "topic": "Stochastic Optimization",
-      "authors": ["Shuoguang Yang", "Wei You", "Zhe Zhang", "Ethan X. Fang"],
-      "venue": "INFORMS Journal on Optimization",
-      "abstract": "Stochastic compositional optimization (SCO) has attracted considerable attention due to its broad applicability to important real-world problems. However, existing work on SCO typically assumes that the projection within a solution update is straightforward, which is not the case for problem instances where constraints are in the form of expectations, such as empirical conditional value-at-risk constraints. In this paper, we introduce a novel model that integrates single-level expected value and two-level compositional constraints into the existing SCO framework. Our model has wide applicability to data-driven optimization, fairness optimization, and risk management, including risk-averse optimization and high-moment portfolio selection, and is capable of handling multiple constraints. Additionally, we propose a class of primal-dual algorithms that generate sequences converging to the optimal solution at a rate of $\\mathcal{O}(1/\\sqrt{N})$ under both single-level and two-level compositional expected-value constraints, where $N$ is the iteration counter, thus establishing benchmarks in expected value constrained SCO. Numerical experiments show the efficiency of our algorithm over real-world applications.",
-      "links": [
-        {
-          "label": "Journal",
-          "url": "https://pubsonline.informs.org/doi/full/10.1287/ijoo.2023.0024"
-        },
-        {
-          "label": "arXiv",
-          "url": "https://arxiv.org/abs/2209.04086"
-        },
-        {
-          "label": "Code",
-          "url": "https://github.com/cnyouwei/ECSCGD.git"
         }
       ]
     },
