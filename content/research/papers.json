@@ -25,17 +25,12 @@
       "type": "working",
       "year": 2026,
       "title": "Cost-Aware Exploration for Structured Bandits",
-      "selected": true,
+      "selected": false,
       "topic": "Bandit Learning",
       "authors": ["Xinyu Liu", "Wei You", "Chao Qin"],
       "note": "submitted.",
       "abstract": "We study pure exploration with heterogeneous per-measurement costs. An agent sequentially selects among $K$ arms whose observation laws belong to (possibly structured) canonical exponential families, and each pull incurs an arm- and instance-dependent cost. The goal is to identify an instance-dependent answer (e.g., best arm, thresholding bandits, or Pareto set identification) while maximizing the rate at which the posterior probability of error decays per unit spent budget. We characterize the optimal cost-normalized posterior error exponent as the value of a maximin program that trades off statistical discrimination against the average cost, and show that no adaptive sampling rule can exceed this exponent. By working with the cost normalization, the exponent is characterized by a concave maximization problem. Motivated by this characterization, we develop a cost-aware pure exploration algorithm. The resulting dynamics is inherently nonsmooth and set-valued due to argmin operations, boundary effects, and normalization. We analyze the stochastic iterates through a continuous-time approximation based on differential inclusions and prove that, under mild regularity conditions, the algorithm attains the optimal cost-normalized posterior error exponent almost surely. Our results provide a general asymptotic optimality guarantee for cost-aware pure exploration beyond best-arm identification, covering broad exploration queries, exponential-family rewards, and structured bandit models, with substantially lower per-iteration computational overhead than optimize-then-track baselines such as Track-and-Stop.",
-      "links": [
-        {
-          "label": "Preprint",
-          "url": "assets/papers/Liu_et_al_cost_aware.pdf"
-        }
-      ]
+      "links": []
     },
     {
       "id": "frank-wolfe-self-play",
