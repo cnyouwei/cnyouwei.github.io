@@ -2,6 +2,32 @@
   "highlight_authors": ["Wei You"],
   "papers": [
     {
+      "id": "principal-fairness-ot",
+      "section": "working",
+      "type": "working",
+      "year": 2026,
+      "title": "Principal Fairness with Optimal Transport for Heterogeneous Population",
+      "selected": false,
+      "topic": "Transfer Learning and Causal Inference",
+      "authors": ["Huichen Zhu","Wei You","Annie Qu"],
+      "note": "submitted.",
+      "abstract": "Algorithmic fairness has attracted growing attention as data-driven decision systems are increasingly deployed in high-stakes domains such as healthcare. Most existing work focuses on associational fairness or counterfactual fairness grounded in structural causal models. Yet in clinical decision-making, fairness should be judged by actions: who receives which treatment and how those choices causally shape benefits and harms across groups. Associational criteria can hold while treatment allocation remains inequitable, and counterfactual notions often rely on strong, untestable modeling assumptions. We propose a two-stage framework that first predicts individual potential outcomes and then enforces a causal fairness constraint on treatment recommendations by aligning decision-relevant representations across sensitive groups within strata defined by predicted potential outcomes. Simulations show near-perfect principal fairness with predictive performance close to the first-stage estimators despite information loss from transport-based alignment. We further apply the method to the Medical Information Mart for Intensive Care IV (MIMIC-IV) database and obtain clinically plausible predicted strata proportions. Because true strata are unobserved, we assess fairness using surrogate criteria, including statistical parity and a decomposition-based estimate of the direct causal effect of the sensitive attribute on treatment assignment, and observe improved parity under these measures. Overall, our results support causal fairness as a practical objective for equitable clinical decision policies under complex time-series data.",
+      "links": [ ]
+    },
+    {
+      "id": "multiple-correct-answers",
+      "section": "working",
+      "type": "working",
+      "year": 2026,
+      "title": "Ranking-and-Selection with Multiple Correct Answers and Non-Answerable Estimates",
+      "selected": false,
+      "topic": "Bandit Learning",
+      "authors": ["Qiaoqiao Wang","Wei You"],
+      "note": "submitted.",
+      "abstract": "We study fixed-precision ranking-and-selection in structured settings where the answer may be non-unique and where noisy estimates may temporarily admit no valid answer at all. This phenomenon arises naturally in problems such as multi-fidelity ranking-and-selection and identifying a Condorcet winner from pairwise comparisons. To address this, we propose a unified framework based on answer-wise acceptance sets, restricted generalized likelihood ratio stopping, and an answer--pitfall decomposition that yields a max-max-min characteristic value and a common sampling principle. We introduce ENDS, a general procedure that combines estimation, nomination, pitfall detection, and cost-aware information-directed sampling. We instantiate ENDS for various problems by deriving explicit formulas. Extensive numerical experiments show that this unified recipe performs well across a broad range of pure-exploration problems and offers a practical proof of concept for a common methodology.",
+      "links": [ ]
+    },
+    {
       "id": "robust-queueing-abandonment",
       "section": "working",
       "type": "working",

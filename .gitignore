@@ -3,7 +3,6 @@
 .DS_Store
 __pycache__/
 *.pyc
-index.html
 blogs/
 teaching/
 _site/
