@@ -214,7 +214,7 @@
       "title": "Information-Directed Selection for Top-Two Algorithms",
       "topic": "Bandit Learning",
       "authors": ["Wei You", "Chao Qin", "Zihao Wang", "Shuoguang Yang"],
-      "venue": "Conference on Learning Theory (COLT)",
+      "venue": "Conference on Learning Theory (COLT 2023)",
       "abstract": "We consider the best-$k$-arm identification problem for multi-armed bandits, where the objective is to select the exact set of $k$ arms with the highest mean rewards by sequentially allocating measurement effort. We characterize the necessary and sufficient conditions for the optimal allocation using dual variables. Remarkably these optimality conditions lead to the extension of top-two algorithm design principle (Russo, 2020), initially proposed for best-arm identification. Furthermore, our optimality conditions induce a simple and effective selection rule dubbed information-directed selection (IDS) that selects one of the top-two candidates based on a measure of information gain. As a theoretical guarantee, we prove that integrated with IDS, top-two Thompson sampling is (asymptotically) optimal for Gaussian best-arm identification, solving a glaring open problem in the pure exploration literature (Russo, 2020). As a by-product, we show that for $k > 1$, top-two algorithms cannot achieve optimality even when the algorithm has access to the unknown optimal tuning parameter. Numerical experiments show the superior performance of the proposed top-two algorithms with IDS and considerable improvement compared with algorithms without adaptive selection.",
       "links": [
         {
