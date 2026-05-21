@@ -2,6 +2,19 @@
   "highlight_authors": ["Wei You"],
   "papers": [
     {
+      "id": "online-learning-queue",
+      "section": "working",
+      "type": "working",
+      "year": 2026,
+      "title": "Learning to Optimize Service Matching with Unknown Rewards under Operational Constraints",
+      "selected": false,
+      "topic": "Bandit Learning",
+      "authors": ["Zhihao Li","Shining Wu","Jiheng Zhang","Wei You","Rachel Q. Zhang"],
+      "note": "submitted to Operations Research.",
+      "abstract": "Online learning methodologies have been extensively applied to optimize sequential decisions under uncertainty to maximize long-run rewards. However, traditional online learning methods often assume decisions are isolated and have instantaneous outcomes. When applied to environments with underlying system dynamics—such as service systems where customers wait to be matched to limited service capacity—these methods overlook crucial operational constraints like server availability, queue length, customer waiting costs, and abandonment. To capture these operational realities, we study a multi-class, multi-server pool queueing system where each customer class is characterized by a known feature vector, waiting cost, and abandonment rate, while each server pool has an unknown expertise parameter and distinct service rate. The reward for matching a customer to a server depends on their compatibility, modeled as the inner product of the customer's feature vector and the server's expertise parameter. To tackle these operational intricacies, we first derive the $sv$-rule, a scheduling rule with strategic reservations that uses fluid approximation to evaluate the long-term effect of each matching decision and guide matching selection when only a subset of servers is available. The $sv$-rule achieves asymptotic optimality when server parameters are known and provides the foundation for our learning algorithms. Building on this foundation, we design two learning algorithms, res-UCB and res-IDS-UCB, which integrate parameter estimation with the $sv$-rule framework. Both achieve polylogarithmic regret $O(\\ln^3 T)$; res-IDS-UCB further reduces the regret constant by prioritizing matches that yield the maximum information gain about the unknown server expertise parameters, rather than exploring uniformly at random, improving from $O(IJ \\ln^3 T)$ to $O((I+J) \\ln^3 T)$. Numerical experiments confirm our theoretical findings, demonstrating that traditional exploration methods suffer linear regret when neglecting operational dynamics, whereas our proposed algorithms successfully achieve sublinear regret.",
+      "links": [ ]
+    },
+    {
       "id": "principal-fairness-ot",
       "section": "working",
       "type": "working",
@@ -10,7 +23,7 @@
       "selected": false,
       "topic": "Transfer Learning and Causal Inference",
       "authors": ["Huichen Zhu","Wei You","Annie Qu"],
-      "note": "submitted.",
+      "note": "submitted to Journal of the American Statistical Association.",
       "abstract": "Algorithmic fairness has attracted growing attention as data-driven decision systems are increasingly deployed in high-stakes domains such as healthcare. Most existing work focuses on associational fairness or counterfactual fairness grounded in structural causal models. Yet in clinical decision-making, fairness should be judged by actions: who receives which treatment and how those choices causally shape benefits and harms across groups. Associational criteria can hold while treatment allocation remains inequitable, and counterfactual notions often rely on strong, untestable modeling assumptions. We propose a two-stage framework that first predicts individual potential outcomes and then enforces a causal fairness constraint on treatment recommendations by aligning decision-relevant representations across sensitive groups within strata defined by predicted potential outcomes. Simulations show near-perfect principal fairness with predictive performance close to the first-stage estimators despite information loss from transport-based alignment. We further apply the method to the Medical Information Mart for Intensive Care IV (MIMIC-IV) database and obtain clinically plausible predicted strata proportions. Because true strata are unobserved, we assess fairness using surrogate criteria, including statistical parity and a decomposition-based estimate of the direct causal effect of the sensitive attribute on treatment assignment, and observe improved parity under these measures. Overall, our results support causal fairness as a practical objective for equitable clinical decision policies under complex time-series data.",
       "links": [ ]
     },
@@ -23,7 +36,7 @@
       "selected": false,
       "topic": "Bandit Learning",
       "authors": ["Qiaoqiao Wang","Wei You"],
-      "note": "submitted.",
+      "note": "submitted to Winter Simulation Conference.",
       "abstract": "We study fixed-precision ranking-and-selection in structured settings where the answer may be non-unique and where noisy estimates may temporarily admit no valid answer at all. This phenomenon arises naturally in problems such as multi-fidelity ranking-and-selection and identifying a Condorcet winner from pairwise comparisons. To address this, we propose a unified framework based on answer-wise acceptance sets, restricted generalized likelihood ratio stopping, and an answer--pitfall decomposition that yields a max-max-min characteristic value and a common sampling principle. We introduce ENDS, a general procedure that combines estimation, nomination, pitfall detection, and cost-aware information-directed sampling. We instantiate ENDS for various problems by deriving explicit formulas. Extensive numerical experiments show that this unified recipe performs well across a broad range of pure-exploration problems and offers a practical proof of concept for a common methodology.",
       "links": [ ]
     },
@@ -36,7 +49,7 @@
       "selected": true,
       "topic": "Queueing Theory",
       "authors": ["Wei You"],
-      "note": "submitted.",
+      "note": "submitted to Queueing Systems.",
       "abstract": "Single-server queues with customer abandonment arise in call centers and many service systems, but steady-state performance measures remain analytically intractable beyond Markovian assumptions. This paper develops Robust Queueing (RQ) approximations for the mean steady-state virtual waiting time (offered waiting time) in the $GI/GI/1{+}GI$ model. The approach starts from a reverse-time supremum representation of the virtual waiting time as the reflection of an effective net-input process that accounts for abandonments. We approximate effective net-input increments by their mean plus a robustness parameter times their standard deviation. For the drift, we introduce a Poisson-surrogate compensator and show that the associated correction term is asymptotically negligible in the long-patience regime. For variability, we propose two implementable surrogates: (i) a deterministic time-change approximation that yields a first RQ algorithm, and (ii) a refined algorithm based on a heavy-traffic limit that produces a scale-dependent variance function capturing the variance-reduction effect of abandonment. The resulting steady-state approximation reduces to a one-dimensional fixed point solvable by bisection and takes as input the arrival index of dispersion for counts (IDC), the service-time squared coefficient of variation, and the patience-time distribution. We further show how to extend the method to queues in series by feeding an approximation of the upstream departure IDC into the downstream RQ algorithm. Extensive numerical experiments demonstrate that the refined RQ approximation is accurate across underload, critical loading, and overload, and remains robust relative to existing heavy-traffic and hazard-rate-scaling benchmarks.",
       "links": [
         {
@@ -83,7 +96,7 @@
       "title": "Efficient Transfer Learning via Causal Bounds",
       "topic": "Transfer Learning and Causal Inference",
       "authors": ["Xueping Gong", "Wei You", "Jiheng Zhang"],
-      "note": "major revision.",
+      "note": "major revision at Operations Research.",
       "abstract": "Transfer learning seeks to accelerate sequential decision-making by leveraging offline data from related agents. However, data from heterogeneous sources that differ in observed features, logging policies, or unobserved confounders often render causal effects non-identifiable and bias naive estimators. We address this by forming ambiguity sets of structural causal models defined via integral constraints on their joint densities. Optimizing any causal effect over these sets leads to generally non-convex programs whose solutions tightly bound the range of possible effects under heterogeneity or confounding. To solve these programs efficiently, we develop a sample-then-optimize framework to produce causal bound estimates that converge to the true limits and quantify the optimality gaps by outer relaxation. We further accommodate estimation error by relaxing the ambiguity set and exploit the Lipschitz continuity of causal effects to establish precise error propagation guarantees. These causal bounds are then embedded into bandit algorithms via arm elimination and truncated UCB indices, yielding optimal gap-dependent and minimax regret bounds. To handle estimation error, we also develop a safe algorithm for incorporating noisy causal bounds. In the contextual-bandit setting with function approximation, our method uses causal bounds to prune both the function class and the per-context action set, achieving matching upper and lower regret bounds with only logarithmic dependence on function-class complexity. Our analysis precisely characterizes when and how causal side-information accelerates online learning, and experiments on synthetic benchmarks confirm substantial regret reductions in confounded regimes.",
       "links": [
         {
@@ -96,11 +109,11 @@
       "id": "service-rate-differentiation",
       "section": "working",
       "type": "working",
-      "year": 2024,
+      "year": 2026,
       "title": "Service Rate Differentiation for Homogeneous Impatient Customers",
       "topic": "Queueing Theory",
       "authors": ["Chenguang (Allen) Wu", "Wei You"],
-      "note": "submitted.",
+      "note": "major revision at Production and Operations Management.",
       "abstract": "We study the joint service rate and waiting time differentiation for homogeneous impatient customers in parallel server queueing systems. Customers are homogeneous at the time of arrival, but the system can differentiate them by assigning each of them to one of many service grades corresponding to different service rates. Customers not served immediately upon arrival wait in the queue corresponding to their grades, and they get further differentiated by their residual patience times as time elapses. We leverage these two dimensions of heterogeneity to propose implementable policies that differentiate customers on both service rates and waiting times. Our policy specifies the service rate of each grade, an allocation rule that assigns customers to grades, and a scheduling policy that routes idle servers to waiting customers using their grade and waiting time information. We show that the optimal policy has a very simple structure, creating at most two grades with different service rates or offered waits, and processing each grade in a First Come First Served manner. Our paper provides managers with ways of improving the quality of service through joint service rate and waiting time differentiation. Our policy can lead to significant cost and welfare improvement over policies without service rate differentiation.",
       "links": []
     },
@@ -108,11 +121,11 @@
       "id": "bandit-resource-allocation-platforms",
       "section": "working",
       "type": "working",
-      "year": 2023,
+      "year": 2026,
       "title": "A Multi-Armed Bandit Approach to Online Resource Allocation for Service Platforms",
       "topic": "Bandit Learning",
       "authors": ["Zihao Wang", "Wei You"],
-      "note": "submitted.",
+      "note": "major revision at Naval Research Logistics (NRL).",
       "abstract": "",
       "links": []
     },

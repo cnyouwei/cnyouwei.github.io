@@ -151,13 +151,31 @@
         <div data-paper-section="working" class="reveal-up delay-2">
   <h3 class="subsection-title">Working Papers</h3>
   <div class="paper-list">
+<article class="paper paper-collapsible card-surface" data-type="working" data-year="2026" data-topic="Bandit Learning" tabindex="0" role="button" aria-expanded="false">
+  <div class="paper-header">
+    <span class="paper-year">2026</span>
+    <span class="badge working">Working</span>
+  </div>
+  <h4 class="paper-title">Learning to Optimize Service Matching with Unknown Rewards under Operational Constraints</h4>
+  <p class="paper-meta">Zhihao Li, Shining Wu, Jiheng Zhang, <strong>Wei You</strong>, and Rachel Q. Zhang, submitted to Operations Research.</p>
+
+
+
+  <div class="paper-abstract" hidden>
+
+    <p>Online learning methodologies have been extensively applied to optimize sequential decisions under uncertainty to maximize long-run rewards. However, traditional online learning methods often assume decisions are isolated and have instantaneous outcomes. When applied to environments with underlying system dynamics—such as service systems where customers wait to be matched to limited service capacity—these methods overlook crucial operational constraints like server availability, queue length, customer waiting costs, and abandonment. To capture these operational realities, we study a multi-class, multi-server pool queueing system where each customer class is characterized by a known feature vector, waiting cost, and abandonment rate, while each server pool has an unknown expertise parameter and distinct service rate. The reward for matching a customer to a server depends on their compatibility, modeled as the inner product of the customer&#x27;s feature vector and the server&#x27;s expertise parameter. To tackle these operational intricacies, we first derive the $sv$-rule, a scheduling rule with strategic reservations that uses fluid approximation to evaluate the long-term effect of each matching decision and guide matching selection when only a subset of servers is available. The $sv$-rule achieves asymptotic optimality when server parameters are known and provides the foundation for our learning algorithms. Building on this foundation, we design two learning algorithms, res-UCB and res-IDS-UCB, which integrate parameter estimation with the $sv$-rule framework. Both achieve polylogarithmic regret $O(\ln^3 T)$; res-IDS-UCB further reduces the regret constant by prioritizing matches that yield the maximum information gain about the unknown server expertise parameters, rather than exploring uniformly at random, improving from $O(IJ \ln^3 T)$ to $O((I+J) \ln^3 T)$. Numerical experiments confirm our theoretical findings, demonstrating that traditional exploration methods suffer linear regret when neglecting operational dynamics, whereas our proposed algorithms successfully achieve sublinear regret.</p>
+
+  </div>
+
+</article>
+
 <article class="paper paper-collapsible card-surface" data-type="working" data-year="2026" data-topic="Transfer Learning and Causal Inference" tabindex="0" role="button" aria-expanded="false">
   <div class="paper-header">
     <span class="paper-year">2026</span>
     <span class="badge working">Working</span>
   </div>
   <h4 class="paper-title">Principal Fairness with Optimal Transport for Heterogeneous Population</h4>
-  <p class="paper-meta">Huichen Zhu, <strong>Wei You</strong>, and Annie Qu, submitted.</p>
+  <p class="paper-meta">Huichen Zhu, <strong>Wei You</strong>, and Annie Qu, submitted to Journal of the American Statistical Association.</p>
 
 
 
@@ -175,7 +193,7 @@
     <span class="badge working">Working</span>
   </div>
   <h4 class="paper-title">Ranking-and-Selection with Multiple Correct Answers and Non-Answerable Estimates</h4>
-  <p class="paper-meta">Qiaoqiao Wang and <strong>Wei You</strong>, submitted.</p>
+  <p class="paper-meta">Qiaoqiao Wang and <strong>Wei You</strong>, submitted to Winter Simulation Conference.</p>
 
 
 
@@ -193,7 +211,7 @@
     <span class="badge working">Working</span>
   </div>
   <h4 class="paper-title">Robust Queueing for Single-Server Queues with Abandonment</h4>
-  <p class="paper-meta"><strong>Wei You</strong>, submitted.</p>
+  <p class="paper-meta"><strong>Wei You</strong>, submitted to Queueing Systems.</p>
 
 
   <div class="paper-links">
@@ -229,6 +247,36 @@
 
 </article>
 
+<article class="paper paper-collapsible card-surface" data-type="working" data-year="2026" data-topic="Queueing Theory" tabindex="0" role="button" aria-expanded="false">
+  <div class="paper-header">
+    <span class="paper-year">2026</span>
+    <span class="badge working">Working</span>
+  </div>
+  <h4 class="paper-title">Service Rate Differentiation for Homogeneous Impatient Customers</h4>
+  <p class="paper-meta">Chenguang (Allen) Wu and <strong>Wei You</strong>, major revision at Production and Operations Management.</p>
+
+
+
+  <div class="paper-abstract" hidden>
+
+    <p>We study the joint service rate and waiting time differentiation for homogeneous impatient customers in parallel server queueing systems. Customers are homogeneous at the time of arrival, but the system can differentiate them by assigning each of them to one of many service grades corresponding to different service rates. Customers not served immediately upon arrival wait in the queue corresponding to their grades, and they get further differentiated by their residual patience times as time elapses. We leverage these two dimensions of heterogeneity to propose implementable policies that differentiate customers on both service rates and waiting times. Our policy specifies the service rate of each grade, an allocation rule that assigns customers to grades, and a scheduling policy that routes idle servers to waiting customers using their grade and waiting time information. We show that the optimal policy has a very simple structure, creating at most two grades with different service rates or offered waits, and processing each grade in a First Come First Served manner. Our paper provides managers with ways of improving the quality of service through joint service rate and waiting time differentiation. Our policy can lead to significant cost and welfare improvement over policies without service rate differentiation.</p>
+
+  </div>
+
+</article>
+
+<article class="paper card-surface" data-type="working" data-year="2026" data-topic="Bandit Learning">
+  <div class="paper-header">
+    <span class="paper-year">2026</span>
+    <span class="badge working">Working</span>
+  </div>
+  <h4 class="paper-title">A Multi-Armed Bandit Approach to Online Resource Allocation for Service Platforms</h4>
+  <p class="paper-meta">Zihao Wang and <strong>Wei You</strong>, major revision at Naval Research Logistics (NRL).</p>
+
+
+
+</article>
+
 <article class="paper paper-collapsible card-surface" data-type="working" data-year="2025" data-topic="Bandit Learning" tabindex="0" role="button" aria-expanded="false">
   <div class="paper-header">
     <span class="paper-year">2025</span>
@@ -259,7 +307,7 @@
     <span class="badge working">Working</span>
   </div>
   <h4 class="paper-title">Efficient Transfer Learning via Causal Bounds</h4>
-  <p class="paper-meta">Xueping Gong, <strong>Wei You</strong>, and Jiheng Zhang, major revision.</p>
+  <p class="paper-meta">Xueping Gong, <strong>Wei You</strong>, and Jiheng Zhang, major revision at Operations Research.</p>
 
 
   <div class="paper-links">
@@ -274,36 +322,6 @@
     <p>Transfer learning seeks to accelerate sequential decision-making by leveraging offline data from related agents. However, data from heterogeneous sources that differ in observed features, logging policies, or unobserved confounders often render causal effects non-identifiable and bias naive estimators. We address this by forming ambiguity sets of structural causal models defined via integral constraints on their joint densities. Optimizing any causal effect over these sets leads to generally non-convex programs whose solutions tightly bound the range of possible effects under heterogeneity or confounding. To solve these programs efficiently, we develop a sample-then-optimize framework to produce causal bound estimates that converge to the true limits and quantify the optimality gaps by outer relaxation. We further accommodate estimation error by relaxing the ambiguity set and exploit the Lipschitz continuity of causal effects to establish precise error propagation guarantees. These causal bounds are then embedded into bandit algorithms via arm elimination and truncated UCB indices, yielding optimal gap-dependent and minimax regret bounds. To handle estimation error, we also develop a safe algorithm for incorporating noisy causal bounds. In the contextual-bandit setting with function approximation, our method uses causal bounds to prune both the function class and the per-context action set, achieving matching upper and lower regret bounds with only logarithmic dependence on function-class complexity. Our analysis precisely characterizes when and how causal side-information accelerates online learning, and experiments on synthetic benchmarks confirm substantial regret reductions in confounded regimes.</p>
 
   </div>
-
-</article>
-
-<article class="paper paper-collapsible card-surface" data-type="working" data-year="2024" data-topic="Queueing Theory" tabindex="0" role="button" aria-expanded="false">
-  <div class="paper-header">
-    <span class="paper-year">2024</span>
-    <span class="badge working">Working</span>
-  </div>
-  <h4 class="paper-title">Service Rate Differentiation for Homogeneous Impatient Customers</h4>
-  <p class="paper-meta">Chenguang (Allen) Wu and <strong>Wei You</strong>, submitted.</p>
-
-
-
-  <div class="paper-abstract" hidden>
-
-    <p>We study the joint service rate and waiting time differentiation for homogeneous impatient customers in parallel server queueing systems. Customers are homogeneous at the time of arrival, but the system can differentiate them by assigning each of them to one of many service grades corresponding to different service rates. Customers not served immediately upon arrival wait in the queue corresponding to their grades, and they get further differentiated by their residual patience times as time elapses. We leverage these two dimensions of heterogeneity to propose implementable policies that differentiate customers on both service rates and waiting times. Our policy specifies the service rate of each grade, an allocation rule that assigns customers to grades, and a scheduling policy that routes idle servers to waiting customers using their grade and waiting time information. We show that the optimal policy has a very simple structure, creating at most two grades with different service rates or offered waits, and processing each grade in a First Come First Served manner. Our paper provides managers with ways of improving the quality of service through joint service rate and waiting time differentiation. Our policy can lead to significant cost and welfare improvement over policies without service rate differentiation.</p>
-
-  </div>
-
-</article>
-
-<article class="paper card-surface" data-type="working" data-year="2023" data-topic="Bandit Learning">
-  <div class="paper-header">
-    <span class="paper-year">2023</span>
-    <span class="badge working">Working</span>
-  </div>
-  <h4 class="paper-title">A Multi-Armed Bandit Approach to Online Resource Allocation for Service Platforms</h4>
-  <p class="paper-meta">Zihao Wang and <strong>Wei You</strong>, submitted.</p>
-
-
 
 </article>
   </div>
