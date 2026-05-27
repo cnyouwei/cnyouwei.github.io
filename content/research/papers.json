@@ -9,9 +9,21 @@
       "title": "Learning to Optimize Service Matching with Unknown Rewards under Operational Constraints",
       "selected": false,
       "topic": "Bandit Learning",
-      "authors": ["Zhihao Li","Shining Wu","Jiheng Zhang","Wei You","Rachel Q. Zhang"],
+      "authors": ["Zhihao Li","Shining Wu","Wei You","Jiheng Zhang","Rachel Q. Zhang"],
       "note": "submitted to Operations Research.",
       "abstract": "Online learning methodologies have been extensively applied to optimize sequential decisions under uncertainty to maximize long-run rewards. However, traditional online learning methods often assume decisions are isolated and have instantaneous outcomes. When applied to environments with underlying system dynamics—such as service systems where customers wait to be matched to limited service capacity—these methods overlook crucial operational constraints like server availability, queue length, customer waiting costs, and abandonment. To capture these operational realities, we study a multi-class, multi-server pool queueing system where each customer class is characterized by a known feature vector, waiting cost, and abandonment rate, while each server pool has an unknown expertise parameter and distinct service rate. The reward for matching a customer to a server depends on their compatibility, modeled as the inner product of the customer's feature vector and the server's expertise parameter. To tackle these operational intricacies, we first derive the $sv$-rule, a scheduling rule with strategic reservations that uses fluid approximation to evaluate the long-term effect of each matching decision and guide matching selection when only a subset of servers is available. The $sv$-rule achieves asymptotic optimality when server parameters are known and provides the foundation for our learning algorithms. Building on this foundation, we design two learning algorithms, res-UCB and res-IDS-UCB, which integrate parameter estimation with the $sv$-rule framework. Both achieve polylogarithmic regret $O(\\ln^3 T)$; res-IDS-UCB further reduces the regret constant by prioritizing matches that yield the maximum information gain about the unknown server expertise parameters, rather than exploring uniformly at random, improving from $O(IJ \\ln^3 T)$ to $O((I+J) \\ln^3 T)$. Numerical experiments confirm our theoretical findings, demonstrating that traditional exploration methods suffer linear regret when neglecting operational dynamics, whereas our proposed algorithms successfully achieve sublinear regret.",
+      "links": [ ]
+    },{
+      "id": "llm-queue",
+      "section": "working",
+      "type": "working",
+      "year": 2026,
+      "title": "Multi Heterogeneous Clusters PD-Disaggregated LLM Inference",
+      "selected": false,
+      "topic": "LLM Inference",
+      "authors": ["Ruihan Lin","Wei You","Jiheng Zhang"],
+      "note": "working paper.",
+      "abstract": "",
       "links": [ ]
     },
     {
