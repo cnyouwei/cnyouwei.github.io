@@ -1,5 +1,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="{{ fonts_href }}" rel="stylesheet" />
-{{ theme_bootstrap_html }}
+{% if cn_fonts_href %}  <link href="{{ cn_fonts_href }}" rel="stylesheet" />
+{% endif %}{{ theme_bootstrap_html }}
   <link rel="stylesheet" href="{{ css_href }}" />

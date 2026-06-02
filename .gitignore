@@ -3,6 +3,8 @@
 .DS_Store
 __pycache__/
 *.pyc
+.venv/
 blogs/
 teaching/
 _site/
+/.claude

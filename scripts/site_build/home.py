@@ -48,7 +48,12 @@ def home_page_template(
             blog_href="#blog",
             main_html=main_html,
             page_scripts=["pages/research.js"],
-            extra_before_scripts_html=mathjax_config_script(include_chtml=False),
+            # Config only: the home page has math solely inside collapsed paper
+            # abstracts, so research.js loads the MathJax engine on first open
+            # and typesets each abstract as it is revealed.
+            extra_before_scripts_html=mathjax_config_script(
+                include_chtml=False, with_loader=False, autotypeset=False
+            ),
         ),
     )
 

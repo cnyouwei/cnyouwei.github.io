@@ -8,7 +8,6 @@
       isDark: false,
       highlightVariant: 'light',
       mermaidVariant: 'default',
-      imageVariant: 'light',
       label: 'Light',
     },
     dark: {
@@ -16,7 +15,6 @@
       isDark: true,
       highlightVariant: 'dark',
       mermaidVariant: 'dark',
-      imageVariant: 'dark',
       label: 'Dark',
     },
   };
@@ -30,6 +28,12 @@
   }
 
   function getSystemThemePreference() {
+    if (
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches
+    ) {
+      return 'dark';
+    }
     return THEME_FALLBACK;
   }
 
@@ -69,7 +73,6 @@
   SiteApp.initTheme = function initTheme() {
     var root = document.documentElement;
     var themeToggle = SiteUtils.qs('.theme-toggle');
-    var themeAwareImages = SiteUtils.qsa('img[data-theme-src-dark]');
     var THEME_STORAGE_KEY = 'wy-theme';
     var THEME_SOURCE_KEY = 'wy-theme-source';
     var THEME_TRANSITION_CLASS = 'theme-transitioning';
@@ -127,21 +130,6 @@
       }, THEME_TRANSITION_MS);
     }
 
-    function syncThemeAwareImages() {
-      if (!themeAwareImages.length) return;
-
-      var imageVariant = getThemeMeta(activeTheme).imageVariant;
-      themeAwareImages.forEach(function (image) {
-        var darkSrc = (image.getAttribute('data-theme-src-dark') || '').trim();
-        var lightSrc = (image.getAttribute('data-theme-src-light') || image.getAttribute('src') || '').trim();
-        var nextSrc = imageVariant === 'dark' ? darkSrc || lightSrc : lightSrc || darkSrc;
-
-        if (nextSrc && image.getAttribute('src') !== nextSrc) {
-          image.setAttribute('src', nextSrc);
-        }
-      });
-    }
-
     function emitThemeChange() {
       window.dispatchEvent(
         new CustomEvent('themechange', {
@@ -184,7 +172,6 @@
       if (settings.animate) startThemeTransition(previousTheme, activeTheme);
       updateThemeToggleState();
       emitThemeChange();
-      syncThemeAwareImages();
     }
 
     var storedThemePreference = readStoredThemePreference();
@@ -216,8 +203,6 @@
       };
       SiteUtils.onMediaQueryChange(colorSchemeQuery, handleColorSchemeChange);
     }
-
-    SiteUtils.on(window, 'themechange', syncThemeAwareImages);
   };
 
   window.SiteApp = SiteApp;

@@ -1,7 +1,11 @@
 from __future__ import annotations
 
 from .common import escape_html
-from .templates import font_stylesheet_href, theme_bootstrap_script
+from .templates import (
+    cn_font_stylesheet_href,
+    font_stylesheet_href,
+    theme_bootstrap_script,
+)
 
 SUBPAGE_HOME_HREF = "../index.html#home"
 SUBPAGE_RESEARCH_HREF = "../index.html#research"
@@ -62,7 +66,8 @@ def build_base_context(
         "page_id": escape_html(page_id),
         "page_title": escape_html(page_title),
         "meta_description": escape_html(meta_description),
-        "fonts_href": font_stylesheet_href(include_cn=include_cn_fonts),
+        "fonts_href": font_stylesheet_href(),
+        "cn_fonts_href": cn_font_stylesheet_href() if include_cn_fonts else "",
         "theme_bootstrap_html": theme_bootstrap_script(),
         "css_href": escape_html(css_href),
         "brand_href": escape_html(brand_href),
@@ -100,7 +105,9 @@ def build_subpage_context(
         page_id=page_id,
         page_title=page_title,
         meta_description=meta_description,
-        include_cn_fonts=True,
+        # The only element styled with the CN font (.name-cn = "尤为") lives on
+        # the home page; subpages fall back to system CJK fonts for any Chinese.
+        include_cn_fonts=False,
         css_href="../css/site.css",
         js_prefix="../js/",
         brand_href=SUBPAGE_HOME_HREF,

@@ -1,13 +1,13 @@
-  <main>
+  <main id="main" tabindex="-1">
     <section class="hero section" id="home">
       <div class="container hero-grid reveal-up">
         <div class="hero-portrait">
           <img
-            src="assets/avatar.png"
-            data-theme-src-light="assets/avatar.png"
-            data-theme-src-dark="assets/avatar.png"
+            src="assets/avatar.jpg"
+            width="440"
+            height="465"
             alt="Portrait of Wei You"
-            loading="eager"
+            fetchpriority="high"
           />
         </div>
 
@@ -47,16 +47,30 @@
         </header>
 
         <div class="controls card-surface reveal-up delay-1">
-          <div class="filters" role="tablist" aria-label="Paper filters">
-            <button class="filter-btn active" type="button" data-filter="all">All</button>
-            <button class="filter-btn" type="button" data-filter="working">Working</button>
-            <button class="filter-btn" type="button" data-filter="journal">Journal</button>
-            <button class="filter-btn" type="button" data-filter="conference">Conference</button>
-            <button class="filter-btn" type="button" data-filter="thesis">Thesis</button>
-          </div>
-          <div class="order-controls" role="group" aria-label="Paper ordering">
-            <button class="order-btn active" type="button" data-order="chronological">Chronological</button>
-            <button class="order-btn" type="button" data-order="topic">By Topic</button>
+          <div class="control-group">
+            <label class="select-field">
+              <span class="sr-only">Filter by type</span>
+              <select id="typeFilter" aria-label="Filter by type">
+                <option value="all">All Types</option>
+                <option value="working">Working</option>
+                <option value="journal">Journal</option>
+                <option value="conference">Conference</option>
+                <option value="thesis">Thesis</option>
+              </select>
+            </label>
+            <label class="select-field">
+              <span class="sr-only">Filter by topic</span>
+              <select id="topicFilter" aria-label="Filter by topic">
+                <option value="all">All Topics</option>
+              </select>
+            </label>
+            <label class="select-field">
+              <span class="sr-only">Sort papers</span>
+              <select id="sortOrder" aria-label="Sort papers">
+                <option value="chronological">Newest first</option>
+                <option value="topic">By topic</option>
+              </select>
+            </label>
           </div>
           <label class="search">
             <span class="sr-only">Search papers</span>
@@ -237,10 +251,3 @@
       </div>
     </section>
   </main>
-
-  <!-- ClustrMaps (hidden widget output) -->
-  <div aria-hidden="true" style="display: none;">
-    <script type='text/javascript' id='clustrmaps'
-      src='//cdn.clustrmaps.com/map_v2.js?cl=ffffff&w=70&t=n&d=k-VKK4sGCTSnv1_7j3-KMWkeht_LXQ7DWB03yGVQSG4&co=ffffff&cmo=ffffff&cmn=ffffff'>
-    </script>
-  </div>

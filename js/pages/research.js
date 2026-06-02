@@ -2,18 +2,83 @@
   var SiteApp = window.SiteApp || {};
   var SiteUtils = window.SiteUtils;
 
+  // The home page ships the MathJax config but not the ~1 MB engine; abstracts
+  // are collapsed, so we fetch and run it only when one with math is first
+  // opened. The page config sets startup.typeset = false, so we typeset each
+  // abstract explicitly once it is visible (correct box measurements).
+  var MATHJAX_LOADER_SRC = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js';
+  var mathJaxPromise = null;
+
+  function abstractHasMath(element) {
+    var text = element.textContent || '';
+    return text.indexOf('$') !== -1 || text.indexOf('\\(') !== -1 || text.indexOf('\\[') !== -1;
+  }
+
+  function ensureMathJax() {
+    if (mathJaxPromise) return mathJaxPromise;
+    if (typeof SiteUtils.loadScript !== 'function') {
+      mathJaxPromise = Promise.reject(new Error('loadScript unavailable'));
+      return mathJaxPromise;
+    }
+    mathJaxPromise = SiteUtils.loadScript(MATHJAX_LOADER_SRC).then(function () {
+      if (window.MathJax && window.MathJax.startup && window.MathJax.startup.promise) {
+        return window.MathJax.startup.promise;
+      }
+    });
+    return mathJaxPromise;
+  }
+
+  function typesetAbstract(abstract) {
+    if (!abstract || abstract.dataset.mathTypeset === 'true') return;
+    abstract.dataset.mathTypeset = 'true';
+    if (!abstractHasMath(abstract)) return;
+    ensureMathJax()
+      .then(function () {
+        if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+          return window.MathJax.typesetPromise([abstract]);
+        }
+      })
+      .catch(function () {
+        abstract.dataset.mathTypeset = '';
+      });
+  }
+
   SiteApp.initResearch = function initResearch() {
-    var filterButtons = SiteUtils.qsa('.filter-btn');
-    var orderButtons = SiteUtils.qsa('.order-btn');
     var paperLists = SiteUtils.qsa('.paper-list');
     var paperCards = SiteUtils.qsa('.paper');
     var paperSearch = document.getElementById('paperSearch');
     var paperSections = SiteUtils.qsa('[data-paper-section]');
     var workingSection = SiteUtils.qs('[data-paper-section="working"]');
     var publicationSection = SiteUtils.qs('[data-paper-section="pub"]');
-    var paperOrderMode = 'chronological';
+    var typeSelect = document.getElementById('typeFilter');
+    var topicSelect = document.getElementById('topicFilter');
+    var sortSelect = document.getElementById('sortOrder');
+    var paperOrderMode = sortSelect ? sortSelect.value || 'chronological' : 'chronological';
+    var paperTopicFilter = 'all';
 
     if (!paperCards.length) return;
+
+    function paperTopicName(card) {
+      return (card.dataset.topic || 'Other').trim() || 'Other';
+    }
+
+    function populateTopicOptions() {
+      if (!topicSelect) return;
+      var seen = {};
+      paperCards.forEach(function (card) {
+        seen[paperTopicName(card)] = true;
+      });
+      Object.keys(seen)
+        .sort(function (left, right) {
+          return left.toLowerCase().localeCompare(right.toLowerCase());
+        })
+        .forEach(function (topic) {
+          var option = document.createElement('option');
+          option.value = topic;
+          option.textContent = topic;
+          topicSelect.appendChild(option);
+        });
+    }
 
     function setPaperExpanded(card, expanded) {
       var abstract = card.querySelector('.paper-abstract');
@@ -21,6 +86,7 @@
       card.classList.toggle('is-expanded', expanded);
       card.setAttribute('aria-expanded', expanded ? 'true' : 'false');
       abstract.hidden = !expanded;
+      if (expanded) typesetAbstract(abstract);
     }
 
     function setupPaperExpansion() {
@@ -212,19 +278,17 @@
     }
 
     function applyPaperFilters() {
-      var activeButton = filterButtons.find(function (button) {
-        return button.classList.contains('active');
-      });
-
-      var activeFilter = activeButton ? activeButton.dataset.filter : 'all';
+      var activeFilter = typeSelect ? typeSelect.value || 'all' : 'all';
       var query = paperSearch ? paperSearch.value.trim().toLowerCase() : '';
+      var topicFilterActive = paperTopicFilter !== 'all';
 
       paperCards.forEach(function (card) {
         var cardType = card.dataset.type || '';
         var text = card.textContent.toLowerCase();
         var matchType = activeFilter === 'all' || activeFilter === cardType;
         var matchQuery = query.length === 0 || text.includes(query);
-        card.classList.toggle('hidden', !(matchType && matchQuery));
+        var matchTopic = !topicFilterActive || paperTopicName(card) === paperTopicFilter;
+        card.classList.toggle('hidden', !(matchType && matchQuery && matchTopic));
       });
 
       if (paperOrderMode === 'topic') {
@@ -236,33 +300,31 @@
       updateResearchSectionVisibility();
     }
 
-    filterButtons.forEach(function (button) {
-      SiteUtils.on(button, 'click', function () {
-        filterButtons.forEach(function (item) {
-          item.classList.remove('active');
-        });
-        button.classList.add('active');
-        applyPaperFilters();
-      });
-    });
+    if (typeSelect) {
+      SiteUtils.on(typeSelect, 'change', applyPaperFilters);
+    }
 
     if (paperSearch) {
       SiteUtils.on(paperSearch, 'input', applyPaperFilters);
     }
 
-    orderButtons.forEach(function (button) {
-      SiteUtils.on(button, 'click', function () {
-        orderButtons.forEach(function (item) {
-          item.classList.remove('active');
-        });
-        button.classList.add('active');
-        paperOrderMode = button.dataset.order || 'chronological';
+    if (sortSelect) {
+      SiteUtils.on(sortSelect, 'change', function () {
+        paperOrderMode = sortSelect.value || 'chronological';
         applyPaperFilters();
       });
-    });
+    }
+
+    if (topicSelect) {
+      SiteUtils.on(topicSelect, 'change', function () {
+        paperTopicFilter = topicSelect.value || 'all';
+        applyPaperFilters();
+      });
+    }
 
     setupPaperExpansion();
     initPaperSorting();
+    populateTopicOptions();
     applyPaperFilters();
   };
 

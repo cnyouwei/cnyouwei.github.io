@@ -7,7 +7,8 @@
   <meta name="description" content="Wei You - Assistant Professor at HKUST. Research in stochastic models, queueing theory, applied probability, and sequential decision-making." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&amp;family=Google+Sans+Flex:opsz,wght@8..144,400..700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;family=Rajdhani:wght@500;600;700&amp;family=Orbitron:wght@500;600;700&amp;family=Source+Sans+3:wght@400;500;600;700&amp;family=Merriweather:wght@400;700&amp;family=Noto+Sans+SC:wght@400;500;700&amp;display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&amp;family=Google+Sans+Flex:opsz,wght@8..144,400..700&amp;display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&amp;text=%E5%B0%A4%E4%B8%BA&amp;display=swap" rel="stylesheet" />
   <script>
     (function () {
       try {
@@ -18,7 +19,8 @@
           root.setAttribute('data-theme', storedTheme);
           return;
         }
-        root.setAttribute('data-theme', 'light');
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        root.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
       } catch (error) {
         document.documentElement.setAttribute('data-theme', 'light');
       }
@@ -28,6 +30,7 @@
 
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header" id="top">
     <div class="container nav-wrap">
       <a class="brand" href="#home" aria-label="Go to home">Wei You</a>
@@ -69,16 +72,16 @@
       </div>
     </div>
   </header>
-  <main>
+  <main id="main" tabindex="-1">
     <section class="hero section" id="home">
       <div class="container hero-grid reveal-up">
         <div class="hero-portrait">
           <img
-            src="assets/avatar.png"
-            data-theme-src-light="assets/avatar.png"
-            data-theme-src-dark="assets/avatar.png"
+            src="assets/avatar.jpg"
+            width="440"
+            height="465"
             alt="Portrait of Wei You"
-            loading="eager"
+            fetchpriority="high"
           />
         </div>
 
@@ -136,16 +139,30 @@
         </header>
 
         <div class="controls card-surface reveal-up delay-1">
-          <div class="filters" role="tablist" aria-label="Paper filters">
-            <button class="filter-btn active" type="button" data-filter="all">All</button>
-            <button class="filter-btn" type="button" data-filter="working">Working</button>
-            <button class="filter-btn" type="button" data-filter="journal">Journal</button>
-            <button class="filter-btn" type="button" data-filter="conference">Conference</button>
-            <button class="filter-btn" type="button" data-filter="thesis">Thesis</button>
-          </div>
-          <div class="order-controls" role="group" aria-label="Paper ordering">
-            <button class="order-btn active" type="button" data-order="chronological">Chronological</button>
-            <button class="order-btn" type="button" data-order="topic">By Topic</button>
+          <div class="control-group">
+            <label class="select-field">
+              <span class="sr-only">Filter by type</span>
+              <select id="typeFilter" aria-label="Filter by type">
+                <option value="all">All Types</option>
+                <option value="working">Working</option>
+                <option value="journal">Journal</option>
+                <option value="conference">Conference</option>
+                <option value="thesis">Thesis</option>
+              </select>
+            </label>
+            <label class="select-field">
+              <span class="sr-only">Filter by topic</span>
+              <select id="topicFilter" aria-label="Filter by topic">
+                <option value="all">All Topics</option>
+              </select>
+            </label>
+            <label class="select-field">
+              <span class="sr-only">Sort papers</span>
+              <select id="sortOrder" aria-label="Sort papers">
+                <option value="chronological">Newest first</option>
+                <option value="topic">By topic</option>
+              </select>
+            </label>
           </div>
           <label class="search">
             <span class="sr-only">Search papers</span>
@@ -945,13 +962,6 @@
       </div>
     </section>
   </main>
-
-  <!-- ClustrMaps (hidden widget output) -->
-  <div aria-hidden="true" style="display: none;">
-    <script type='text/javascript' id='clustrmaps'
-      src='//cdn.clustrmaps.com/map_v2.js?cl=ffffff&w=70&t=n&d=k-VKK4sGCTSnv1_7j3-KMWkeht_LXQ7DWB03yGVQSG4&co=ffffff&cmo=ffffff&cmn=ffffff'>
-    </script>
-  </div>
   <footer class="site-footer">
     <div class="container footer-inner">
       <p>&copy; <span id="year"></span> Wei You</p>
@@ -962,6 +972,9 @@
   <button class="back-to-top" type="button" aria-label="Back to top">Top</button>
   <script>
     window.MathJax = {
+      startup: {
+        typeset: false
+      },
       tex: {
         inlineMath: [['$', '$'], ['\\(', '\\)']],
         displayMath: [['$$', '$$'], ['\\[', '\\]']],
@@ -975,7 +988,6 @@
       }
     };
   </script>
-  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
   <script src="js/core/utils.js" defer></script>
   <script src="js/core/theme.js" defer></script>
   <script src="js/core/nav.js" defer></script>
