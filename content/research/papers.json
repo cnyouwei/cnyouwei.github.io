@@ -2,6 +2,24 @@
   "highlight_authors": ["Wei You"],
   "papers": [
     {
+      "id": "service-rate-differentiation",
+      "section": "working",
+      "type": "working",
+      "year": 2026,
+      "title": "Service Rate Differentiation for Homogeneous Impatient Customers",
+      "selected": true,
+      "topic": "Queueing Theory",
+      "authors": ["Chenguang (Allen) Wu", "Wei You"],
+      "note": "major revision at Production and Operations Management.",
+      "abstract": "We study joint service rate and waiting time differentiation for homogeneous impatient customers in many-server quality-based queueing systems, where longer services generate higher values but customers may abandon if they wait too long. Customers are homogeneous upon arrival, but the system manager can differentiate them in two dimensions: by assigning each customer to one of many service grades corresponding to different service rates, and by using customers' elapsed waiting times as a scheduling signal to further differentiate those who are waiting in queue. The manager jointly chooses the service grades, an allocation rule that assigns arriving customers to grades, and a scheduling policy that prioritizes customers across and within each grade. Because an exact stochastic analysis of this joint optimization problem is intractable, we adopt a fluid approach and translate the fluid solution into implementable policies for the underlying stochastic system. Our main structural result is that there exists an optimal fluid policy with at most two active service rate and offered wait pairs, regardless of the welfare function or patience time distribution. This reduces the complicated design problem to operationally simple policies. Motivated by our fluid analysis, we propose using a randomized grade assignment at customer arrival and a priority rule based on grade labels and elapsed waiting times, and establish a formal performance guarantee for this policy in Markovian systems. Our framework can easily extend to heterogeneous customers, where we show at most one customer class needs to be further differentiated, thereby suggesting a robust principle of implementing joint service rate and waiting time differentiation.",
+      "links": [
+        {
+          "label": "PDF",
+          "url": "assets/papers/Wu_You_SRD.pdf"
+        }
+      ]
+    },
+    {
       "id": "online-learning-queue",
       "section": "working",
       "type": "working",
@@ -116,18 +134,6 @@
           "url": "https://arxiv.org/abs/2308.03572"
         }
       ]
-    },
-    {
-      "id": "service-rate-differentiation",
-      "section": "working",
-      "type": "working",
-      "year": 2026,
-      "title": "Service Rate Differentiation for Homogeneous Impatient Customers",
-      "topic": "Queueing Theory",
-      "authors": ["Chenguang (Allen) Wu", "Wei You"],
-      "note": "major revision at Production and Operations Management.",
-      "abstract": "We study the joint service rate and waiting time differentiation for homogeneous impatient customers in parallel server queueing systems. Customers are homogeneous at the time of arrival, but the system can differentiate them by assigning each of them to one of many service grades corresponding to different service rates. Customers not served immediately upon arrival wait in the queue corresponding to their grades, and they get further differentiated by their residual patience times as time elapses. We leverage these two dimensions of heterogeneity to propose implementable policies that differentiate customers on both service rates and waiting times. Our policy specifies the service rate of each grade, an allocation rule that assigns customers to grades, and a scheduling policy that routes idle servers to waiting customers using their grade and waiting time information. We show that the optimal policy has a very simple structure, creating at most two grades with different service rates or offered waits, and processing each grade in a First Come First Served manner. Our paper provides managers with ways of improving the quality of service through joint service rate and waiting time differentiation. Our policy can lead to significant cost and welfare improvement over policies without service rate differentiation.",
-      "links": []
     },
     {
       "id": "bandit-resource-allocation-platforms",
