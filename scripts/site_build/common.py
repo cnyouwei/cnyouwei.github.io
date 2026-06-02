@@ -44,5 +44,30 @@ def format_date(date_string: str) -> str:
         return date_string
     return date_obj.strftime("%B %d, %Y")
 
-def indent_block(block: str, indent: str) -> str:
-    return "\n".join((indent + line if line else "") for line in block.splitlines())
+def page_context(
+    *,
+    ga_id: str,
+    page_id: str,
+    page_title: str,
+    meta_description: str,
+    main_html: str,
+    subpage: bool = False,
+    mathjax: str = "none",
+    page_scripts: list[str] | tuple[str, ...] = (),
+) -> dict[str, object]:
+    """Context for base.html.j2.
+
+    `subpage` flips every page-relative path (assets, nav anchors) in the
+    template. `mathjax` is one of "none" | "lazy" | "eager" (see the partial).
+    `page_scripts` are paths under js/, loaded after site.js.
+    """
+    return {
+        "ga_id": escape_html(ga_id),
+        "page_id": escape_html(page_id),
+        "page_title": escape_html(page_title),
+        "meta_description": escape_html(meta_description),
+        "main_html": main_html,
+        "subpage": subpage,
+        "mathjax": mathjax,
+        "page_scripts": list(page_scripts),
+    }

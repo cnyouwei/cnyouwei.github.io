@@ -1,0 +1,39 @@
+{#
+  MathJax config. Two modes (the script body is {% raw %} because the `{#1}`
+  macro arg would otherwise read as a Jinja comment):
+    lazy  (home) - config only, no engine; research.js loads tex-chtml.js on
+                   first abstract open and typesets it (startup.typeset = false).
+    eager (blog) - config + engine, typesets the whole post on load.
+#}
+{%- if mathjax == 'lazy' %}
+  <script>
+{% raw %}    window.MathJax = {
+      startup: { typeset: false },
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true,
+        macros: { bm: ['\\boldsymbol{#1}', 1] }
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    };{% endraw %}
+  </script>
+{%- elif mathjax == 'eager' %}
+  <script>
+{% raw %}    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true,
+        macros: { bm: ['\\boldsymbol{#1}', 1] }
+      },
+      chtml: { mtextInheritFont: true, merrorInheritFont: true },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    };{% endraw %}
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+{%- endif %}

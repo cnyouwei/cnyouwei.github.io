@@ -51,10 +51,8 @@
   --radius-4: 50px;
   --radius-full: 9999px;
   --radius-sm: var(--radius-2);
-  --radius-md: var(--radius-3);
-  --radius-lg: var(--radius-4);
-  --radius-nested-min-delta: 4px;
-  --radius-nested-max-delta: 12px;
+  /* Radius for cards nested inside a card-surface (timeline, students, TOC). */
+  --radius-nested: 28px;
   --corner-shape-card: squircle;
   --container: 1120px;
   --header-height: 72px;
@@ -117,7 +115,6 @@
   --glass-filter-control: blur(10px) saturate(130%);
   --glass-filter-menu: blur(14px) saturate(135%);
   --glass-filter-mobile-nav: blur(16px) saturate(135%);
-  --font-sans: "Google Sans Flex", "Avenir Next", "Segoe UI", sans-serif;
   --badge-border: #475569;
   --badge-text: #e2e8f0;
   --badge-working-bg: #3b2f1a;
@@ -450,8 +447,6 @@ main[tabindex="-1"]:focus {
   gap: 1.6rem;
   border: 1px solid var(--line);
   border-radius: var(--radius-4);
-  --nested-parent-radius: var(--radius-4);
-  --nested-gap: 1.6rem;
   background: var(--surface);
   box-shadow: var(--shadow);
   padding: 1.5rem;
@@ -824,16 +819,10 @@ main[tabindex="-1"]:focus {
 .timeline {
   display: grid;
   gap: 0.58rem;
-  --nested-parent-radius: var(--radius-3);
-  --nested-gap: 0.58rem;
 }
 
 .timeline-item {
-  border-radius: clamp(
-    max(var(--radius-1), calc(var(--nested-parent-radius) - var(--radius-nested-max-delta))),
-    calc(var(--nested-parent-radius) - (var(--nested-gap) / 2)),
-    calc(var(--nested-parent-radius) - var(--radius-nested-min-delta))
-  );
+  border-radius: var(--radius-nested);
   padding: 0.72rem 0.8rem;
   background: var(--surface-soft);
   box-shadow: none;
@@ -859,16 +848,10 @@ main[tabindex="-1"]:focus {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
   gap: 0.65rem;
-  --nested-parent-radius: var(--radius-3);
-  --nested-gap: 0.65rem;
 }
 
 .student-card {
-  border-radius: clamp(
-    max(var(--radius-1), calc(var(--nested-parent-radius) - var(--radius-nested-max-delta))),
-    calc(var(--nested-parent-radius) - (var(--nested-gap) / 2)),
-    calc(var(--nested-parent-radius) - var(--radius-nested-min-delta))
-  );
+  border-radius: var(--radius-nested);
   padding: 0.68rem 0.78rem;
   background: var(--surface-soft);
   box-shadow: none;
@@ -1058,13 +1041,6 @@ main[tabindex="-1"]:focus {
     animation: none;
   }
 
-  .site-nav::after,
-  .theme-toggle::after,
-  .menu-toggle::after,
-  .back-to-top::after {
-    animation: none;
-  }
-
   .back-to-top {
     transition: opacity 0.2s ease;
   }
@@ -1160,8 +1136,6 @@ main[tabindex="-1"]:focus {
   padding: 0;
   display: grid;
   gap: 0.15rem;
-  --nested-parent-radius: var(--radius-3);
-  --nested-gap: 0.15rem;
 }
 
 .post-toc__item {
@@ -1183,11 +1157,7 @@ main[tabindex="-1"]:focus {
 
 .post-toc__link {
   display: block;
-  border-radius: clamp(
-    max(var(--radius-1), calc(var(--nested-parent-radius) - var(--radius-nested-max-delta))),
-    calc(var(--nested-parent-radius) - (var(--nested-gap) / 2)),
-    calc(var(--nested-parent-radius) - var(--radius-nested-min-delta))
-  );
+  border-radius: var(--radius-nested);
   color: var(--text-muted);
   text-decoration: none;
   line-height: 1.3;

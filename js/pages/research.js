@@ -1,5 +1,4 @@
 (function (window) {
-  var SiteApp = window.SiteApp || {};
   var SiteUtils = window.SiteUtils;
 
   // The home page ships the MathJax config but not the ~1 MB engine; abstracts
@@ -43,7 +42,7 @@
       });
   }
 
-  SiteApp.initResearch = function initResearch() {
+  function initResearch() {
     var paperLists = SiteUtils.qsa('.paper-list');
     var paperCards = SiteUtils.qsa('.paper');
     var paperSearch = document.getElementById('paperSearch');
@@ -326,7 +325,7 @@
     initPaperSorting();
     populateTopicOptions();
     applyPaperFilters();
-  };
+  }
 
-  window.SiteApp = SiteApp;
+  initResearch();
 })(window);

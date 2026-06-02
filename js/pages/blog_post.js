@@ -1,29 +1,13 @@
 (function (window) {
-  var SiteApp = window.SiteApp || {};
   var SiteUtils = window.SiteUtils;
-  var SiteTheme = window.SiteTheme || null;
+  var SiteTheme = window.SiteTheme;
 
-  function resolveTheme() {
-    if (SiteTheme && typeof SiteTheme.resolveActiveTheme === 'function') {
-      return SiteTheme.resolveActiveTheme();
-    }
-    return 'light';
+  function activeTheme() {
+    return SiteTheme ? SiteTheme.resolveActiveTheme() : 'light';
   }
 
-  function resolveThemeFromEvent(event) {
-    if (SiteTheme && typeof SiteTheme.resolveThemeFromEvent === 'function') {
-      return SiteTheme.resolveThemeFromEvent(event);
-    }
-    return resolveTheme();
-  }
-
-  function resolveThemeMeta(theme) {
-    if (SiteTheme && typeof SiteTheme.getThemeMeta === 'function') {
-      return SiteTheme.getThemeMeta(theme);
-    }
-    return theme === 'dark'
-      ? { highlightVariant: 'dark', mermaidVariant: 'dark' }
-      : { highlightVariant: 'light', mermaidVariant: 'default' };
+  function eventTheme(event) {
+    return SiteTheme ? SiteTheme.resolveThemeFromEvent(event) : activeTheme();
   }
 
   function initCodeCopyButtons() {
@@ -330,9 +314,7 @@
     };
 
     function applyHighlightTheme(theme) {
-      var themeMeta = resolveThemeMeta(theme);
-      var resolvedTheme = themeMeta.highlightVariant === 'dark' ? 'dark' : 'light';
-      var nextHref = hljsThemeHref[resolvedTheme];
+      var nextHref = hljsThemeHref[theme === 'dark' ? 'dark' : 'light'];
       var link = SiteUtils.qs('link[data-hljs-theme="true"]');
       if (!(link instanceof HTMLLinkElement)) {
         link = document.createElement('link');
@@ -345,7 +327,7 @@
       }
     }
 
-    applyHighlightTheme(resolveTheme());
+    applyHighlightTheme(activeTheme());
 
     return SiteUtils.loadScript(
       'https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.11.1/build/highlight.min.js'
@@ -394,7 +376,7 @@
         });
 
         SiteUtils.on(window, 'themechange', function (event) {
-          applyHighlightTheme(resolveThemeFromEvent(event));
+          applyHighlightTheme(eventTheme(event));
         });
       })
       .catch(function () {
@@ -437,8 +419,7 @@
         };
 
         function getMermaidTheme(theme) {
-          var themeMeta = resolveThemeMeta(theme);
-          return themeMeta.mermaidVariant === 'dark' ? 'dark' : 'default';
+          return theme === 'dark' ? 'dark' : 'default';
         }
 
         function readMermaidColor(token) {
@@ -498,10 +479,10 @@
           return renderQueue;
         }
 
-        queueRender(resolveTheme());
+        queueRender(activeTheme());
 
         SiteUtils.on(window, 'themechange', function (event) {
-          queueRender(resolveThemeFromEvent(event));
+          queueRender(eventTheme(event));
         });
       })
       .catch(function () {
@@ -509,13 +490,9 @@
       });
   }
 
-  SiteApp.initBlogPost = function initBlogPost() {
-    initCodeCopyButtons();
-    initPostTocMobileToggle();
-    initPostTocScrollSpy();
-    initHighlighting();
-    initMermaid();
-  };
-
-  window.SiteApp = SiteApp;
+  initCodeCopyButtons();
+  initPostTocMobileToggle();
+  initPostTocScrollSpy();
+  initHighlighting();
+  initMermaid();
 })(window);

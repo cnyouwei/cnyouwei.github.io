@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import re
 
-from .common import BLOG_OUTPUT_DIR, BLOG_SOURCE_DIR, escape_html, format_date
+from .common import BLOG_OUTPUT_DIR, BLOG_SOURCE_DIR, escape_html, format_date, page_context
 from .markdown_render import (
     get_summary,
     markdown_to_html,
@@ -10,9 +10,7 @@ from .markdown_render import (
     parse_front_matter,
     parse_tags,
 )
-from .page_context import build_subpage_context
 from .template_engine import render_template
-from .templates import mathjax_config_script
 
 
 def _normalized_toc_entries(toc_entries: list[dict[str, object]]) -> list[dict[str, object]]:
@@ -91,14 +89,15 @@ def post_page_template(
 
     return render_template(
         "base.html.j2",
-        build_subpage_context(
+        page_context(
             ga_id=ga_id,
             page_id="blog-post",
             page_title=f"{str(post['title'])} | Wei You",
             meta_description=str(post["summary"]),
             main_html=main_html,
+            subpage=True,
+            mathjax="eager",
             page_scripts=["pages/blog_post.js"],
-            extra_before_scripts_html=mathjax_config_script(include_chtml=True),
         ),
     )
 

@@ -242,10 +242,3 @@ def render_research_sections() -> dict[str, object]:
         "selected_markup": build_selected_papers_markup(papers),
         "research_markup": build_research_markup(papers, highlighted),
     }
-
-
-def build_research() -> int:
-    payload = render_research_sections()
-    paper_count = int(payload["paper_count"])
-    print(f"Built research section from {paper_count} entries.")
-    return paper_count

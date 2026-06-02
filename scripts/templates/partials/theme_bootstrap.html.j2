@@ -1,0 +1,18 @@
+  {# Set the theme before first paint to avoid a flash; site.js owns it after load. #}
+  <script>
+    (function () {
+      try {
+        var root = document.documentElement;
+        var storedTheme = localStorage.getItem('wy-theme');
+        var themeSource = localStorage.getItem('wy-theme-source');
+        if (themeSource === 'manual' && (storedTheme === 'light' || storedTheme === 'dark')) {
+          root.setAttribute('data-theme', storedTheme);
+          return;
+        }
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        root.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+      } catch (error) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>

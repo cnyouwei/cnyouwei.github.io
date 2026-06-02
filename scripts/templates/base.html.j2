@@ -1,3 +1,7 @@
+{%- set asset_prefix = '../' if subpage else '' -%}
+{%- set nav_prefix = '../index.html' if subpage else '' -%}
+{%- set js_prefix = asset_prefix ~ 'js/' -%}
+{%- set css_href = asset_prefix ~ 'css/site.css' -%}
 <!DOCTYPE html>
 <html lang="en" data-ga-id="{{ ga_id }}" data-page="{{ page_id }}">
 <head>
@@ -6,21 +10,14 @@
   <title>{{ page_title }}</title>
   <meta name="description" content="{{ meta_description }}" />
 {% include 'partials/head_assets.html.j2' %}
-{{ extra_head_html }}
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 {% include 'partials/nav.html.j2' %}
 {{ main_html }}
 {% include 'partials/footer.html.j2' %}
-{{ extra_before_scripts_html }}
-  <script src="{{ js_prefix }}core/utils.js" defer></script>
-  <script src="{{ js_prefix }}core/theme.js" defer></script>
-  <script src="{{ js_prefix }}core/nav.js" defer></script>
-  <script src="{{ js_prefix }}core/analytics.js" defer></script>
-  <script src="{{ js_prefix }}core/back_to_top.js" defer></script>
-{{ page_scripts_html }}
+{% include 'partials/mathjax.html.j2' %}
   <script src="{{ js_prefix }}site.js" defer></script>
-{{ extra_after_scripts_html }}
-</body>
+{% for src in page_scripts %}  <script src="{{ js_prefix }}{{ src }}" defer></script>
+{% endfor %}</body>
 </html>

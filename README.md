@@ -5,9 +5,8 @@ This repository contains a static personal research website.
 ## Structure
 
 - `css/site.css`: Site styles (single file, organized by tokens/base/layout/components/pages/media).
-- `js/site.js`: Thin runtime bootstrap.
-- `js/core/*.js`: Shared runtime features (theme, nav, analytics, back-to-top, utils).
-- `js/pages/research.js`: Home research filters/search/ordering behavior.
+- `js/site.js`: Shared runtime for every page — DOM helpers, theme toggle, nav/section routing, analytics, back-to-top. Exposes `SiteUtils` and `SiteTheme` for the page scripts.
+- `js/pages/research.js`: Home research filters/search/ordering and lazy MathJax for abstracts.
 - `js/pages/blog_post.js`: Blog post enhancements (TOC, copy buttons, highlighting, Mermaid).
 - `content/research/papers.json`: Source of truth for working papers and publications.
 - `content/blog/*.md`: Source markdown files for blog posts.
@@ -16,15 +15,14 @@ This repository contains a static personal research website.
 - `scripts/build_site.py`: Public build entrypoint.
 - `scripts/site_build/`: Internal build modules.
   - `cli.py`: Build orchestration.
-  - `common.py`: Shared constants and utility helpers.
-  - `home.py`: Home page rendering (`index.html`) from templates plus generated research/teaching markup.
+  - `common.py`: Shared constants, helpers, and the `base.html.j2` page context.
+  - `home.py`: Home page rendering (`index.html`).
   - `markdown_render.py`: Front matter parsing + markdown rendering (Python markdown library).
   - `blog.py`: Blog page rendering and home recent-post markup generation.
   - `research.py`: Research section and selected-papers markup rendering.
   - `teaching.py`: Teaching markup rendering and per-course page generation.
   - `template_engine.py`: Template rendering (Jinja2).
-  - `templates.py`: Shared injected snippet helpers (theme bootstrap, MathJax config, fonts).
-- `scripts/templates/`: HTML templates and partials used by the generator.
+- `scripts/templates/`: HTML templates and partials. `base.html.j2` is the page shell; `partials/` holds nav, head assets, theme bootstrap, MathJax config, footer, and the content fragments.
 - `scripts/parity_check.py`: Snapshot/check utility for generated-output parity.
 - `.github/workflows/pages.yml`: Build-and-deploy pipeline for GitHub Pages.
 - `blogs/`: Generated blog output (post pages).
@@ -175,9 +173,8 @@ python3 scripts/build_site.py
   - `scripts/site_build/*.py`
   - `scripts/build_site.py`
 - Runtime behavior/style edits (frontend behavior):
-  - `js/core/*.js`
-  - `js/pages/*.js`
   - `js/site.js`
+  - `js/pages/*.js`
   - `css/site.css`
 - Template/layout edits (page shell and generated markup):
   - `scripts/templates/**/*.j2`

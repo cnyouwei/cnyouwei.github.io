@@ -3,8 +3,7 @@ from __future__ import annotations
 import json
 import re
 
-from .common import TEACHING_DATA_PATH, TEACHING_OUTPUT_DIR, escape_html
-from .page_context import build_subpage_context
+from .common import TEACHING_DATA_PATH, TEACHING_OUTPUT_DIR, escape_html, page_context
 from .template_engine import render_template
 
 
@@ -177,13 +176,13 @@ def teaching_course_template(
 
     return render_template(
         "base.html.j2",
-        build_subpage_context(
+        page_context(
             ga_id=ga_id,
             page_id="teaching-course",
             page_title=f"{raw_code} {raw_title} | Teaching",
             meta_description=summary_raw,
             main_html=main_html,
-            page_scripts=[],
+            subpage=True,
         ),
     )
 

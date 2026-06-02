@@ -1,6 +1,6 @@
   <header class="site-header" id="top">
     <div class="container nav-wrap">
-      <a class="brand" href="{{ brand_href }}"{% if brand_aria_label %} aria-label="{{ brand_aria_label }}"{% endif %}>Wei You</a>
+      <a class="brand" href="{{ nav_prefix }}#home" aria-label="Go to home">Wei You</a>
       <div class="nav-controls">
         <button class="theme-toggle" type="button" aria-label="Toggle theme" aria-pressed="false" data-active-icon="sun">
           <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">
@@ -28,13 +28,9 @@
           <span></span>
         </button>
         <nav class="site-nav" id="site-nav" aria-label="Primary">
-          <a class="nav-link" href="{{ home_href }}">Home</a>
-          <a class="nav-link" href="{{ research_href }}">Research</a>
-          <a class="nav-link" href="{{ talks_href }}">Talks</a>
-          <a class="nav-link" href="{{ teaching_href }}">Teaching</a>
-          <a class="nav-link" href="{{ team_href }}">Team</a>
-          <a class="nav-link" href="{{ about_href }}">About</a>
-          <a class="nav-link" href="{{ blog_href }}">Blog</a>
+{%- for label, anchor in [('Home', 'home'), ('Research', 'research'), ('Talks', 'talks'), ('Teaching', 'teaching'), ('Team', 'team'), ('About', 'about'), ('Blog', 'blog')] %}
+          <a class="nav-link" href="{{ nav_prefix }}#{{ anchor }}">{{ label }}</a>
+{%- endfor %}
         </nav>
       </div>
     </div>
