@@ -1,0 +1,62 @@
+{#
+  Page shell. Pages extend this and provide:
+    blocks: title, description, main  (+ optional head_extra)
+  Context (from builder.site): root ('' at site root, '../' in subdirectories),
+  page_id, mathjax ('none'|'lazy'|'eager'), page_scripts, ga_id, profile.
+#}
+<!DOCTYPE html>
+<html lang="en" data-ga-id="{{ ga_id }}" data-page="{{ page_id }}">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}{{ profile.site.title }}{% endblock %}</title>
+  <meta name="description" content="{% block description %}{{ profile.site.meta_description }}{% endblock %}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  {# Fraunces: serif display headings. Inter: body/UI (stable rendering everywhere). #}
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  {% if page_id == 'home' %}
+  {# The only CJK on the site is the name "尤为" (home only); subset to those glyphs. #}
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&text=%E5%B0%A4%E4%B8%BA&display=swap" rel="stylesheet" />
+  {% endif %}
+  <script>
+    /* Apply the saved or system theme before first paint to avoid flashing. */
+    (function () {
+      try {
+        var root = document.documentElement;
+        var stored = localStorage.getItem('wy-theme');
+        var source = localStorage.getItem('wy-theme-source');
+        if (source === 'manual' && (stored === 'light' || stored === 'dark')) {
+          root.setAttribute('data-theme', stored);
+          return;
+        }
+        var dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        root.setAttribute('data-theme', dark ? 'dark' : 'light');
+      } catch (error) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="{{ root }}css/site.css" />
+{% include 'partials/mathjax.html.j2' %}
+{% block head_extra %}{% endblock %}
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+{% include 'partials/nav.html.j2' %}
+  <main id="main" tabindex="-1">
+{% block main %}{% endblock %}
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; <span data-footer-year></span> {{ profile.name }}</p>
+      <p>{{ profile.site.footer_affiliation }}</p>
+    </div>
+  </footer>
+  <button class="back-to-top" type="button" aria-label="Back to top">Top</button>
+  <script src="{{ root }}js/site.js" defer></script>
+{% for src in page_scripts %}
+  <script src="{{ root }}js/{{ src }}" defer></script>
+{% endfor %}
+</body>
+</html>

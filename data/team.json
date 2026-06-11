@@ -1,0 +1,47 @@
+{
+  "_comment": "Students for the site #team section and the CV Students block. status: current|former. degree as displayed. Optional: coadvisor, thesis, placement, institution_note.",
+  "students": [
+    {
+      "name": "Xinyu Liu",
+      "degree": "Ph.D.",
+      "period": "2024–present",
+      "status": "current"
+    },
+    {
+      "name": "Yueying Hu",
+      "degree": "Ph.D.",
+      "period": "2024–present",
+      "status": "current"
+    },
+    {
+      "name": "Qiaoqiao Wang",
+      "degree": "Ph.D.",
+      "period": "2023–present",
+      "status": "current"
+    },
+    {
+      "name": "Ke Lu",
+      "degree": "MPhil",
+      "period": "2023–present",
+      "status": "current"
+    },
+    {
+      "name": "Zihao Wang",
+      "degree": "Ph.D.",
+      "period": "2019–2023",
+      "status": "former",
+      "thesis": "Online Resource Allocation for Service Platforms and Bandit Experiments",
+      "placement": "Equity Derivatives Quant, Bank of America"
+    },
+    {
+      "name": "Yingxian Wu",
+      "degree": "MPhil",
+      "period": "2020–2022",
+      "status": "former",
+      "institution_note": "HKUST(GZ)",
+      "coadvisor": "Sisi Jian",
+      "thesis": "Mix Allocation of Two Types of Passengers and Drivers",
+      "placement": "Investment Risk Management Assistant, E Fund Management Co., LTD"
+    }
+  ]
+}

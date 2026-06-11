@@ -1,0 +1,71 @@
+{% extends 'base.html.j2' %}
+
+{% block title %}{{ course.code }} {{ course.title }} | Teaching{% endblock %}
+{% block description %}{{ course.summary }}{% endblock %}
+
+{% block main %}
+    <article class="section course">
+      <div class="container">
+        <p><a class="chip" href="../index.html#teaching">&larr; All courses</a></p>
+        <header class="section-header">
+          <p class="eyebrow">{{ course.code }}</p>
+          <h1>{{ course.title }}</h1>
+          <p class="muted">{{ course.period }}</p>
+        </header>
+
+        <div class="split-grid">
+          <article class="panel card-surface">
+            <h2>Course Snapshot</h2>
+            <dl class="snapshot">
+              <dt>Institution</dt>
+              <dd>{{ course.institution }}</dd>
+              <dt>Period</dt>
+              <dd>{{ course.period }}</dd>
+              {% if course.audience %}
+              <dt>Audience</dt>
+              <dd>{{ course.audience }}</dd>
+              {% endif %}
+              {% if course.prerequisites %}
+              <dt>Prerequisites</dt>
+              <dd>{{ course.prerequisites }}</dd>
+              {% endif %}
+            </dl>
+            <p>{{ course.overview }}</p>
+          </article>
+          <article class="panel card-surface">
+            <h2>Learning Outcomes</h2>
+            <ul class="stack-list">
+              {% for outcome in course.outcomes %}
+              <li>{{ outcome }}</li>
+              {% else %}
+              <li>Learning outcomes will be posted soon.</li>
+              {% endfor %}
+            </ul>
+          </article>
+        </div>
+
+        <header class="section-header">
+          <p class="eyebrow">Lecture Modules</p>
+          <h2>Materials</h2>
+        </header>
+        <div class="course-grid">
+          {% for module in course.modules %}
+          <article class="course-card card-surface">
+            <div class="course-meta">
+              <span class="badge badge--published">{{ module.code }}</span>
+            </div>
+            <h3>{{ module.title }}</h3>
+            <p>{{ module.description }}</p>
+            {% if module.link_url %}
+            {% set external = module.link_url.startswith('http') %}
+            <a class="chip" href="{{ module.link_url if external else root ~ module.link_url }}"
+               {% if external or module.link_url.endswith('.pdf') %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ module.link_label or 'Open resource' }}</a>
+            {% endif %}
+          </article>
+          {% else %}
+          <p class="muted">No modules published yet. Materials will be added here when available.</p>
+          {% endfor %}
+        </div>
+      </div>
+    </article>
+{% endblock %}

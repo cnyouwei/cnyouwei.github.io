@@ -1,0 +1,32 @@
+{# One paper card. Data attributes drive the research filters (js/pages/research.js). #}
+<article class="paper card" id="paper-{{ paper.id }}"
+         data-type="{{ paper.type }}" data-topic="{{ paper.topic }}"
+         data-year="{{ paper.year }}" data-search="{{ paper.search_blob }}">
+  <div class="paper-meta">
+    <span class="badge badge--{{ paper.type }}">{{ badge_labels[paper.type] }}</span>
+    <span class="paper-topic">{{ paper.topic }}</span>
+    <span class="paper-year">{{ paper.year }}</span>
+  </div>
+  <h4 class="paper-title">{{ paper.title }}</h4>
+  <p class="paper-authors">{{ paper.authors_html }}</p>
+  {% if paper.citation %}
+  <p class="paper-venue">{{ paper.citation }}</p>
+  {% endif %}
+  {% if paper.note %}
+  <p class="paper-note">{{ paper.note }}</p>
+  {% endif %}
+  {% if paper.abstract %}
+  <details class="paper-abstract">
+    <summary>Abstract</summary>
+    <div class="paper-abstract-body">{{ paper.abstract }}</div>
+  </details>
+  {% endif %}
+  {% if paper.links %}
+  <div class="paper-links">
+    {% for link in paper.links %}
+    <a class="chip chip--small" href="{{ link.url }}"
+       {% if link.url.startswith('http') %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ link.label }}</a>
+    {% endfor %}
+  </div>
+  {% endif %}
+</article>

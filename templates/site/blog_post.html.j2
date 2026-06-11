@@ -1,0 +1,40 @@
+{% extends 'base.html.j2' %}
+
+{% block title %}{{ post.title }} | {{ profile.site.title }}{% endblock %}
+{% block description %}{{ post.summary }}{% endblock %}
+
+{% block main %}
+    <article class="section post">
+      <div class="container post-layout">
+        <div class="post-main card-surface">
+          <p><a class="chip" href="../index.html#blog">&larr; All posts</a></p>
+          <header class="post-header">
+            <p class="eyebrow">{{ post.eyebrow }}</p>
+            <h1>{{ post.title }}</h1>
+            <p class="post-meta">
+              <time datetime="{{ post.date }}">{{ post.date_label }}</time>
+              {% for tag in post.tags %}
+              <span class="blog-tag">{{ tag }}</span>
+              {% endfor %}
+            </p>
+            <p class="post-summary">{{ post.summary }}</p>
+          </header>
+          <div class="post-body">
+{{ post.body_html | safe }}
+          </div>
+        </div>
+        {% if post.toc %}
+        <aside class="post-toc card-surface" aria-label="Table of contents">
+          <p class="post-toc__title">On this page</p>
+          <ul>
+            {% for entry in post.toc %}
+            <li class="post-toc__item{{ ' post-toc__item--sub' if entry.level >= 3 else '' }}">
+              <a href="#{{ entry.id }}">{{ entry.title }}</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </aside>
+        {% endif %}
+      </div>
+    </article>
+{% endblock %}

@@ -1,0 +1,245 @@
+{
+  "_comment": "Courses shown in the site #teaching hub. published: true generates a course page at teaching/<slug>.html; published: false shows a Coming Soon card. CV teaching history lives in cv.json (teaching_history).",
+  "courses": [
+    {
+      "slug": "ieda3250",
+      "code": "IEDA3250",
+      "title": "Stochastic Models",
+      "period": "2026–present",
+      "institution": "HKUST, Department of Industrial Engineering and Decision Analytics",
+      "summary": "Stochastic-process modeling methods for engineering systems.",
+      "published": false
+    },
+    {
+      "slug": "ieda5270",
+      "code": "IEDA5270",
+      "title": "Engineering Statistics",
+      "period": "2019–present",
+      "institution": "HKUST, Department of Industrial Engineering and Decision Analytics",
+      "summary": "Graduate-level statistical methodology for data-driven engineering.",
+      "published": true,
+      "overview": "This course develops a rigorous statistical toolkit for engineering data analytics, covering probability foundations, random-sample theory, estimation and inference, regression modeling, regularization, generalized linear models, and modern classification methods.",
+      "audience": "Graduate students in engineering and data analytics, and advanced undergraduates with strong quantitative backgrounds.",
+      "prerequisites": "Probability theory, linear algebra, calculus, and basic programming/statistical computing.",
+      "outcomes": [
+        "Formulate statistical inference problems and interpret assumptions in engineering contexts.",
+        "Construct and evaluate point estimators, hypothesis tests, and confidence sets.",
+        "Build and diagnose linear and generalized linear regression models.",
+        "Apply model selection, regularization, and cross-validation for predictive performance.",
+        "Compare and deploy classification methods based on data characteristics and evaluation metrics."
+      ],
+      "modules": [
+        {
+          "code": "CH1",
+          "title": "Review of Probability Theory",
+          "description": "Events, conditional probability, random variables, expectation, transformations, and multivariate distributions as the foundation for inference.",
+          "link_label": "Open Handout",
+          "link_url": "assets/teaching/IEDA5270/handout.pdf"
+        },
+        {
+          "code": "CH2",
+          "title": "Properties of a Random Sample",
+          "description": "Sampling distributions, moment generating functions, order statistics, LLN/CLT, and delta-method approximations.",
+          "link_label": "Open Handout",
+          "link_url": "assets/teaching/IEDA5270/handout.pdf"
+        },
+        {
+          "code": "CH3",
+          "title": "Principles of Data Reduction",
+          "description": "Sufficient, minimal sufficient, and complete statistics, with factorization and exponential-family perspectives.",
+          "link_label": "Open Handout",
+          "link_url": "assets/teaching/IEDA5270/handout.pdf"
+        },
+        {
+          "code": "CH4",
+          "title": "Point Estimation",
+          "description": "Method of moments, maximum likelihood, Fisher information, Cramer-Rao bounds, and unbiased estimation under sufficiency/completeness.",
+          "link_label": "Open Handout",
+          "link_url": "assets/teaching/IEDA5270/handout.pdf"
+        },
+        {
+          "code": "CH5",
+          "title": "Hypothesis Testing",
+          "description": "Test construction, simple and composite hypotheses, UMP tests, likelihood-ratio methods, and sequential testing principles.",
+          "link_label": "Open Handout",
+          "link_url": "assets/teaching/IEDA5270/handout.pdf"
+        },
+        {
+          "code": "CH6",
+          "title": "Confidence Set",
+          "description": "Confidence-set construction via pivotal quantities and test inversion, plus asymptotic, bootstrap, and Bayesian intervals.",
+          "link_label": "Open Handout",
+          "link_url": "assets/teaching/IEDA5270/handout.pdf"
+        },
+        {
+          "code": "CH7",
+          "title": "Regression Models",
+          "description": "Multiple linear regression, least squares theory, inference, nested model tests, diagnostics, Box-Cox transforms, spline, and robust methods.",
+          "link_label": "Open Handout",
+          "link_url": "assets/teaching/IEDA5270/handout.pdf"
+        },
+        {
+          "code": "CH8",
+          "title": "Model Selection and Regularization",
+          "description": "Subset selection, ridge and lasso shrinkage, model criteria (Adjusted R2/Cp/AIC/BIC), and cross-validation workflows.",
+          "link_label": "Open Handout",
+          "link_url": "assets/teaching/IEDA5270/handout.pdf"
+        },
+        {
+          "code": "CH9",
+          "title": "Generalized Linear Model",
+          "description": "Logistic and Poisson regression, exponential-family formulation, estimation algorithms, and GLM inference/testing.",
+          "link_label": "Open Handout",
+          "link_url": "assets/teaching/IEDA5270/handout.pdf"
+        },
+        {
+          "code": "CH10",
+          "title": "Classification Methods",
+          "description": "LDA/QDA, k-NN, tree-based ensembles, and SVM methods for supervised classification tasks.",
+          "link_label": "Open Handout",
+          "link_url": "assets/teaching/IEDA5270/handout.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "ieda2540",
+      "code": "IEDA2540",
+      "title": "Statistics for Engineers",
+      "period": "2020–2025",
+      "institution": "HKUST, Department of Industrial Engineering and Decision Analytics",
+      "summary": "Core statistics for engineers: uncertainty modeling, estimation, inference, and regression.",
+      "published": true,
+      "overview": "This course introduces statistical thinking for engineering systems: data description, probabilistic modeling, statistical estimation, uncertainty quantification, and evidence-based decisions.",
+      "audience": "Undergraduate engineering students.",
+      "prerequisites": "Basic calculus and algebra.",
+      "outcomes": [
+        "Summarize and visualize engineering data effectively.",
+        "Apply probability models to quantify uncertainty.",
+        "Construct point estimates and confidence intervals.",
+        "Run hypothesis tests and interpret p-values responsibly.",
+        "Build and interpret basic linear regression models."
+      ],
+      "modules": [
+        {
+          "code": "T0a",
+          "title": "Course Introduction",
+          "description": "Course goals, data-driven engineering decisions, and the role of statistics in the IEDA curriculum.",
+          "link_label": "Open Slides",
+          "link_url": "assets/teaching/IEDA2540/T0a_introduction.pdf"
+        },
+        {
+          "code": "T0b",
+          "title": "Sampling Foundations",
+          "description": "Population vs. sample, sampling bias, and how sampling design impacts inference quality.",
+          "link_label": "Open Slides",
+          "link_url": "assets/teaching/IEDA2540/T0b_sampling.pdf"
+        },
+        {
+          "code": "T1",
+          "title": "Descriptive Statistics",
+          "description": "Summary measures and visual diagnostics for understanding variation and central tendency.",
+          "link_label": "Open Slides",
+          "link_url": "assets/teaching/IEDA2540/T1_descriptive.pdf"
+        },
+        {
+          "code": "T2",
+          "title": "Probability Distributions",
+          "description": "Discrete and continuous distributions, random variables, and model assumptions used in practice.",
+          "link_label": "Open Slides",
+          "link_url": "assets/teaching/IEDA2540/T2_distributions.pdf"
+        },
+        {
+          "code": "T3a",
+          "title": "Random Samples",
+          "description": "Sampling distributions, law of large numbers intuition, and central limit theorem viewpoints.",
+          "link_label": "Open Slides",
+          "link_url": "assets/teaching/IEDA2540/T3_random_sample.pdf"
+        },
+        {
+          "code": "T3b",
+          "title": "Point Estimation",
+          "description": "Estimators, bias, variance, MSE tradeoffs, and principles for good estimator construction.",
+          "link_label": "Open Slides",
+          "link_url": "assets/teaching/IEDA2540/T3_point_estimation.pdf"
+        },
+        {
+          "code": "T4",
+          "title": "Confidence Intervals",
+          "description": "Interval construction, interpretation under repeated sampling, and common misuse patterns.",
+          "link_label": "Open Slides",
+          "link_url": "assets/teaching/IEDA2540/T4_confidence_interval.pdf"
+        },
+        {
+          "code": "T5",
+          "title": "Hypothesis Testing",
+          "description": "Null/alternative setup, type I/II errors, p-values, power, and practical test selection.",
+          "link_label": "Open Slides",
+          "link_url": "assets/teaching/IEDA2540/T5_hypothesis_testing.pdf"
+        },
+        {
+          "code": "T6",
+          "title": "Comparing Multiple Samples",
+          "description": "Inference with more than two groups, model assumptions, and interpretation of group differences.",
+          "link_label": "Open Slides",
+          "link_url": "assets/teaching/IEDA2540/T6_comparing_multiple_samples.pdf"
+        },
+        {
+          "code": "T7",
+          "title": "Linear Regression",
+          "description": "Model fitting, coefficient interpretation, diagnostics, and prediction in engineering contexts.",
+          "link_label": "Open Slides",
+          "link_url": "assets/teaching/IEDA2540/T7_regression.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "eemt5500",
+      "code": "EEMT5500",
+      "title": "Applied Probability, Statistics and Data Analytics",
+      "period": "2022",
+      "institution": "HKUST, Engineering Enterprise Management Program",
+      "summary": "Applied probability and statistical methods for engineering management contexts.",
+      "published": false
+    },
+    {
+      "slug": "real-analysis-2011",
+      "code": "NJU",
+      "title": "Real Analysis Notes",
+      "period": "2011",
+      "institution": "Nanjing University, School of Mathematics",
+      "summary": "Real analysis notes written at Nanjing University, with an English translation and a companion blog post.",
+      "published": true,
+      "overview": "A set of real analysis notes originally written in Chinese at Nanjing University in 2011 and later translated into English, with context and commentary in a companion blog post.",
+      "audience": "Undergraduate mathematics students and self-learners.",
+      "prerequisites": "Single-variable and multivariable calculus.",
+      "outcomes": [
+        "Understand the measure-theoretic foundations behind modern real analysis.",
+        "Connect key results across topology, measure, integration, and differentiation.",
+        "Use the notes as a structured reference for study and teaching."
+      ],
+      "modules": [
+        {
+          "code": "BLOG",
+          "title": "Companion Blog Post",
+          "description": "Background and roadmap for the 2011 notes and their English translation.",
+          "link_label": "Open Blog Post",
+          "link_url": "blogs/2026-02-07-real_analysis.html"
+        },
+        {
+          "code": "CN",
+          "title": "Chinese Notes (Original)",
+          "description": "Original Chinese real analysis notes written in 2011.",
+          "link_label": "Open PDF (Chinese)",
+          "link_url": "assets/papers/Real_analysis.pdf"
+        },
+        {
+          "code": "EN",
+          "title": "English Notes (Translation)",
+          "description": "Complete English translation of the original notes.",
+          "link_label": "Open PDF (English)",
+          "link_url": "assets/papers/Real_analysis_en.pdf"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "name": "Wei You",
+  "name_cn": "尤为",
+  "tagline": "Operations Research · Applied Probability",
+  "position": [
+    "Assistant Professor",
+    "Department of Industrial Engineering and Decision Analytics",
+    "The Hong Kong University of Science and Technology"
+  ],
+  "email": "weiyou@ust.hk",
+  "avatar": {
+    "src": "assets/avatar.jpg",
+    "width": 440,
+    "height": 465,
+    "alt": "Portrait of Wei You"
+  },
+  "links": [
+    { "label": "weiyou@ust.hk", "url": "mailto:weiyou@ust.hk" },
+    { "label": "Google Scholar", "url": "https://scholar.google.com/citations?user=N9b9l8wAAAAJ" },
+    { "label": "ORCID", "url": "https://orcid.org/0000-0003-0844-4194" },
+    { "label": "CV", "url": "CV.pdf" }
+  ],
+  "research_focus": "Research Focus: stochastic models, queueing theory, applied probability, sequential decision-making, and their applications to the performance analysis and design of service systems and digital experimentation.",
+  "research_interest_tags": [
+    "Stochastic Models",
+    "Queueing Theory",
+    "Applied Probability",
+    "Service Systems",
+    "Sequential Decision-Making",
+    "Digital Experimentation"
+  ],
+  "bio": [
+    "Wei You is an assistant professor of [Industrial Engineering and Decision Analytics](https://ieda.ust.hk/) at the Hong Kong University of Science and Technology. His research focuses on stochastic models, queueing theory, applied probability, sequential decision-making, and their applications to the performance analysis and design of service systems and digital experimentation.",
+    "He received his Ph.D. in Operations Research (2019) from Columbia University, advised by Professor [Ward Whitt](http://www.columbia.edu/~ww2040/), and his B.S. in Mathematics (2014) from Nanjing University."
+  ],
+  "education": [
+    {
+      "degree": "Ph.D. in Operations Research",
+      "institution": "Columbia University",
+      "location": "New York, NY, USA",
+      "period": "2014–2019",
+      "thesis": {
+        "title": "A Robust Queueing Network Analyzer Based on Indices of Dispersion",
+        "url": "assets/papers/Thesis_WYou.pdf"
+      }
+    },
+    {
+      "degree": "B.S. in Mathematics",
+      "institution": "Nanjing University",
+      "location": "Nanjing, China",
+      "period": "2010–2014"
+    }
+  ],
+  "site": {
+    "title": "Wei You",
+    "meta_description": "Wei You - Assistant Professor at HKUST. Research in stochastic models, queueing theory, applied probability, and sequential decision-making.",
+    "ga_id": "G-W043BW5W9F",
+    "footer_affiliation": "Department of Industrial Engineering and Decision Analytics, HKUST"
+  }
+}

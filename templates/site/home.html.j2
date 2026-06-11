@@ -1,0 +1,277 @@
+{% extends 'base.html.j2' %}
+
+{% block main %}
+    <section class="hero section" id="home">
+      <div class="container hero-grid">
+        <div class="hero-portrait">
+          <img src="{{ profile.avatar.src }}" width="{{ profile.avatar.width }}" height="{{ profile.avatar.height }}"
+               alt="{{ profile.avatar.alt }}" fetchpriority="high" />
+        </div>
+        <div class="hero-content">
+          <p class="eyebrow">{{ profile.tagline }}</p>
+          <h1>{{ profile.name }} <span class="name-cn">{{ profile.name_cn }}</span></h1>
+          <p class="hero-title">
+            {% for line in profile.position %}{{ line }}{% if not loop.last %}<br />{% endif %}
+            {% endfor %}
+          </p>
+          <div class="hero-links">
+            {% for link in profile.links %}
+            <a class="chip" href="{{ link.url }}"
+               {% if link.url.startswith('http') or link.url.endswith('.pdf') %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ link.label }}</a>
+            {% endfor %}
+          </div>
+          <div class="hero-note">{{ profile.research_focus }}</div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="spotlight card-surface">
+        <h2>Selected Papers</h2>
+        <ul class="selected-list">
+          {% for paper in selected_papers %}
+          <li>
+            <span class="paper-year">{{ paper.year }}</span>
+            {% if paper.links %}
+            <a href="{{ paper.links[0].url }}"
+               {% if paper.links[0].url.startswith('http') %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ paper.title }}</a>
+            {% else %}
+            <a href="#paper-{{ paper.id }}">{{ paper.title }}</a>
+            {% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="research">
+      <div class="container">
+        <header class="section-header">
+          <p class="eyebrow">Publications</p>
+          <h2>Research</h2>
+        </header>
+
+        <div class="controls card-surface">
+          <div class="control-group">
+            <label class="select-field">
+              <span class="sr-only">Filter by type</span>
+              <select id="typeFilter" aria-label="Filter by type">
+                <option value="all">All Types</option>
+                <option value="working">Working</option>
+                <option value="journal">Journal</option>
+                <option value="conference">Conference</option>
+                <option value="thesis">Thesis</option>
+              </select>
+            </label>
+            <label class="select-field">
+              <span class="sr-only">Filter by topic</span>
+              <select id="topicFilter" aria-label="Filter by topic">
+                <option value="all">All Topics</option>
+                {% for topic in topics %}
+                <option value="{{ topic }}">{{ topic }}</option>
+                {% endfor %}
+              </select>
+            </label>
+            <label class="select-field">
+              <span class="sr-only">Sort papers</span>
+              <select id="sortOrder" aria-label="Sort papers">
+                <option value="chronological">Newest first</option>
+                <option value="topic">By topic</option>
+              </select>
+            </label>
+          </div>
+          <label class="search">
+            <span class="sr-only">Search papers</span>
+            <input id="paperSearch" type="search" placeholder="Search title, authors, venue, topic" />
+          </label>
+        </div>
+
+        <div id="papersList">
+          <section class="paper-group" data-group="working">
+            <h3 class="paper-group-title">Working Papers</h3>
+            <div class="paper-list">
+              {% for paper in working_papers %}
+              {% include 'partials/paper.html.j2' %}
+              {% endfor %}
+            </div>
+          </section>
+          <section class="paper-group" data-group="publications">
+            <h3 class="paper-group-title">Publications</h3>
+            <div class="paper-list">
+              {% for paper in publications %}
+              {% include 'partials/paper.html.j2' %}
+              {% endfor %}
+            </div>
+          </section>
+          <p class="papers-empty" hidden>No papers match the current filters.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="talks">
+      <div class="container">
+        <header class="section-header">
+          <p class="eyebrow">Presentations</p>
+          <h2>Talks</h2>
+        </header>
+        <div class="split-grid">
+          <article class="panel card-surface">
+            <h3>Conference Talks</h3>
+            <p class="muted">({{ talks.coauthor_note }})</p>
+            <ul class="stack-list">
+              {% for talk in talks.conference_talks %}
+              <li>
+                <strong>{{ talk.title }}</strong>
+                {% for stop in talk.venues %}<br />{{ stop.venue }}{% if stop.by_coauthor %}*{% endif %}
+                {% endfor %}
+              </li>
+              {% endfor %}
+            </ul>
+          </article>
+          <article class="panel card-surface">
+            <h3>Invited Talks</h3>
+            <ul class="stack-list">
+              {% for talk in talks.invited_talks %}
+              <li>{{ talk.host }}, {{ talk.years | join(', ') }}</li>
+              {% endfor %}
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="teaching">
+      <div class="container">
+        <header class="section-header">
+          <p class="eyebrow">Courses</p>
+          <h2>Teaching</h2>
+        </header>
+        <div class="course-grid">
+          {% for course in courses %}
+          <article class="course-card card-surface">
+            <div class="course-meta">
+              <span class="badge {{ 'badge--published' if course.published else 'badge--soon' }}">
+                {{ 'Published' if course.published else 'Coming Soon' }}
+              </span>
+              <span class="course-period">{{ course.period }}</span>
+            </div>
+            <h3>{{ course.code }} · {{ course.title }}</h3>
+            <p class="course-institution">{{ course.institution }}</p>
+            <p>{{ course.summary }}</p>
+            {% if course.published %}
+            <a class="chip" href="teaching/{{ course.slug }}.html">Open course page</a>
+            {% else %}
+            <p class="muted">Course page coming soon.</p>
+            {% endif %}
+          </article>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="team">
+      <div class="container">
+        <header class="section-header">
+          <p class="eyebrow">Advising</p>
+          <h2>Team</h2>
+        </header>
+        <div class="team-wrap">
+          <article class="panel card-surface">
+            <h3>Current Students</h3>
+            <div class="student-grid">
+              {% for student in students_current %}
+              <div class="student-card">
+                <p class="student-name">{{ student.name }}</p>
+                <p class="student-note">{{ student.degree }} ({{ student.period }})</p>
+              </div>
+              {% endfor %}
+            </div>
+          </article>
+          <article class="panel card-surface">
+            <h3>Former Students</h3>
+            <div class="student-grid">
+              {% for student in students_former %}
+              <div class="student-card">
+                <p class="student-name">{{ student.name }}</p>
+                <p class="student-note">
+                  {{ student.degree }}{% if student.institution_note %} at {{ student.institution_note }}{% endif %} ({{ student.period }}){% if student.coadvisor %}, co-advised with {{ student.coadvisor }}{% endif %}
+                </p>
+                {% if student.placement %}
+                <p class="student-placement">First placement: {{ student.placement }}.</p>
+                {% endif %}
+              </div>
+              {% endfor %}
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="about">
+      <div class="container">
+        <header class="section-header">
+          <p class="eyebrow">Biography</p>
+          <h2>About</h2>
+        </header>
+        <div class="split-grid">
+          <article class="panel card-surface">
+            <h3>Bio</h3>
+            {% for paragraph in profile.bio %}
+            <p>{{ paragraph | md_links }}</p>
+            {% endfor %}
+          </article>
+          <article class="panel card-surface">
+            <h3>Education</h3>
+            <div class="timeline">
+              {% for entry in profile.education %}
+              <div class="timeline-item">
+                <p class="timeline-year">{{ entry.period }}</p>
+                <p class="timeline-title">{{ entry.degree }}</p>
+                <p class="timeline-copy">
+                  {{ entry.institution }}{% if entry.location %}, {{ entry.location }}{% endif %}.
+                  {% if entry.thesis %}
+                  Thesis: <a href="{{ entry.thesis.url }}" target="_blank" rel="noopener noreferrer">{{ entry.thesis.title }}</a>.
+                  {% endif %}
+                </p>
+              </div>
+              {% endfor %}
+            </div>
+          </article>
+        </div>
+        <article class="panel card-surface about-interests">
+          <h3>Research Interests</h3>
+          <div class="tag-cloud">
+            {% for tag in profile.research_interest_tags %}
+            <span class="tag">{{ tag }}</span>
+            {% endfor %}
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="blog">
+      <div class="container">
+        <header class="section-header">
+          <p class="eyebrow">Writing</p>
+          <h2>Blog</h2>
+        </header>
+        <div class="blog-grid">
+          {% for post in posts %}
+          <article class="blog-card card-surface">
+            <p class="blog-date"><time datetime="{{ post.date }}">{{ post.date_label }}</time></p>
+            <h3><a href="blogs/{{ post.slug }}.html">{{ post.title }}</a></h3>
+            <p>{{ post.summary }}</p>
+            <div class="blog-card-foot">
+              {% for tag in post.tags[:2] %}
+              <span class="blog-tag">{{ tag }}</span>
+              {% endfor %}
+              <a class="blog-more" href="blogs/{{ post.slug }}.html">Read post</a>
+            </div>
+          </article>
+          {% else %}
+          <p class="muted">No posts yet. Add a markdown file to data/blog/ and run python3 build.py.</p>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+{% endblock %}

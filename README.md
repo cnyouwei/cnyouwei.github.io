@@ -1,36 +1,34 @@
-# Wei You - Personal Research Website
+# Wei You — Personal Research Website
 
-This repository contains a static personal research website.
+A small, data-driven static site: all content lives in JSON (and markdown for
+blog posts), and one command renders the whole website.
 
-## Structure
+```
+python3 build.py        # one click: full website in dist/
+```
 
-- `css/site.css`: Site styles (single file, organized by tokens/base/layout/components/pages/media).
-- `js/site.js`: Shared runtime for every page — DOM helpers, theme toggle, nav/section routing, analytics, back-to-top. Exposes `SiteUtils` and `SiteTheme` for the page scripts.
-- `js/pages/research.js`: Home research filters/search/ordering and lazy MathJax for abstracts.
-- `js/pages/blog_post.js`: Blog post enhancements (TOC, copy buttons, highlighting, Mermaid).
-- `content/research/papers.json`: Source of truth for working papers and publications.
-- `content/blog/*.md`: Source markdown files for blog posts.
-- `content/teaching/courses.json`: Source of truth for home teaching hub cards and course pages.
-- `requirements.txt`: Required Python build dependencies for markdown/template rendering.
-- `scripts/build_site.py`: Public build entrypoint.
-- `scripts/site_build/`: Internal build modules.
-  - `cli.py`: Build orchestration.
-  - `common.py`: Shared constants, helpers, and the `base.html.j2` page context.
-  - `home.py`: Home page rendering (`index.html`).
-  - `markdown_render.py`: Front matter parsing + markdown rendering (Python markdown library).
-  - `blog.py`: Blog page rendering and home recent-post markup generation.
-  - `research.py`: Research section and selected-papers markup rendering.
-  - `teaching.py`: Teaching markup rendering and per-course page generation.
-  - `template_engine.py`: Template rendering (Jinja2).
-- `scripts/templates/`: HTML templates and partials. `base.html.j2` is the page shell; `partials/` holds nav, head assets, theme bootstrap, MathJax config, footer, and the content fragments.
-- `scripts/parity_check.py`: Snapshot/check utility for generated-output parity.
-- `.github/workflows/pages.yml`: Build-and-deploy pipeline for GitHub Pages.
-- `blogs/`: Generated blog output (post pages).
-- `teaching/`: Generated teaching output (per-course pages only).
+## How it works
 
-## Build
+```
+data/*.json + data/blog/*.md ──► builder/ (load → validate → render → verify) ──► dist/
+```
 
-Install required dependencies (recommended in a virtual environment):
+| Path | What it is |
+| --- | --- |
+| `data/profile.json` | Name, titles, links, bio, education, research interests, GA id |
+| `data/papers.json` | Every paper: authors, venue, volume/pages, status, abstract, links |
+| `data/talks.json` | Conference and invited talks |
+| `data/teaching.json` | Course cards + published course pages |
+| `data/team.json` | Current and former students |
+| `data/blog/*.md` | Blog posts (markdown with front matter) |
+| `templates/site/` | Jinja2 HTML templates (base + pages + partials) |
+| `builder/` | The generator: `data.py` (load/validate), `site.py` (render), `checks.py` (verify) |
+| `static/` | CSS + JS copied verbatim into `dist/` |
+| `assets/` | PDFs, avatar, teaching materials (copied into `dist/assets/`) |
+| `dist/` | Build output (gitignored; deployed by GitHub Actions) |
+| `CV.tex` / `CV.pdf` | The CV, maintained by hand; the committed PDF is copied into `dist/` |
+
+## Setup (once)
 
 ```bash
 python3 -m venv .venv
@@ -38,157 +36,86 @@ source .venv/bin/activate
 python -m pip install -r requirements.txt
 ```
 
-Build from repository root:
+## Everyday commands
 
 ```bash
-python3 scripts/build_site.py
+python3 build.py            # build the website + run all checks
+python3 build.py --serve    # build, then preview at http://localhost:8000
 ```
 
-This generates:
+Every build validates the data first (missing fields, broken local links,
+duplicate ids fail loudly) and verifies the output afterwards (every paper
+present on the page, every local link resolving inside `dist/`).
 
-- Blog outputs in `blogs/`
-- Teaching outputs in `teaching/`
-- `index.html`
-- and does not require committing generated files.
+## Common edits
 
-Build command contract is unchanged:
+**Add a paper** — append an entry to `data/papers.json`:
 
-```bash
-python3 scripts/build_site.py
+```jsonc
+{
+  "id": "short-unique-slug",
+  "type": "working",            // working | journal | conference | thesis
+  "year": 2026,
+  "title": "Paper Title",
+  "topic": "Bandit Learning",   // used for the topic filter
+  "authors": ["Coauthor Name", "Wei You"],
+  "status": "Under review at Operations Research",  // working papers only
+  // for publications instead of status:
+  // "venue": "Operations Research", "volume": "74", "number": "2", "pages": "1-20",
+  "selected": false,            // true => appears in Home "Selected Papers"
+  "abstract": "...",            // inline math with $...$ is fine
+  "links": [{ "label": "arXiv", "url": "https://arxiv.org/abs/..." }]
+}
 ```
 
-Default GA configuration:
+Optional authorship metadata (kept for reference and future use):
+`student_authors`, `alphabetical`, `corresponding`.
 
-```bash
-# Defaults to G-W043BW5W9F when WY_GA_MEASUREMENT_ID is unset.
-python3 scripts/build_site.py
-```
-
-Optional override:
-
-```bash
-export WY_GA_MEASUREMENT_ID=G-YYYYYYYYYY
-python3 scripts/build_site.py
-```
-
-## Deployment (GitHub Pages Actions)
-
-Deploys are handled by `.github/workflows/pages.yml`.
-
-- Trigger: push to `master` or `main` (and manual dispatch).
-- Workflow builds the site with `python3 scripts/build_site.py`.
-- Workflow uploads a Pages artifact from generated outputs and deploys with `actions/deploy-pages`.
-
-## Parity Workflow (High-Confidence Refactor Guard)
-
-1. Capture baseline snapshot:
-
-```bash
-python3 scripts/parity_check.py snapshot --output /tmp/site_parity_baseline.json
-```
-
-2. Run build:
-
-```bash
-python3 scripts/build_site.py
-```
-
-3. Verify parity against baseline:
-
-```bash
-python3 scripts/parity_check.py check --baseline /tmp/site_parity_baseline.json
-```
-
-The checker validates:
-
-- Generated artifact file set and SHA-256 hashes
-- Core `index.html` contract hooks (required page/section/script nodes)
-
-## Manage Research Papers
-
-1. Edit `content/research/papers.json`.
-2. Each paper entry supports:
-   - `authors` (ordered list)
-   - `year`
-   - `topic` (for `By Topic` grouping in the Research section)
-   - `venue`
-   - `abstract`
-   - `links` (e.g., arXiv, preprint, journal, slides, code)
-   - `selected` (optional boolean; if `true`, appears in Home `Selected Papers`)
-   - plus classification fields (`section`, `type`) for filtering and grouping
-3. Rebuild the site:
-
-```bash
-python3 scripts/build_site.py
-```
-
-## Add a New Blog Post
-
-1. Create a new markdown file in `content/blog/`, for example:
-   - `content/blog/2026-02-10-my-new-note.md`
-2. Use this front matter format:
+**Add a blog post** — create `data/blog/YYYY-MM-DD-slug.md`:
 
 ```md
 ---
 title: My New Note
 date: 2026-02-10
 eyebrow: Research Notes
-summary: One-sentence summary shown on the homepage blog section.
+summary: One-sentence summary shown on the homepage.
 tags: [queueing, teaching]
 ---
 
-Write your post in markdown here.
+Markdown body. Math ($x^2$), code fences, tables, and ```mermaid blocks all work.
 ```
 
-`eyebrow` is optional; if omitted, blog post pages use `Research Notes`.
+**Add/maintain a course** — edit `data/teaching.json`. `published: true`
+generates `teaching/<slug>.html`; `false` shows a Coming Soon card.
 
-3. Build site pages:
+**Talks** — edit `data/talks.json` (`by_coauthor: true` renders the `*` mark).
 
-```bash
-python3 scripts/build_site.py
-```
+**Students** — edit `data/team.json` (`status: current|former`; former students
+support `thesis` and `placement`).
 
-## Add or Update Course Pages
+**Update the CV** — edit `CV.tex`, compile it however you like (e.g.
+`latexmk -pdf CV.tex`), and commit the refreshed `CV.pdf`. The build copies
+the committed PDF into `dist/CV.pdf`, which the hero "CV" chip links to.
 
-1. Edit `content/teaching/courses.json`.
-2. For each course, set:
-   - `published: true` to generate a course page at `teaching/<slug>.html`
-   - `published: false` to show it as "Coming Soon" in the home `#teaching` hub
-3. For published courses, you can define:
-   - `institution`, `overview`, `audience`, `prerequisites`, `outcomes`
-   - `modules` with `code`, `title`, `description`, `link_label`, and `link_url`
-4. Rebuild:
+## Deployment
 
-```bash
-python3 scripts/build_site.py
-```
+Push to `master`. GitHub Actions (`.github/workflows/pages.yml`) runs
+`python3 build.py` and deploys `dist/` to GitHub Pages. Public URLs are
+unchanged from the previous site: `/index.html`, `/blogs/<slug>.html`,
+`/teaching/<slug>.html`, `/assets/...`, `/CV.pdf`.
 
-## Safe Edit Zones
+Analytics: the GA measurement id lives in `data/profile.json` (`site.ga_id`)
+and can be overridden with the `WY_GA_MEASUREMENT_ID` env var.
 
-- Content-only edits (lowest risk):
-  - `content/research/papers.json`
-  - `content/blog/*.md`
-  - `content/teaching/courses.json`
-- Build/template edits (generator behavior):
-  - `scripts/site_build/*.py`
-  - `scripts/build_site.py`
-- Runtime behavior/style edits (frontend behavior):
-  - `js/site.js`
-  - `js/pages/*.js`
-  - `css/site.css`
-- Template/layout edits (page shell and generated markup):
-  - `scripts/templates/**/*.j2`
+## Design notes
 
-When editing build/template or runtime files, use the parity workflow before and after changes.
-
-## Local Preview
-
-Use any static file server from the repository root.
-
-Example with Python:
-
-```bash
-python3 -m http.server 8000
-```
-
-Then open `http://localhost:8000`.
+- Styling lives in a single `static/css/site.css`, organized by design tokens
+  (light + dark themes) → base → components → sections. Only widely-supported
+  CSS is used; `backdrop-filter` is a progressive enhancement behind
+  `@supports`, so the site renders consistently on Safari/Firefox/Chrome/mobile.
+- JavaScript is dependency-free and page-scoped: `static/js/site.js` (theme,
+  nav, scrollspy, analytics) plus `js/pages/research.js` (filters, search,
+  topic grouping, lazy MathJax) and `js/pages/blog_post.js` (TOC highlight,
+  copy buttons, Mermaid, highlight.js — all lazy-loaded only when needed).
+- Theme preference is stored under the same localStorage keys as before
+  (`wy-theme`, `wy-theme-source`), so returning visitors keep their setting.

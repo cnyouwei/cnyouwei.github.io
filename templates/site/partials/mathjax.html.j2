@@ -1,0 +1,38 @@
+{#
+  MathJax wiring, two modes:
+    lazy  (home) - config only; js/pages/research.js loads the engine the first
+                   time an abstract is opened and typesets just that element.
+    eager (blog) - config + engine; typesets the whole post on load.
+#}
+{% if mathjax == 'lazy' %}
+  <script>
+{% raw %}    window.MathJax = {
+      startup: { typeset: false },
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true,
+        macros: { bm: ['\\boldsymbol{#1}', 1] }
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    };{% endraw %}
+  </script>
+{% elif mathjax == 'eager' %}
+  <script>
+{% raw %}    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true,
+        macros: { bm: ['\\boldsymbol{#1}', 1] }
+      },
+      chtml: { mtextInheritFont: true, merrorInheritFont: true },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    };{% endraw %}
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+{% endif %}
