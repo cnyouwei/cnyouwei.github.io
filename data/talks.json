@@ -3,6 +3,12 @@
   "coauthor_note": "* Presented by co-authors",
   "conference_talks": [
     {
+      "title": "Minimax Optimality in Contextual Dynamic Pricing with General Valuation Models",
+      "venues": [
+        { "venue": "2026 POMS International Conference in China, Xi'an", "by_coauthor": true }
+      ]
+    },
+    {
       "title": "Pure Exploration via Frank–Wolfe Self-Play",
       "venues": [
         { "venue": "POMS-HK 2026, Shenzhen", "by_coauthor": true },
