@@ -464,6 +464,13 @@ img {
   text-decoration: none;
 }
 
+.chip-icon {
+  display: block;
+  width: 1em;
+  height: 1em;
+  flex: 0 0 auto;
+}
+
 .chip--small {
   padding: 0.25rem 0.7rem;
   font-size: 0.85rem;
