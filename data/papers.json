@@ -3,6 +3,21 @@
   "highlight_authors": ["Wei You"],
   "papers": [
     {
+      "id": "robust-queueing-abandonment",
+      "type": "working",
+      "year": 2026,
+      "title": "Robust Queueing for Single-Server Queues with Abandonment",
+      "selected": true,
+      "topic": "Queueing Theory",
+      "authors": ["Wei You"],
+      "corresponding": ["Wei You"],
+      "status": "Major revision at Queueing Systems",
+      "abstract": "Single-server queues with customer abandonment arise in call centers and many service systems, but steady-state performance measures remain analytically intractable beyond Markovian assumptions. This paper develops Robust Queueing (RQ) approximations for the mean steady-state virtual waiting time (offered waiting time) in the $GI/GI/1{+}GI$ model. The approach starts from a reverse-time supremum representation of the virtual waiting time as the reflection of an effective net-input process that accounts for abandonments. We approximate effective net-input increments by their mean plus a robustness parameter times their standard deviation. For the drift, we introduce a Poisson-surrogate compensator and show that the associated correction term is asymptotically negligible in the long-patience regime. For variability, we propose two implementable surrogates: (i) a deterministic time-change approximation that yields a first RQ algorithm, and (ii) a refined algorithm based on a heavy-traffic limit that produces a scale-dependent variance function capturing the variance-reduction effect of abandonment. The resulting steady-state approximation reduces to a one-dimensional fixed point solvable by bisection and takes as input the arrival index of dispersion for counts (IDC), the service-time squared coefficient of variation, and the patience-time distribution. We further show how to extend the method to queues in series by feeding an approximation of the upstream departure IDC into the downstream RQ algorithm. Extensive numerical experiments demonstrate that the refined RQ approximation is accurate across underload, critical loading, and overload, and remains robust relative to existing heavy-traffic and hazard-rate-scaling benchmarks.",
+      "links": [
+        { "label": "arXiv", "url": "https://arxiv.org/abs/2603.00982" }
+      ]
+    },
+    {
       "id": "service-rate-differentiation",
       "type": "working",
       "year": 2026,
@@ -42,21 +57,6 @@
       "status": "Under review at Journal of the American Statistical Association",
       "abstract": "Algorithmic fairness has attracted growing attention as data-driven decision systems are increasingly deployed in high-stakes domains such as healthcare. Most existing work focuses on associational fairness or counterfactual fairness grounded in structural causal models. Yet in clinical decision-making, fairness should be judged by actions: who receives which treatment and how those choices causally shape benefits and harms across groups. Associational criteria can hold while treatment allocation remains inequitable, and counterfactual notions often rely on strong, untestable modeling assumptions. We propose a two-stage framework that first predicts individual potential outcomes and then enforces a causal fairness constraint on treatment recommendations by aligning decision-relevant representations across sensitive groups within strata defined by predicted potential outcomes. Simulations show near-perfect principal fairness with predictive performance close to the first-stage estimators despite information loss from transport-based alignment. We further apply the method to the Medical Information Mart for Intensive Care IV (MIMIC-IV) database and obtain clinically plausible predicted strata proportions. Because true strata are unobserved, we assess fairness using surrogate criteria, including statistical parity and a decomposition-based estimate of the direct causal effect of the sensitive attribute on treatment assignment, and observe improved parity under these measures. Overall, our results support causal fairness as a practical objective for equitable clinical decision policies under complex time-series data.",
       "links": []
-    },
-    {
-      "id": "robust-queueing-abandonment",
-      "type": "working",
-      "year": 2026,
-      "title": "Robust Queueing for Single-Server Queues with Abandonment",
-      "selected": true,
-      "topic": "Queueing Theory",
-      "authors": ["Wei You"],
-      "corresponding": ["Wei You"],
-      "status": "Under review at Queueing Systems",
-      "abstract": "Single-server queues with customer abandonment arise in call centers and many service systems, but steady-state performance measures remain analytically intractable beyond Markovian assumptions. This paper develops Robust Queueing (RQ) approximations for the mean steady-state virtual waiting time (offered waiting time) in the $GI/GI/1{+}GI$ model. The approach starts from a reverse-time supremum representation of the virtual waiting time as the reflection of an effective net-input process that accounts for abandonments. We approximate effective net-input increments by their mean plus a robustness parameter times their standard deviation. For the drift, we introduce a Poisson-surrogate compensator and show that the associated correction term is asymptotically negligible in the long-patience regime. For variability, we propose two implementable surrogates: (i) a deterministic time-change approximation that yields a first RQ algorithm, and (ii) a refined algorithm based on a heavy-traffic limit that produces a scale-dependent variance function capturing the variance-reduction effect of abandonment. The resulting steady-state approximation reduces to a one-dimensional fixed point solvable by bisection and takes as input the arrival index of dispersion for counts (IDC), the service-time squared coefficient of variation, and the patience-time distribution. We further show how to extend the method to queues in series by feeding an approximation of the upstream departure IDC into the downstream RQ algorithm. Extensive numerical experiments demonstrate that the refined RQ approximation is accurate across underload, critical loading, and overload, and remains robust relative to existing heavy-traffic and hazard-rate-scaling benchmarks.",
-      "links": [
-        { "label": "arXiv", "url": "https://arxiv.org/abs/2603.00982" }
-      ]
     },
     {
       "id": "cost-aware-structured-bandits",
