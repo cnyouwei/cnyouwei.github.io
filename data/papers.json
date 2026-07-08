@@ -38,7 +38,7 @@
       "id": "llm-queue",
       "type": "working",
       "year": 2026,
-      "title": "Multi Heterogeneous Clusters PD-Disaggregated LLM Inference",
+      "title": "PD-Disaggregated LLM Inference over Multiple Heterogeneous Clusters",
       "selected": false,
       "topic": "LLM Inference",
       "authors": ["Ruihan Lin", "Wei You", "Jiheng Zhang"],
