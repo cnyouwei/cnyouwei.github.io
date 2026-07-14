@@ -1155,6 +1155,62 @@ img {
   line-height: 1.6;
 }
 
+/* Paired LaTeX source and compiled output in the style guide. */
+.latex-example {
+  margin: 1.35rem 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.latex-example__source {
+  min-width: 0;
+  background: var(--code-bg);
+}
+
+.latex-example__label,
+.latex-example__output figcaption {
+  margin: 0;
+  padding: 0.55rem 0.9rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.latex-example__source .latex-example__label {
+  color: #c2ccdc;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.post-body .latex-example__source pre {
+  margin: 0;
+  border-radius: 0;
+}
+
+.latex-example__output {
+  min-width: 0;
+  margin: 0;
+  padding: 0 1rem 1rem;
+  color: #111827;
+  background: #fff;
+  border-top: 1px solid var(--line);
+}
+
+.latex-example__output figcaption {
+  padding-left: 0;
+  color: #596579;
+}
+
+.latex-example__output img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
 .post-body pre.mermaid {
   background: var(--surface);
   border: 1px solid var(--line);
@@ -1384,6 +1440,18 @@ img {
   .search input {
     width: 100%;
     min-width: 0;
+  }
+}
+
+@media (min-width: 760px) {
+  .latex-example--compact {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(16rem, 0.95fr);
+  }
+
+  .latex-example--compact .latex-example__output {
+    border-top: 0;
+    border-left: 1px solid var(--line);
   }
 }
 
