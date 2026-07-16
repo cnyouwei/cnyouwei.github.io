@@ -3,6 +3,19 @@
   "highlight_authors": ["Wei You"],
   "papers": [
     {
+      "id": "interchange-join-shortest-queue",
+      "type": "working",
+      "year": 2026,
+      "title": "Steady-State Limit Interchange for Join-the-Shortest-Queue in the Nondegenerate Slowdown Regime",
+      "selected": true,
+      "topic": "Queueing Theory",
+      "authors": ["Wei You"],
+      "corresponding": ["Wei You"],
+      "status": "Working paper",
+      "abstract": "We prove steady-state limit interchange for the homogeneous Markovian join-the-shortest-queue system in the nondegenerate slowdown regime. Gupta and Walton established a finite-horizon diffusion limit from balanced initial states and identified the invariant distribution of the limiting diffusion. Their result, however, did not imply convergence of the finite-system stationary distributions because two ingredients were missing: uniform stationary tightness and stationary averaging of the endogenous idleness process. We close both gaps. For tightness, we combine an exponential perpendicular-deviation estimate with a new Palm excursion analysis of the deficit process. The key estimate shows that high-population states with idleness have vanishing stationary occupation. These are the only high-population states in which the total-population drift can be positive. Level-crossing and transform arguments then yield a uniform exponential tail. For averaging, a weighted state-space-collapse estimate and a Poisson-equation corrector identify the stationary mean contribution of the fast idleness dynamics. A prelimit basic adjoint relationship, together with comparison to a centralized many-server queue, identifies every subsequential limit and rules out boundary mass. Consequently, the stationary scaled total population converges to the explicit invariant distribution of the NDS diffusion. The proof derives both tightness and drift averaging directly from prelimit stationary structure.",
+      "links": []
+    },
+    {
       "id": "robust-queueing-abandonment",
       "type": "working",
       "year": 2026,
