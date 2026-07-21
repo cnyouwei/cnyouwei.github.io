@@ -11,9 +11,11 @@
       "topic": "Queueing Theory",
       "authors": ["Wei You"],
       "corresponding": ["Wei You"],
-      "status": "Working paper",
-      "abstract": "We prove steady-state limit interchange for the homogeneous Markovian join-the-shortest-queue system in the nondegenerate slowdown regime. Gupta and Walton established a finite-horizon diffusion limit from balanced initial states and identified the invariant distribution of the limiting diffusion. Their result, however, did not imply convergence of the finite-system stationary distributions because two ingredients were missing: uniform stationary tightness and stationary averaging of the endogenous idleness process. We close both gaps. For tightness, we combine an exponential perpendicular-deviation estimate with a new Palm excursion analysis of the deficit process. The key estimate shows that high-population states with idleness have vanishing stationary occupation. These are the only high-population states in which the total-population drift can be positive. Level-crossing and transform arguments then yield a uniform exponential tail. For averaging, a weighted state-space-collapse estimate and a Poisson-equation corrector identify the stationary mean contribution of the fast idleness dynamics. A prelimit basic adjoint relationship, together with comparison to a centralized many-server queue, identifies every subsequential limit and rules out boundary mass. Consequently, the stationary scaled total population converges to the explicit invariant distribution of the NDS diffusion. The proof derives both tightness and drift averaging directly from prelimit stationary structure.",
-      "links": []
+      "status": "Under review at Operations Research",
+      "abstract": "We establish steady-state validity of the nondegenerate slowdown diffusion approximation for the stationary marginal of normalized total population in a homogeneous Markovian parallel-server system operating under join-the-shortest-queue, with one queue at each server. Without abandonment, the finite-horizon diffusion limit and its invariant law were known, but stationary convergence remained open because irrevocable routing allows idle servers and waiting jobs to coexist. A Palm analysis of marked excursions controls stationary idleness in high-population states; combined with a state-space-collapse estimate, this yields population tail control. We prove convergence of the stationary normalized-population marginal, interchange of the two iterated limits, and convergence of stationary moments. We also study customer abandonment with mean patience proportional to system size. From balanced initial queue lengths we prove the normalized-population diffusion limit, and separately prove convergence of the stationary normalized-population marginal. Abandonment adds a linear mean-reverting drift and gives Gaussian-type decay in the limiting invariant density without altering the lower-boundary effect of idleness.",
+      "links": [
+        { "label": "PDF", "url": "assets/papers/You_NDS.pdf" }
+      ]
     },
     {
       "id": "robust-queueing-abandonment",
@@ -36,7 +38,7 @@
       "type": "working",
       "year": 2026,
       "title": "Service Rate Differentiation for Homogeneous Impatient Customers",
-      "selected": true,
+      "selected": false,
       "topic": "Queueing Theory",
       "authors": ["Chenguang (Allen) Wu", "Wei You"],
       "alphabetical": true,
