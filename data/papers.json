@@ -137,7 +137,9 @@
       "corresponding": ["Wei You"],
       "status": "Minor revision at Naval Research Logistics",
       "abstract": "",
-      "links": []
+      "links": [
+        { "label": "PDF", "url": "assets/papers/Wang_You_ORA.pdf" }
+      ]
     },
     {
       "id": "multiple-correct-answers",
