@@ -59,9 +59,10 @@ present on the page, every local link resolving inside `dist/`).
   "title": "Paper Title",
   "topic": "Bandit Learning",   // used for the topic filter
   "authors": ["Coauthor Name", "Wei You"],
+  "venue": "Operations Research", // canonical full name; badge label is inferred
   "status": "Under review at Operations Research",  // working papers only
-  // for publications instead of status:
-  // "venue": "Operations Research", "volume": "74", "number": "2", "pages": "1-20",
+  // for publications instead of status, add citation details:
+  // "volume": "74", "number": "2", "pages": "1-20",
   "selected": false,            // true => appears in Home "Selected Papers"
   "abstract": "...",            // inline math with $...$ is fine
   "links": [{ "label": "arXiv", "url": "https://arxiv.org/abs/..." }]
@@ -70,6 +71,19 @@ present on the page, every local link resolving inside `dist/`).
 
 Optional authorship metadata (kept for reference and future use):
 `student_authors`, `alphabetical`, `corresponding`.
+
+Venue badge abbreviations and ranking tiers are inferred from the canonical
+full `venue` name using the registry in `builder/config.py`; do not add a
+`venue_abbrev` field to paper data. Add new venues to that registry with their
+accepted abbreviation and UTD24/FT50 memberships. UTD24 takes precedence when
+a journal belongs to both lists. The classifications follow the official
+[UTD24 journal list](https://jsom.utdallas.edu/the-utd-top-100-business-school-research-rankings/list-of-journals)
+and [FT50 journal list](https://www.ft.com/content/3405a512-5cbb-11e1-8f1f-00144feabdc0).
+
+Use optional `venue_display` only when a citation needs decoration beyond the
+canonical name, such as a conference edition or the full thesis wording; it
+must retain the canonical name. A working-paper `status` must end with its
+canonical venue so the visible review status and venue pill cannot diverge.
 
 **Add a blog post** — create `data/blog/YYYY-MM-DD-slug.md`:
 

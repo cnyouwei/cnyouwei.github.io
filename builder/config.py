@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 import os
 from pathlib import Path
 
@@ -40,3 +41,60 @@ BADGE_LABELS = {
     "conference": "Conference",
     "thesis": "Thesis",
 }
+
+
+@dataclass(frozen=True)
+class VenueMetadata:
+    """Derived display and ranking metadata for a canonical venue name."""
+
+    abbreviation: str
+    memberships: frozenset[str] = frozenset()
+
+
+# Papers store only the canonical full venue name. Badge abbreviations and
+# ranking tiers are inferred here so authors never duplicate them in the data.
+# Memberships were checked against the official lists on 2026-07-22; UTD24
+# takes precedence when a journal also appears in FT50.
+VENUE_METADATA_BY_NAME = {
+    "Columbia University": VenueMetadata("Columbia"),
+    "Conference on Learning Theory": VenueMetadata("COLT"),
+    "INFORMS Journal on Optimization": VenueMetadata("IJOO"),
+    "Journal of Machine Learning Research": VenueMetadata("JMLR"),
+    "Journal of the American Statistical Association": VenueMetadata("JASA"),
+    "Naval Research Logistics": VenueMetadata("NRL"),
+    "Operations Research": VenueMetadata("OR", frozenset({"utd24", "ft50"})),
+    "Operations Research Letters": VenueMetadata("ORL"),
+    "Production and Operations Management": VenueMetadata(
+        "POM", frozenset({"utd24", "ft50"})
+    ),
+    "Queueing Systems": VenueMetadata("QUESTA"),
+    "Stochastic Systems": VenueMetadata("STSY"),
+    "Winter Simulation Conference": VenueMetadata("WSC"),
+}
+
+VENUE_TIER_LABELS = {
+    "utd24": "UTD24 journal",
+    "ft50": "FT50 journal",
+    "other": "Other venue",
+}
+
+
+def venue_tier_from_memberships(memberships: set[str] | frozenset[str]) -> str:
+    """Resolve overlapping journal lists using the site's visual precedence."""
+    if "utd24" in memberships:
+        return "utd24"
+    if "ft50" in memberships:
+        return "ft50"
+    return "other"
+
+
+def venue_metadata(venue_name: str) -> VenueMetadata:
+    """Return metadata inferred from an exact canonical full venue name."""
+    try:
+        return VENUE_METADATA_BY_NAME[venue_name]
+    except KeyError as exc:
+        raise ValueError(f"unrecognized venue name '{venue_name}'") from exc
+
+
+def venue_tier(venue_name: str) -> str:
+    return venue_tier_from_memberships(venue_metadata(venue_name).memberships)

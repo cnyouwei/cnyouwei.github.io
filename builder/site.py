@@ -5,7 +5,17 @@ from __future__ import annotations
 import shutil
 from typing import Any
 
-from .config import ASSETS_DIR, BADGE_LABELS, CV_PDF, DIST_DIR, STATIC_DIR, ga_id
+from .config import (
+    ASSETS_DIR,
+    BADGE_LABELS,
+    CV_PDF,
+    DIST_DIR,
+    STATIC_DIR,
+    VENUE_TIER_LABELS,
+    ga_id,
+    venue_metadata,
+    venue_tier as classify_venue_tier,
+)
 from .data import SiteData
 from .render import author_list, site_env
 
@@ -14,7 +24,7 @@ def _display_citation(paper: dict[str, Any]) -> str:
     """Venue line shown under a paper title on the site."""
     if paper["type"] == "working":
         return paper.get("status", "")
-    bits = [paper.get("venue", "")]
+    bits = [paper.get("venue_display", paper.get("venue", ""))]
     volume = paper.get("volume")
     if volume:
         number = paper.get("number")
@@ -25,11 +35,15 @@ def _display_citation(paper: dict[str, Any]) -> str:
 
 
 def _prepare_paper(paper: dict[str, Any], highlight: list[str]) -> dict[str, Any]:
+    venue = venue_metadata(paper["venue"])
+    venue_tier = classify_venue_tier(paper["venue"])
     search_blob = " ".join(
         [
             paper["title"],
             " ".join(paper["authors"]),
-            paper.get("venue", ""),
+            paper["venue"],
+            paper.get("venue_display", ""),
+            venue.abbreviation,
             paper.get("status", ""),
             paper.get("topic", ""),
             str(paper["year"]),
@@ -41,6 +55,9 @@ def _prepare_paper(paper: dict[str, Any], highlight: list[str]) -> dict[str, Any
         "citation": _display_citation(paper),
         "search_blob": search_blob,
         "topic": paper.get("topic", "Other"),
+        "venue_abbrev": venue.abbreviation,
+        "venue_tier": venue_tier,
+        "venue_tier_label": VENUE_TIER_LABELS[venue_tier],
     }
 
 

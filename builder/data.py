@@ -12,7 +12,13 @@ from pathlib import Path
 from typing import Any
 
 from . import markdown as md
-from .config import BLOG_SOURCE_DIR, DATA_DIR, PAPER_TYPES, ROOT
+from .config import (
+    BLOG_SOURCE_DIR,
+    DATA_DIR,
+    PAPER_TYPES,
+    ROOT,
+    venue_metadata,
+)
 
 
 class DataError(Exception):
@@ -82,10 +88,36 @@ def _validate_papers(payload: dict[str, Any]) -> tuple[list[dict[str, Any]], lis
         if not isinstance(authors, list) or not all(isinstance(a, str) for a in authors):
             raise DataError(f"{where}: authors must be a list of names")
 
-        if ptype in ("journal", "conference", "thesis"):
-            _require(paper, "venue", where)
+        if "venue_abbrev" in paper:
+            raise DataError(
+                f"{where}: remove 'venue_abbrev'; it is inferred from 'venue'"
+            )
+        venue = _require(paper, "venue", where)
+        if not isinstance(venue, str):
+            raise DataError(f"{where}: venue must be a non-empty string")
+        try:
+            venue_metadata(venue)
+        except ValueError as exc:
+            raise DataError(f"{where}: {exc}") from exc
+
+        venue_display = paper.get("venue_display")
+        if venue_display is not None and (
+            not isinstance(venue_display, str) or not venue_display.strip()
+        ):
+            raise DataError(f"{where}: venue_display must be a non-empty string")
+        if venue_display is not None and venue.casefold() not in venue_display.casefold():
+            raise DataError(
+                f"{where}: venue_display must contain the canonical venue '{venue}'"
+            )
         if ptype == "working":
-            _require(paper, "status", where)
+            status = _require(paper, "status", where)
+            if not isinstance(status, str) or not status.strip():
+                raise DataError(f"{where}: status must be a non-empty string")
+            if not status.casefold().endswith(venue.casefold()):
+                raise DataError(
+                    f"{where}: working-paper status must end with its canonical "
+                    f"venue '{venue}'"
+                )
 
         for extra in ("student_authors", "corresponding"):
             for name in paper.get(extra, []):

@@ -3,7 +3,9 @@
          data-type="{{ paper.type }}" data-topic="{{ paper.topic }}"
          data-year="{{ paper.year }}" data-search="{{ paper.search_blob }}">
   <div class="paper-meta">
-    <span class="badge badge--{{ paper.type }}">{{ badge_labels[paper.type] }}</span>
+    <span class="badge paper-type-badge badge--{{ paper.type }}">{{ badge_labels[paper.type] }}</span>
+    <span class="badge paper-venue-badge badge--venue badge--venue-{{ paper.venue_tier }}"
+          title="{{ paper.venue_tier_label }}">{{ paper.venue_abbrev }}</span>
     <span class="paper-topic">{{ paper.topic }}</span>
     <span class="paper-year">{{ paper.year }}</span>
   </div>

@@ -41,6 +41,12 @@
   --badge-conference-text: #166534;
   --badge-thesis-bg: #ede9fe;
   --badge-thesis-text: #5b21b6;
+  --badge-venue-utd24-bg: #fae8ff;
+  --badge-venue-utd24-text: #701a75;
+  --badge-venue-ft50-bg: #d6f0e8;
+  --badge-venue-ft50-text: #0b5f59;
+  --badge-venue-other-bg: #f1f4f8;
+  --badge-venue-other-text: #4b5563;
   --badge-published-bg: #dcfce7;
   --badge-published-text: #166534;
   --badge-soon-bg: #e8edf3;
@@ -107,6 +113,12 @@
   --badge-conference-text: #86efac;
   --badge-thesis-bg: #372a5e;
   --badge-thesis-text: #c4b5fd;
+  --badge-venue-utd24-bg: #4a1d4f;
+  --badge-venue-utd24-text: #f5d0fe;
+  --badge-venue-ft50-bg: #11423c;
+  --badge-venue-ft50-text: #99f6e4;
+  --badge-venue-other-bg: #1f2d4e;
+  --badge-venue-other-text: #a8b6cb;
   --badge-published-bg: #14422a;
   --badge-published-text: #86efac;
   --badge-soon-bg: #243049;
@@ -489,6 +501,10 @@ img {
 .badge--journal { background: var(--badge-journal-bg); color: var(--badge-journal-text); }
 .badge--conference { background: var(--badge-conference-bg); color: var(--badge-conference-text); }
 .badge--thesis { background: var(--badge-thesis-bg); color: var(--badge-thesis-text); }
+.badge--venue { box-shadow: inset 0 0 0 1px currentColor; }
+.badge--venue-utd24 { background: var(--badge-venue-utd24-bg); color: var(--badge-venue-utd24-text); }
+.badge--venue-ft50 { background: var(--badge-venue-ft50-bg); color: var(--badge-venue-ft50-text); }
+.badge--venue-other { background: var(--badge-venue-other-bg); color: var(--badge-venue-other-text); }
 .badge--published { background: var(--badge-published-bg); color: var(--badge-published-text); }
 .badge--soon { background: var(--badge-soon-bg); color: var(--badge-soon-text); }
 
