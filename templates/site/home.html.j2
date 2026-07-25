@@ -1,5 +1,32 @@
 {% extends 'base.html.j2' %}
 
+{% macro link_icon(name) -%}
+  {% if name == 'email' %}
+  <svg class="chip-icon chip-icon--stroke" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <path d="M3.75 5.75h16.5v12.5H3.75z" />
+    <path d="m4.5 6.5 7.5 6 7.5-6" />
+  </svg>
+  {% elif name == 'scholar' %}
+  <svg class="chip-icon chip-icon--stroke" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <path d="m2.75 9 9.25-5 9.25 5L12 14 2.75 9Z" />
+    <path d="M6.5 11.25v4.2c2.9 2.2 8.1 2.2 11 0v-4.2" />
+    <path d="M21.25 9v5" />
+  </svg>
+  {% elif name == 'arxiv' %}
+  <img class="chip-logo chip-logo--arxiv" src="assets/arxiv-logo-one-color-black.svg" alt="" />
+  {% elif name == 'github' %}
+  <svg class="chip-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <path fill="currentColor" d="M12 2C6.48 2 2 6.58 2 12.26c0 4.52 2.87 8.35 6.84 9.7.5.1.68-.22.68-.5v-1.75c-2.78.62-3.37-1.38-3.37-1.38-.45-1.18-1.11-1.49-1.11-1.49-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.35 1.12 2.92.86.09-.67.35-1.12.63-1.38-2.22-.26-4.55-1.14-4.55-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05A9.32 9.32 0 0 1 12 6.94c.85 0 1.7.12 2.5.34 1.9-1.33 2.74-1.05 2.74-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.8-4.57 5.05.36.32.68.94.68 1.9v2.82c0 .28.18.6.69.5A10.12 10.12 0 0 0 22 12.26C22 6.58 17.52 2 12 2Z" />
+  </svg>
+  {% elif name == 'cv' %}
+  <svg class="chip-icon chip-icon--stroke" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <path d="M5 3.75h14v16.5H5z" />
+    <circle cx="10" cy="9.5" r="2" />
+    <path d="M7.5 15.5c.75-2.75 4.25-2.75 5 0M15 9h2M15 12h2M15 15h2" />
+  </svg>
+  {% endif %}
+{%- endmacro %}
+
 {% block main %}
     <section class="hero section" id="home">
       <div class="container hero-grid">
@@ -16,14 +43,11 @@
           </p>
           <div class="hero-links">
             {% for link in profile.links %}
-            <a class="chip" href="{{ link.url }}"
-               {% if link.url.startswith('http') or link.url.endswith('.pdf') %}target="_blank" rel="noopener noreferrer"{% endif %}>
-              {% if link.icon == 'github' %}
-              <svg class="chip-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path fill="currentColor" d="M12 2C6.48 2 2 6.58 2 12.26c0 4.52 2.87 8.35 6.84 9.7.5.1.68-.22.68-.5v-1.75c-2.78.62-3.37-1.38-3.37-1.38-.45-1.18-1.11-1.49-1.11-1.49-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.35 1.12 2.92.86.09-.67.35-1.12.63-1.38-2.22-.26-4.55-1.14-4.55-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05A9.32 9.32 0 0 1 12 6.94c.85 0 1.7.12 2.5.34 1.9-1.33 2.74-1.05 2.74-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.8-4.57 5.05.36.32.68.94.68 1.9v2.82c0 .28.18.6.69.5A10.12 10.12 0 0 0 22 12.26C22 6.58 17.52 2 12 2Z" />
-              </svg>
-              {% endif %}
+            <a class="chip{% if link.icon_only %} chip--icon-only{% endif %}" href="{{ link.url }}"{% if link.icon_only %} aria-label="{{ link.label }}"{% endif %}{% if link.url.startswith('http') or link.url.endswith('.pdf') %} target="_blank" rel="noopener noreferrer"{% endif %}>
+              {{ link_icon(link.icon) }}
+              {% if not link.icon_only %}
               {{ link.label }}
+              {% endif %}
             </a>
             {% endfor %}
           </div>

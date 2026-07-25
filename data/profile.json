@@ -15,11 +15,11 @@
     "alt": "Portrait of Wei You"
   },
   "links": [
-    { "label": "weiyou@ust.hk", "url": "mailto:weiyou@ust.hk" },
-    { "label": "Google Scholar", "url": "https://scholar.google.com/citations?user=N9b9l8wAAAAJ" },
-    { "label": "ORCID", "url": "https://orcid.org/0000-0003-0844-4194" },
-    { "label": "GitHub", "url": "https://github.com/cnyouwei", "icon": "github" },
-    { "label": "CV", "url": "CV.pdf" }
+    { "label": "Email", "url": "mailto:weiyou@ust.hk", "icon": "email" },
+    { "label": "Google Scholar", "url": "https://scholar.google.com/citations?user=N9b9l8wAAAAJ", "icon": "scholar" },
+    { "label": "arXiv", "url": "https://arxiv.org/a/you_w_3.html", "icon": "arxiv", "icon_only": true },
+    { "label": "GitHub", "url": "https://github.com/cnyouwei", "icon": "github", "icon_only": true },
+    { "label": "CV", "url": "CV.pdf", "icon": "cv" }
   ],
   "research_focus": "Research Focus: I study data-driven decision making at the intersection of machine learning, stochastic modeling, causal inference, and optimization, focusing on turning rigorous theory into algorithms that learn, adapt, and act reliably in digital platforms, AI deployment, revenue management, and trustworthy algorithmic decision support.",
   "research_interest_tags": [

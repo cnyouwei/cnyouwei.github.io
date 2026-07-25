@@ -483,6 +483,33 @@ img {
   flex: 0 0 auto;
 }
 
+.chip-icon--stroke {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.chip--icon-only {
+  padding-inline: 0.8rem;
+}
+
+.chip-logo {
+  display: block;
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+
+.chip-logo--arxiv {
+  width: 2.75rem;
+  height: 1.05rem;
+}
+
+:root[data-theme="dark"] .chip-logo--arxiv {
+  filter: invert(1);
+}
+
 .chip--small {
   padding: 0.25rem 0.7rem;
   font-size: 0.85rem;
