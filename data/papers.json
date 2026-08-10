@@ -117,7 +117,7 @@
     {
       "id": "transfer-learning-causal-bounds",
       "type": "working",
-      "year": 2025,
+      "year": 2026,
       "title": "Efficient Transfer Learning via Causal Bounds",
       "selected": false,
       "topic": "Transfer Learning and Causal Inference",
@@ -172,7 +172,7 @@
     {
       "id": "stochastic-compositional-optimization",
       "type": "journal",
-      "year": 2026,
+      "year": 2025,
       "title": "Stochastic Compositional Optimization with Compositional Constraints",
       "selected": false,
       "topic": "Stochastic Optimization",
@@ -191,7 +191,7 @@
     {
       "id": "minimax-contextual-dynamic-pricing",
       "type": "journal",
-      "year": 2026,
+      "year": 2025,
       "title": "Minimax Optimality in Contextual Dynamic Pricing with General Valuation Models",
       "selected": true,
       "topic": "Bandit Learning",
@@ -212,7 +212,7 @@
     {
       "id": "dual-directed-pure-exploration",
       "type": "journal",
-      "year": 2026,
+      "year": 2025,
       "title": "Dual-Directed Algorithm Design for Efficient Pure Exploration",
       "selected": true,
       "topic": "Bandit Learning",
