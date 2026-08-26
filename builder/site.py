@@ -35,15 +35,16 @@ def _display_citation(paper: dict[str, Any]) -> str:
 
 
 def _prepare_paper(paper: dict[str, Any], highlight: list[str]) -> dict[str, Any]:
-    venue = venue_metadata(paper["venue"])
-    venue_tier = classify_venue_tier(paper["venue"])
+    venue_name = paper.get("venue")
+    venue = venue_metadata(venue_name) if venue_name else None
+    venue_tier = classify_venue_tier(venue_name) if venue_name else None
     search_blob = " ".join(
         [
             paper["title"],
             " ".join(paper["authors"]),
-            paper["venue"],
+            venue_name or "",
             paper.get("venue_display", ""),
-            venue.abbreviation,
+            venue.abbreviation if venue else "",
             paper.get("status", ""),
             paper.get("topic", ""),
             str(paper["year"]),
@@ -55,9 +56,9 @@ def _prepare_paper(paper: dict[str, Any], highlight: list[str]) -> dict[str, Any
         "citation": _display_citation(paper),
         "search_blob": search_blob,
         "topic": paper.get("topic", "Other"),
-        "venue_abbrev": venue.abbreviation,
+        "venue_abbrev": venue.abbreviation if venue else None,
         "venue_tier": venue_tier,
-        "venue_tier_label": VENUE_TIER_LABELS[venue_tier],
+        "venue_tier_label": VENUE_TIER_LABELS[venue_tier] if venue_tier else None,
     }
 
 

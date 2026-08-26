@@ -121,7 +121,8 @@ def _paper_citation(paper: dict[str, object]) -> str:
     """Independently reconstruct the citation expected in a generated card."""
     if paper["type"] == "working":
         return str(paper.get("status", ""))
-    bits = [str(paper.get("venue_display", paper.get("venue", "")))]
+    venue_label = paper.get("venue_display") or paper.get("venue")
+    bits = [str(venue_label)] if venue_label else []
     volume = paper.get("volume")
     if volume:
         number = paper.get("number")
@@ -162,6 +163,7 @@ def check_site(data: SiteData) -> None:
         ("INFORMS Journal on Optimization", "IJOO", "other"),
         ("Journal of Machine Learning Research", "JMLR", "other"),
         ("Journal of the American Statistical Association", "JASA", "other"),
+        ("Mathematics of Operations Research", "MOR", "other"),
         ("Naval Research Logistics", "NRL", "other"),
         ("Operations Research", "OR", "utd24"),
         ("Operations Research Letters", "ORL", "other"),
@@ -237,8 +239,9 @@ def check_site(data: SiteData) -> None:
                 f"got '{card.data_type}'"
             )
 
-        metadata = venue_metadata(paper["venue"])
-        search_terms = [paper["venue"], metadata.abbreviation]
+        venue_name = paper.get("venue")
+        metadata = venue_metadata(venue_name) if venue_name else None
+        search_terms = [venue_name, metadata.abbreviation] if metadata else []
         if paper.get("venue_display"):
             search_terms.append(paper["venue_display"])
         for search_term in search_terms:
@@ -249,13 +252,15 @@ def check_site(data: SiteData) -> None:
                 )
 
         expected_citation = _paper_citation(paper)
+        expected_citation_count = 1 if expected_citation else 0
         actual_citation = " ".join("".join(card.citation_text).split())
-        if card.citation_count != 1:
+        if card.citation_count != expected_citation_count:
             problems.append(
-                f"paper {paper['id']}: expected one venue citation, "
+                f"paper {paper['id']}: expected {expected_citation_count} venue "
+                f"citation(s), "
                 f"found {card.citation_count}"
             )
-        elif actual_citation != expected_citation:
+        elif expected_citation and actual_citation != expected_citation:
             problems.append(
                 f"paper {paper['id']}: expected citation '{expected_citation}', "
                 f"got '{actual_citation}'"
@@ -291,11 +296,13 @@ def check_site(data: SiteData) -> None:
                 )
 
         venue_badges = [b for b in card.badges if "paper-venue-badge" in b.classes]
-        if len(venue_badges) != 1:
+        expected_venue_badge_count = 1 if metadata else 0
+        if len(venue_badges) != expected_venue_badge_count:
             problems.append(
-                f"paper {paper['id']}: expected one venue badge, found {len(venue_badges)}"
+                f"paper {paper['id']}: expected {expected_venue_badge_count} venue "
+                f"badge(s), found {len(venue_badges)}"
             )
-        else:
+        elif metadata is not None:
             venue_badge = venue_badges[0]
             expected_venue = metadata.abbreviation
             actual_venue = _badge_text(venue_badge)
@@ -304,7 +311,7 @@ def check_site(data: SiteData) -> None:
                     f"paper {paper['id']}: expected venue badge '{expected_venue}', "
                     f"got '{actual_venue}'"
                 )
-            expected_tier = venue_tier(paper["venue"])
+            expected_tier = venue_tier(venue_name)
             expected_tier_class = f"badge--venue-{expected_tier}"
             tier_modifier_classes = {
                 class_name

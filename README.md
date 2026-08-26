@@ -16,7 +16,7 @@ data/*.json + data/blog/*.md ──► builder/ (load → validate → render �
 | Path | What it is |
 | --- | --- |
 | `data/profile.json` | Name, titles, links, bio, education, research interests, GA id |
-| `data/papers.json` | Every paper: authors, venue, volume/pages, status, abstract, links |
+| `data/papers.json` | Every paper: authors, optional venue, volume/pages, status, abstract, links |
 | `data/talks.json` | Conference and invited talks |
 | `data/teaching.json` | Course cards + published course pages |
 | `data/team.json` | Current and former students |
@@ -59,7 +59,7 @@ present on the page, every local link resolving inside `dist/`).
   "title": "Paper Title",
   "topic": "Bandit Learning",   // used for the topic filter
   "authors": ["Coauthor Name", "Wei You"],
-  "venue": "Operations Research", // canonical full name; badge label is inferred
+  "venue": "Operations Research", // optional canonical name; badge label is inferred
   "status": "Under review at Operations Research",  // working papers only
   // for publications instead of status, add citation details:
   // "volume": "74", "number": "2", "pages": "1-20",
@@ -80,10 +80,15 @@ a journal belongs to both lists. The classifications follow the official
 [UTD24 journal list](https://jsom.utdallas.edu/the-utd-top-100-business-school-research-rankings/list-of-journals)
 and [FT50 journal list](https://www.ft.com/content/3405a512-5cbb-11e1-8f1f-00144feabdc0).
 
+When a venue has not been specified, omit `venue` or set it to `null`. The
+paper will render without a venue pill. Empty strings and unknown non-empty
+venue names remain invalid so mistakes fail during the build.
+
 Use optional `venue_display` only when a citation needs decoration beyond the
 canonical name, such as a conference edition or the full thesis wording; it
-must retain the canonical name. A working-paper `status` must end with its
-canonical venue so the visible review status and venue pill cannot diverge.
+must retain the canonical name and cannot be used without `venue`. When a
+working paper has a venue, its `status` must end with that canonical venue so
+the visible review status and venue pill cannot diverge.
 
 **Add a blog post** — create `data/blog/YYYY-MM-DD-slug.md`:
 

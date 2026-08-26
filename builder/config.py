@@ -61,6 +61,7 @@ VENUE_METADATA_BY_NAME = {
     "INFORMS Journal on Optimization": VenueMetadata("IJOO"),
     "Journal of Machine Learning Research": VenueMetadata("JMLR"),
     "Journal of the American Statistical Association": VenueMetadata("JASA"),
+    "Mathematics of Operations Research": VenueMetadata("MOR"),
     "Naval Research Logistics": VenueMetadata("NRL"),
     "Operations Research": VenueMetadata("OR", frozenset({"utd24", "ft50"})),
     "Operations Research Letters": VenueMetadata("ORL"),

@@ -92,28 +92,32 @@ def _validate_papers(payload: dict[str, Any]) -> tuple[list[dict[str, Any]], lis
             raise DataError(
                 f"{where}: remove 'venue_abbrev'; it is inferred from 'venue'"
             )
-        venue = _require(paper, "venue", where)
-        if not isinstance(venue, str):
-            raise DataError(f"{where}: venue must be a non-empty string")
-        try:
-            venue_metadata(venue)
-        except ValueError as exc:
-            raise DataError(f"{where}: {exc}") from exc
+        venue = paper.get("venue")
+        if venue is not None:
+            if not isinstance(venue, str) or not venue.strip():
+                raise DataError(f"{where}: venue must be a non-empty string or null")
+            try:
+                venue_metadata(venue)
+            except ValueError as exc:
+                raise DataError(f"{where}: {exc}") from exc
 
         venue_display = paper.get("venue_display")
         if venue_display is not None and (
             not isinstance(venue_display, str) or not venue_display.strip()
         ):
             raise DataError(f"{where}: venue_display must be a non-empty string")
-        if venue_display is not None and venue.casefold() not in venue_display.casefold():
-            raise DataError(
-                f"{where}: venue_display must contain the canonical venue '{venue}'"
-            )
+        if venue_display is not None:
+            if venue is None:
+                raise DataError(f"{where}: venue_display requires a canonical venue")
+            if venue.casefold() not in venue_display.casefold():
+                raise DataError(
+                    f"{where}: venue_display must contain the canonical venue '{venue}'"
+                )
         if ptype == "working":
             status = _require(paper, "status", where)
             if not isinstance(status, str) or not status.strip():
                 raise DataError(f"{where}: status must be a non-empty string")
-            if not status.casefold().endswith(venue.casefold()):
+            if venue is not None and not status.casefold().endswith(venue.casefold()):
                 raise DataError(
                     f"{where}: working-paper status must end with its canonical "
                     f"venue '{venue}'"
