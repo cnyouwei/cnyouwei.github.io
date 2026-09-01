@@ -3,6 +3,24 @@
   "highlight_authors": ["Wei You"],
   "papers": [
     {
+      "id": "transfer-learning-causal-bounds",
+      "type": "working",
+      "year": 2026,
+      "title": "Efficient Transfer Learning via Causal Bounds",
+      "selected": false,
+      "topic": "Transfer Learning and Causal Inference",
+      "authors": ["Xueping Gong", "Wei You", "Jiheng Zhang"],
+      "student_authors": ["Xueping Gong"],
+      "alphabetical": true,
+      "corresponding": ["Wei You"],
+      "status": "Minor revision at Operations Research",
+      "venue": "Operations Research",
+      "abstract": "Transfer learning seeks to accelerate sequential decision-making by leveraging offline data from related agents. However, data from heterogeneous sources that differ in observed features, logging policies, or unobserved confounders often render causal effects non-identifiable and bias naive estimators. We address this by forming ambiguity sets of structural causal models defined via integral constraints on their joint densities. Optimizing any causal effect over these sets leads to generally non-convex programs whose solutions tightly bound the range of possible effects under heterogeneity or confounding. To solve these programs efficiently, we develop a sample-then-optimize framework to produce causal bound estimates that converge to the true limits and quantify the optimality gaps by outer relaxation. We further accommodate estimation error by relaxing the ambiguity set and exploit the Lipschitz continuity of causal effects to establish precise error propagation guarantees. These causal bounds are then embedded into bandit algorithms via arm elimination and truncated UCB indices, yielding optimal gap-dependent and minimax regret bounds. To handle estimation error, we also develop a safe algorithm for incorporating noisy causal bounds. In the contextual-bandit setting with function approximation, our method uses causal bounds to prune both the function class and the per-context action set, achieving matching upper and lower regret bounds with only logarithmic dependence on function-class complexity. Our analysis precisely characterizes when and how causal side-information accelerates online learning, and experiments on synthetic benchmarks confirm substantial regret reductions in confounded regimes.",
+      "links": [
+        { "label": "arXiv", "url": "https://arxiv.org/abs/2308.03572" }
+      ]
+    },
+    {
       "id": "interchange-join-shortest-queue-rv",
       "type": "working",
       "year": 2026,
@@ -126,24 +144,6 @@
       "abstract": "We study pure exploration in structured stochastic multi-armed bandits, aiming to efficiently identify the correct hypothesis from a finite set of alternatives. For a broad class of tasks, asymptotic analyses reduce to a maximin optimization that admits a two-player zero-sum game interpretation between an experimenter and a skeptic: the experimenter allocates measurements to rule out alternatives while the skeptic proposes alternatives. We reformulate the game by allowing the skeptic to adopt a mixed strategy, yielding a concave–convex saddle-point problem. This viewpoint leads to Frank–Wolfe Self-Play (FWSP): a projection-free, regularization-free, tuning-free method whose one-hot updates on both sides match the bandit sampling paradigm. However, structural constraints introduce sharp pathologies that complicate algorithm design and analysis: our linear-bandit case study exhibits nonunique optima, optimal designs with zero mass on the best arm, bilinear objectives, and nonsmoothness at the boundary. We address these challenges via a differential-inclusion argument, proving convergence of the game value for best-arm identification in linear bandits. Our analysis proceeds through a continuous-time limit: a differential inclusion with a Lyapunov function that decays exponentially, implying a vanishing duality gap and convergence to the optimal value. Although Lyapunov analysis requires differentiability of the objective, which is not guaranteed on the boundary, we show that along continuous trajectories the algorithm steers away from pathological nonsmooth points and achieves uniform global convergence to the optimal game value. We then embed the discrete-time updates into a perturbed flow and show that the discrete game value also converges. Building on FWSP, we further propose a learning algorithm based on posterior sampling. Numerical experiments demonstrate game-value convergence with a vanishing duality gap.",
       "links": [
         { "label": "arXiv", "url": "https://arxiv.org/abs/2509.19901" }
-      ]
-    },
-    {
-      "id": "transfer-learning-causal-bounds",
-      "type": "working",
-      "year": 2026,
-      "title": "Efficient Transfer Learning via Causal Bounds",
-      "selected": false,
-      "topic": "Transfer Learning and Causal Inference",
-      "authors": ["Xueping Gong", "Wei You", "Jiheng Zhang"],
-      "student_authors": ["Xueping Gong"],
-      "alphabetical": true,
-      "corresponding": ["Wei You"],
-      "status": "Major revision at Operations Research",
-      "venue": "Operations Research",
-      "abstract": "Transfer learning seeks to accelerate sequential decision-making by leveraging offline data from related agents. However, data from heterogeneous sources that differ in observed features, logging policies, or unobserved confounders often render causal effects non-identifiable and bias naive estimators. We address this by forming ambiguity sets of structural causal models defined via integral constraints on their joint densities. Optimizing any causal effect over these sets leads to generally non-convex programs whose solutions tightly bound the range of possible effects under heterogeneity or confounding. To solve these programs efficiently, we develop a sample-then-optimize framework to produce causal bound estimates that converge to the true limits and quantify the optimality gaps by outer relaxation. We further accommodate estimation error by relaxing the ambiguity set and exploit the Lipschitz continuity of causal effects to establish precise error propagation guarantees. These causal bounds are then embedded into bandit algorithms via arm elimination and truncated UCB indices, yielding optimal gap-dependent and minimax regret bounds. To handle estimation error, we also develop a safe algorithm for incorporating noisy causal bounds. In the contextual-bandit setting with function approximation, our method uses causal bounds to prune both the function class and the per-context action set, achieving matching upper and lower regret bounds with only logarithmic dependence on function-class complexity. Our analysis precisely characterizes when and how causal side-information accelerates online learning, and experiments on synthetic benchmarks confirm substantial regret reductions in confounded regimes.",
-      "links": [
-        { "label": "arXiv", "url": "https://arxiv.org/abs/2308.03572" }
       ]
     },
     {
