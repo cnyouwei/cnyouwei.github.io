@@ -1,5 +1,5 @@
 {
-  "_comment": "Students for the site #team section and the CV Students block. status: current|former. degree as displayed. Optional: coadvisor, thesis, placement, institution_note.",
+  "_comment": "Students for the site #team section. The CV is maintained separately. status: current|former. degree as displayed. Optional: coadvisor, thesis, placement, institution_note.",
   "students": [
     {
       "name": "Xinyu Liu",

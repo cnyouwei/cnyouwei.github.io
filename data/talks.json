@@ -1,5 +1,5 @@
 {
-  "_comment": "Talks shown in the site #talks section and the CV. Conference talks: each entry is a talk title with the venues where it was presented; by_coauthor marks venues where a co-author presented (rendered with *). Invited talks: host institution + years.",
+  "_comment": "Talks shown in the site #talks section; the CV is maintained separately. Conference talks: each entry is a talk title with the venues where it was presented; by_coauthor marks venues where a co-author presented (rendered with *). Invited talks: host institution + years.",
   "coauthor_note": "* Presented by co-authors",
   "conference_talks": [
     {

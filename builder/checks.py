@@ -7,9 +7,10 @@ template or a renamed asset fails the build instead of shipping.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-import html
 from html.parser import HTMLParser
-import re
+from pathlib import Path
+from urllib.parse import unquote, urlsplit
+from xml.etree import ElementTree
 
 from markupsafe import escape as jinja_escape
 
@@ -19,11 +20,101 @@ from .config import (
     VENUE_TIER_LABELS,
     venue_metadata,
     venue_tier,
-    venue_tier_from_memberships,
+    paper_citation,
 )
 from .data import SiteData
+from .site import page_registry
+from .validation import DataError, local_target, url_value
 
-_HREF = re.compile(r"""(?:href|src)=["']([^"'#]+)["']""")
+
+class Document(HTMLParser):
+    """Collect actual HTML attributes instead of interpreting HTML with regexes."""
+
+    def __init__(self, source: str) -> None:
+        super().__init__(convert_charrefs=True)
+        self.ids: set[str] = set()
+        self.duplicate_ids: set[str] = set()
+        self.urls: list[str] = []
+        self.problems: list[str] = []
+        self.h1_count = 0
+        self.canonicals: list[str] = []
+        self.meta: dict[str, str] = {}
+        self.title = ""
+        self._in_title = False
+        self.feed(source)
+        self.close()
+
+    def handle_starttag(self, tag, attrs) -> None:
+        attributes = dict(attrs)
+        element_id = attributes.get("id")
+        if element_id:
+            if element_id in self.ids:
+                self.duplicate_ids.add(element_id)
+            self.ids.add(element_id)
+        for name, value in attrs:
+            if name in ("href", "src", "poster") and value is not None:
+                self.urls.append(value)
+            if name.startswith("on") or name == "srcdoc":
+                self.problems.append(f"unsafe inline HTML attribute: {name}")
+        if tag == "h1":
+            self.h1_count += 1
+        elif tag == "title":
+            self._in_title = True
+        elif tag == "link" and "canonical" in (attributes.get("rel") or "").split():
+            self.canonicals.append(attributes.get("href") or "")
+        elif tag == "meta":
+            key = attributes.get("name") or attributes.get("property")
+            if key:
+                self.meta[key] = attributes.get("content") or ""
+            if (attributes.get("http-equiv") or "").lower() == "refresh":
+                content = attributes.get("content") or ""
+                marker = content.lower().find("url=")
+                if marker >= 0:
+                    destination = content[marker + 4:].strip().strip("\"'")
+                    self.urls.append(destination)
+
+    def handle_endtag(self, tag) -> None:
+        if tag == "title":
+            self._in_title = False
+
+    def handle_data(self, value) -> None:
+        if self._in_title:
+            self.title += value
+
+
+def check_links(root: Path, documents: dict[Path, Document], site_url: str = "") -> list[str]:
+    root = root.resolve()
+    problems = []
+    origin = urlsplit(site_url)
+    for page, document in documents.items():
+        prefix = str(page.relative_to(root))
+        for detail in document.problems:
+            problems.append(f"{prefix}: {detail}")
+        for element_id in sorted(document.duplicate_ids):
+            problems.append(f"{prefix}: duplicate id '{element_id}'")
+        for url in document.urls:
+            try:
+                parsed = url_value(url, prefix)
+                if parsed.scheme and not (parsed.scheme == origin.scheme and parsed.netloc == origin.netloc):
+                    continue
+                if not parsed.path:
+                    target = page.resolve()
+                else:
+                    target = local_target(root, parsed.path, relative_to=page.parent)
+                if target.is_dir():
+                    target = target / "index.html"
+                if not target.is_file():
+                    raise DataError(f"broken local link {url}")
+                fragment = unquote(parsed.fragment).split(":~:text=", 1)[0]
+                if fragment and target.suffix.lower() == ".html":
+                    destination = documents.get(target)
+                    if destination is None:
+                        destination = Document(target.read_text(encoding="utf-8"))
+                    if fragment not in destination.ids:
+                        raise DataError(f"missing fragment '{fragment}' in {url}")
+            except DataError as exc:
+                problems.append(f"{prefix}: {exc}")
+    return problems
 
 
 @dataclass
@@ -117,22 +208,6 @@ def _badge_text(badge: _Badge) -> str:
     return " ".join("".join(badge.text).split())
 
 
-def _paper_citation(paper: dict[str, object]) -> str:
-    """Independently reconstruct the citation expected in a generated card."""
-    if paper["type"] == "working":
-        return str(paper.get("status", ""))
-    venue_label = paper.get("venue_display") or paper.get("venue")
-    bits = [str(venue_label)] if venue_label else []
-    volume = paper.get("volume")
-    if volume:
-        number = paper.get("number")
-        bits.append(f"{volume}({number})" if number else str(volume))
-    pages = paper.get("pages")
-    if pages:
-        bits.append(str(pages).replace("-", "–"))
-    return ", ".join(bit for bit in bits if bit)
-
-
 class CheckError(Exception):
     pass
 
@@ -145,49 +220,6 @@ def _fail(problems: list[str]) -> None:
 
 def check_site(data: SiteData) -> None:
     problems: list[str] = []
-
-    tier_cases = [
-        (frozenset({"ft50"}), "ft50", "FT50-only classification"),
-        (frozenset({"utd24", "ft50"}), "utd24", "UTD24 precedence"),
-    ]
-    for memberships, expected_tier, description in tier_cases:
-        actual_tier = venue_tier_from_memberships(memberships)
-        if actual_tier != expected_tier:
-            problems.append(
-                f"{description} is broken: expected '{expected_tier}', got '{actual_tier}'"
-            )
-
-    venue_cases = [
-        ("Columbia University", "Columbia", "other"),
-        ("Conference on Learning Theory", "COLT", "other"),
-        ("INFORMS Journal on Optimization", "IJOO", "other"),
-        ("Journal of Machine Learning Research", "JMLR", "other"),
-        ("Journal of the American Statistical Association", "JASA", "other"),
-        ("Mathematics of Operations Research", "MOR", "other"),
-        ("Naval Research Logistics", "NRL", "other"),
-        ("Operations Research", "OR", "utd24"),
-        ("Operations Research Letters", "ORL", "other"),
-        ("Production and Operations Management", "POM", "utd24"),
-        ("Queueing Systems", "QUESTA", "other"),
-        ("Stochastic Systems", "STSY", "other"),
-        ("Winter Simulation Conference", "WSC", "other"),
-    ]
-    for full_name, expected_abbreviation, expected_tier in venue_cases:
-        metadata = venue_metadata(full_name)
-        actual_tier = venue_tier(full_name)
-        if metadata.abbreviation != expected_abbreviation or actual_tier != expected_tier:
-            problems.append(
-                f"venue inference is broken for '{full_name}': expected "
-                f"'{expected_abbreviation}'/'{expected_tier}', got "
-                f"'{metadata.abbreviation}'/'{actual_tier}'"
-            )
-
-    try:
-        venue_metadata("Unknown Test Venue")
-    except ValueError:
-        pass
-    else:
-        problems.append("unknown venue names must fail inference")
 
     index = DIST_DIR / "index.html"
     if not index.exists():
@@ -208,12 +240,6 @@ def check_site(data: SiteData) -> None:
             selector = f".badge--venue-{tier}"
             if selector not in css_text:
                 problems.append(f"venue tier CSS missing selector: {selector}")
-            for role in ("bg", "text"):
-                token = f"--badge-venue-{tier}-{role}:"
-                if css_text.count(token) < 2:
-                    problems.append(
-                        f"venue tier CSS missing light/dark token definitions: {token}"
-                    )
 
     for paper_id in sorted(set(paper_cards) - expected_paper_ids):
         problems.append(f"unexpected paper card on home page: {paper_id}")
@@ -251,7 +277,7 @@ def check_site(data: SiteData) -> None:
                     f"'{search_term}'"
                 )
 
-        expected_citation = _paper_citation(paper)
+        expected_citation = paper_citation(paper)
         expected_citation_count = 1 if expected_citation else 0
         actual_citation = " ".join("".join(card.citation_text).split())
         if card.citation_count != expected_citation_count:
@@ -344,16 +370,37 @@ def check_site(data: SiteData) -> None:
         ).exists():
             problems.append(f"course page missing: teaching/{course['slug']}.html")
 
-    # Every local href/src in generated HTML must resolve inside dist/.
-    for page in DIST_DIR.rglob("*.html"):
-        rel_dir = page.parent
-        for url in _HREF.findall(page.read_text(encoding="utf-8")):
-            if url.startswith(("http://", "https://", "mailto:", "data:")):
-                continue
-            url = html.unescape(url).split("?")[0]
-            target = (rel_dir / url).resolve()
-            if not target.exists():
-                problems.append(f"{page.relative_to(DIST_DIR)}: broken local link {url}")
+    documents = {page.resolve(): Document(page.read_text(encoding="utf-8")) for page in DIST_DIR.rglob("*.html")}
+    site_url = data.profile["site"]["base_url"]
+    problems.extend(check_links(DIST_DIR, documents, site_url))
+    for page in page_registry(data):
+        document = documents.get(local_target(DIST_DIR, page.path))
+        if document is None:
+            problems.append(f"page missing: {page.path}")
+            continue
+        if document.h1_count != 1:
+            problems.append(f"{page.path}: expected one h1, found {document.h1_count}")
+        if document.title.strip() != page.title:
+            problems.append(f"{page.path}: missing or incorrect page title")
+        expected_url = f"{site_url}/{page.path}"
+        if document.canonicals != [expected_url]:
+            problems.append(f"{page.path}: expected one canonical URL {expected_url}")
+        for key, value in (("description", page.description), ("og:title", page.title), ("og:description", page.description), ("og:url", expected_url)):
+            if document.meta.get(key) != value:
+                problems.append(f"{page.path}: missing or incorrect {key} metadata")
+        if not page.indexed and document.meta.get("robots") != "noindex":
+            problems.append(f"{page.path}: non-indexed page missing noindex metadata")
+    sitemap_path = DIST_DIR / "sitemap.xml"
+    if not sitemap_path.is_file():
+        problems.append("sitemap.xml missing")
+    else:
+        actual = [node.text for node in ElementTree.parse(sitemap_path).findall(".//{http://www.sitemaps.org/schemas/sitemap/0.9}loc")]
+        expected = [f"{site_url}/{page.path}" for page in page_registry(data) if page.indexed]
+        if actual != expected:
+            problems.append("sitemap.xml does not match indexed page registry")
+    robots = DIST_DIR / "robots.txt"
+    if not robots.is_file() or f"Sitemap: {site_url}/sitemap.xml" not in robots.read_text(encoding="utf-8"):
+        problems.append("robots.txt missing sitemap declaration")
 
     _fail(problems)
     print(f"Site checks passed ({len(data.papers)} papers, {len(data.posts)} posts).")

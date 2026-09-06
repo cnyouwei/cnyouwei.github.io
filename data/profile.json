@@ -9,9 +9,9 @@
   ],
   "email": "weiyou@ust.hk",
   "avatar": {
-    "src": "assets/avatar.jpg",
-    "width": 440,
-    "height": 465,
+    "src": "assets/avatar.png",
+    "width": 1122,
+    "height": 1402,
     "alt": "Portrait of Wei You"
   },
   "links": [
@@ -21,7 +21,7 @@
     { "label": "GitHub", "url": "https://github.com/cnyouwei", "icon": "github", "icon_only": true },
     { "label": "CV", "url": "CV.pdf", "icon": "cv" }
   ],
-  "research_focus": "Research Focus: I study data-driven decision making at the intersection of machine learning, stochastic modeling, causal inference, and optimization, focusing on turning rigorous theory into algorithms that learn, adapt, and act reliably in digital platforms, AI deployment, revenue management, and trustworthy algorithmic decision support.",
+  "research_focus": "I study how data, stochastic models, and optimization improve sequential decisions, with applications to service systems, digital platforms, and trustworthy AI.",
   "research_interest_tags": [
     "Stochastic Models",
     "Queueing Theory",
@@ -34,7 +34,7 @@
   ],
   "bio": [
     "Wei You is an assistant professor of [Industrial Engineering and Decision Analytics](https://ieda.ust.hk/) at the Hong Kong University of Science and Technology. His research focuses on data-driven decision making at the intersection of machine learning, stochastic modeling, causal inference, and optimization, focusing on turning rigorous theory into algorithms that learn, adapt, and act reliably in digital platforms, AI deployment, revenue management, and trustworthy algorithmic decision support.",
-    "He received his Ph.D. in Operations Research (2019) from Columbia University, advised by Professor [Ward Whitt](http://www.columbia.edu/~ww2040/), and his B.S. in Mathematics (2014) from Nanjing University."
+    "He received his Ph.D. in Operations Research (2019) from Columbia University, advised by Professor [Ward Whitt](https://www.columbia.edu/~ww2040/), and his B.S. in Mathematics (2014) from Nanjing University."
   ],
   "education": [
     {
@@ -55,8 +55,9 @@
     }
   ],
   "site": {
+    "base_url": "https://cnyouwei.github.io",
     "title": "Wei You",
-    "meta_description": "Wei You - Assistant Professor at HKUST. Research in stochastic models, queueing theory, applied probability, and sequential decision-making.",
+    "meta_description": "Wei You, Assistant Professor at HKUST. Research in operations research, applied probability, machine learning, and data-driven decision making.",
     "ga_id": "G-W043BW5W9F",
     "footer_affiliation": "Department of Industrial Engineering and Decision Analytics, HKUST"
   }

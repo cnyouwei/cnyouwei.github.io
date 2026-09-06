@@ -4,7 +4,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import os
+import re
 from pathlib import Path
+from typing import Any
+
+from .validation import DataError
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -28,11 +32,11 @@ GA_MEASUREMENT_ID_ENV = "WY_GA_MEASUREMENT_ID"
 
 
 def ga_id(default: str) -> str:
-    value = os.environ.get(GA_MEASUREMENT_ID_ENV, "").strip()
-    return value or default
+    value = os.environ.get(GA_MEASUREMENT_ID_ENV, default).strip()
+    if value and not re.fullmatch(r"G-[A-Z0-9]+", value):
+        raise DataError(f"{GA_MEASUREMENT_ID_ENV}: expected an empty string or G- measurement ID")
+    return value
 
-
-PAPER_TYPES = ("working", "journal", "conference", "thesis")
 
 # Paper badge labels by type (site)
 BADGE_LABELS = {
@@ -41,6 +45,27 @@ BADGE_LABELS = {
     "conference": "Conference",
     "thesis": "Thesis",
 }
+PAPER_TYPES = tuple(BADGE_LABELS)
+
+# Exact runtime versions keep a rebuild from silently changing third-party code.
+RUNTIME_URLS = {
+    "mathjax_url": "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js",
+    "mermaid_url": "https://cdn.jsdelivr.net/npm/mermaid@11.16.1/dist/mermaid.esm.min.mjs",
+    "hljs_base_url": "https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.11.1/build/",
+}
+
+
+def paper_citation(paper: dict[str, Any]) -> str:
+    """The display citation used by rendering and structural verification."""
+    if paper["type"] == "working":
+        return paper.get("status", "")
+    bits = [paper.get("venue_display") or paper.get("venue")]
+    volume, number = paper.get("volume"), paper.get("number")
+    if volume:
+        bits.append(f"{volume}({number})" if number else volume)
+    if paper.get("pages"):
+        bits.append(paper["pages"].replace("-", "–"))
+    return ", ".join(part for part in bits if part)
 
 
 @dataclass(frozen=True)

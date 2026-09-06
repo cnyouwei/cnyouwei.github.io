@@ -1,5 +1,5 @@
 {
-  "_comment": "Single source of truth for all papers, on the website AND in the CV. Fields: type = working|journal|conference|thesis; optional venue is the canonical full venue name and its badge abbreviation is inferred during the build (omit it or use null for no venue pill). Author annotations: student_authors (* in CV), alphabetical (# on Wei You in CV), corresponding (dagger in CV). For publications use venue + volume/number/pages; for working papers use venue + status (and optional note for extra context). selected = appears in Home 'Selected Papers'.",
+  "_comment": "Source of truth for papers on the website; CV.tex and CV.pdf are maintained separately. Fields: type = working|journal|conference|thesis; optional venue is the canonical full name, with its badge abbreviation inferred during the build (omit it or use null for no venue pill). Author metadata student_authors, alphabetical, and corresponding is retained for reference. Publications use venue + volume/number/pages; working papers use venue + status (and optional note). selected = appears in Home 'Selected Papers'.",
   "highlight_authors": ["Wei You"],
   "papers": [
     {
@@ -31,7 +31,7 @@
       "corresponding": ["Wei You"],
       "status": "Preparing submission to Mathematics of Operations Research",
       "venue": "Mathematics of Operations Research",
-      "abstract": "We study steady-state join-the-shortest-queue routing in a system of homogeneous exponential servers fed by a renewal process whose interarrival tail is regularly varying with index $\\alpha\\in(1,2)$. Under staffing matched to the stable renewal scale, the stationary process of scaled occupancy vectors converges to a two-dimensional reflected process driven by a spectrally positive $\\alpha$-stable L\\'evy process. The total number of customers in positions three and above vanishes in mean without scaling, uniformly over compact stationary time intervals, so the system is asymptotically two-level. We identify the exact mixed-moment domain and marginal tail scales: idleness has a power-law tail with an explicit constant, whereas the queue coordinate has an exact exponential-moment threshold and logarithmic tail rate. For the queueing system, the delay probability and mean waiting time are first-order proportional to the relative spare capacity, while the waiting time conditional on delay converges in total variation to a unit-rate exponential distribution. The limiting process also converges exponentially in every subcritical polynomial–exponential weighted total variation norm. The stationary proof combines an exact level-three flow balance, a Palm-cycle Lyapunov comparison uniform over the full labeled post-arrival state, and a separate drift inequality that eliminates higher occupancy levels without circularity.",
+      "abstract": "We study steady-state join-the-shortest-queue routing in a system of homogeneous exponential servers fed by a renewal process whose interarrival tail is regularly varying with index $\\alpha\\in(1,2)$. Under staffing matched to the stable renewal scale, the stationary process of scaled occupancy vectors converges to a two-dimensional reflected process driven by a spectrally positive $\\alpha$-stable Lévy process. The total number of customers in positions three and above vanishes in mean without scaling, uniformly over compact stationary time intervals, so the system is asymptotically two-level. We identify the exact mixed-moment domain and marginal tail scales: idleness has a power-law tail with an explicit constant, whereas the queue coordinate has an exact exponential-moment threshold and logarithmic tail rate. For the queueing system, the delay probability and mean waiting time are first-order proportional to the relative spare capacity, while the waiting time conditional on delay converges in total variation to a unit-rate exponential distribution. The limiting process also converges exponentially in every subcritical polynomial–exponential weighted total variation norm. The stationary proof combines an exact level-three flow balance, a Palm-cycle Lyapunov comparison uniform over the full labeled post-arrival state, and a separate drift inequality that eliminates higher occupancy levels without circularity.",
       "links": []
     },
     {
@@ -130,7 +130,7 @@
     {
       "id": "frank-wolfe-self-play",
       "type": "working",
-      "year": 2025,
+      "year": 2026,
       "title": "Pure Exploration via Frank–Wolfe Self-Play",
       "selected": false,
       "topic": "Bandit Learning",
@@ -138,8 +138,8 @@
       "student_authors": ["Xinyu Liu"],
       "alphabetical": true,
       "corresponding": ["Wei You"],
-      "status": "Preparing submission to Journal of Machine Learning Research",
-      "venue": "Journal of Machine Learning Research",
+      "status": "Planning submission to Operations Research",
+      "venue": "Operations Research",
       "note": "Short version appeared at NeurIPS 2025 MLxOR Workshop.",
       "abstract": "We study pure exploration in structured stochastic multi-armed bandits, aiming to efficiently identify the correct hypothesis from a finite set of alternatives. For a broad class of tasks, asymptotic analyses reduce to a maximin optimization that admits a two-player zero-sum game interpretation between an experimenter and a skeptic: the experimenter allocates measurements to rule out alternatives while the skeptic proposes alternatives. We reformulate the game by allowing the skeptic to adopt a mixed strategy, yielding a concave–convex saddle-point problem. This viewpoint leads to Frank–Wolfe Self-Play (FWSP): a projection-free, regularization-free, tuning-free method whose one-hot updates on both sides match the bandit sampling paradigm. However, structural constraints introduce sharp pathologies that complicate algorithm design and analysis: our linear-bandit case study exhibits nonunique optima, optimal designs with zero mass on the best arm, bilinear objectives, and nonsmoothness at the boundary. We address these challenges via a differential-inclusion argument, proving convergence of the game value for best-arm identification in linear bandits. Our analysis proceeds through a continuous-time limit: a differential inclusion with a Lyapunov function that decays exponentially, implying a vanishing duality gap and convergence to the optimal value. Although Lyapunov analysis requires differentiability of the objective, which is not guaranteed on the boundary, we show that along continuous trajectories the algorithm steers away from pathological nonsmooth points and achieves uniform global convergence to the optimal game value. We then embed the discrete-time updates into a perturbed flow and show that the discrete game value also converges. Building on FWSP, we further propose a learning algorithm based on posterior sampling. Numerical experiments demonstrate game-value convergence with a vanishing duality gap.",
       "links": [

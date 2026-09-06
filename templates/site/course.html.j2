@@ -1,8 +1,5 @@
 {% extends 'base.html.j2' %}
 
-{% block title %}{{ course.code }} {{ course.title }} | Teaching{% endblock %}
-{% block description %}{{ course.summary }}{% endblock %}
-
 {% block main %}
     <article class="section course">
       <div class="container">
@@ -14,7 +11,7 @@
         </header>
 
         <div class="split-grid">
-          <article class="panel card-surface">
+          <article class="panel">
             <h2>Course Snapshot</h2>
             <dl class="snapshot">
               <dt>Institution</dt>
@@ -32,7 +29,7 @@
             </dl>
             <p>{{ course.overview }}</p>
           </article>
-          <article class="panel card-surface">
+          <article class="panel">
             <h2>Learning Outcomes</h2>
             <ul class="stack-list">
               {% for outcome in course.outcomes %}
@@ -50,7 +47,7 @@
         </header>
         <div class="course-grid">
           {% for module in course.modules %}
-          <article class="course-card card-surface">
+          <article class="course-card">
             <div class="course-meta">
               <span class="badge badge--published">{{ module.code }}</span>
             </div>

@@ -21,16 +21,18 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--serve", action="store_true", help="serve dist/ after building")
     parser.add_argument("--port", type=int, default=8000)
+    parser.add_argument("--host", default="127.0.0.1", help="preview bind address (default: loopback only)")
     args = parser.parse_args()
+    if not 1 <= args.port <= 65535:
+        parser.error("--port must be between 1 and 65535")
 
     try:
         everything = data.load_all()
-    except data.DataError as exc:
-        print(f"Data error: {exc}", file=sys.stderr)
+        site.build_site(everything)
+        checks.check_site(everything)
+    except (data.DataError, checks.CheckError) as exc:
+        print(str(exc), file=sys.stderr)
         return 1
-
-    site.build_site(everything)
-    checks.check_site(everything)
 
     if args.serve:
         import functools
@@ -41,8 +43,8 @@ def main() -> int:
         handler = functools.partial(
             http.server.SimpleHTTPRequestHandler, directory=str(DIST_DIR)
         )
-        print(f"Serving {DIST_DIR} at http://localhost:{args.port} (Ctrl-C to stop)")
-        http.server.ThreadingHTTPServer(("", args.port), handler).serve_forever()
+        print(f"Serving {DIST_DIR} at http://{args.host}:{args.port} (Ctrl-C to stop)")
+        http.server.ThreadingHTTPServer((args.host, args.port), handler).serve_forever()
 
     return 0
 

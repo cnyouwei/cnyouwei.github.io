@@ -3,7 +3,13 @@
 from __future__ import annotations
 
 import shutil
+import datetime as dt
+from dataclasses import dataclass, field
+import hashlib
+from pathlib import Path
 from typing import Any
+from urllib.parse import urlsplit
+from xml.etree import ElementTree
 
 from .config import (
     ASSETS_DIR,
@@ -11,27 +17,17 @@ from .config import (
     CV_PDF,
     DIST_DIR,
     STATIC_DIR,
+    PAPER_TYPES,
+    RUNTIME_URLS,
     VENUE_TIER_LABELS,
     ga_id,
+    paper_citation,
     venue_metadata,
     venue_tier as classify_venue_tier,
 )
 from .data import SiteData
 from .render import author_list, site_env
-
-
-def _display_citation(paper: dict[str, Any]) -> str:
-    """Venue line shown under a paper title on the site."""
-    if paper["type"] == "working":
-        return paper.get("status", "")
-    bits = [paper.get("venue_display", paper.get("venue", ""))]
-    volume = paper.get("volume")
-    if volume:
-        number = paper.get("number")
-        bits.append(f"{volume}({number})" if number else volume)
-    if paper.get("pages"):
-        bits.append(paper["pages"].replace("-", "–"))
-    return ", ".join(b for b in bits if b)
+from .validation import DataError, local_target, slug_value
 
 
 def _prepare_paper(paper: dict[str, Any], highlight: list[str]) -> dict[str, Any]:
@@ -43,7 +39,7 @@ def _prepare_paper(paper: dict[str, Any], highlight: list[str]) -> dict[str, Any
             paper["title"],
             " ".join(paper["authors"]),
             venue_name or "",
-            paper.get("venue_display", ""),
+            paper.get("venue_display") or "",
             venue.abbreviation if venue else "",
             paper.get("status", ""),
             paper.get("topic", ""),
@@ -53,7 +49,7 @@ def _prepare_paper(paper: dict[str, Any], highlight: list[str]) -> dict[str, Any
     return {
         **paper,
         "authors_html": author_list(paper["authors"], highlight),
-        "citation": _display_citation(paper),
+        "citation": paper_citation(paper),
         "search_blob": search_blob,
         "topic": paper.get("topic", "Other"),
         "venue_abbrev": venue.abbreviation if venue else None,
@@ -71,9 +67,15 @@ def build_context(data: SiteData) -> dict[str, Any]:
     topics = sorted({p["topic"] for p in papers})
 
     students = data.team["students"]
+    measurement_id = ga_id(data.profile["site"]["ga_id"])
+    site_url = data.profile["site"]["base_url"]
     return {
         "profile": data.profile,
-        "ga_id": ga_id(data.profile["site"]["ga_id"]),
+        "site_url": site_url,
+        "build_year": dt.datetime.now(dt.timezone.utc).year,
+        "paper_types": PAPER_TYPES,
+        "asset_versions": static_asset_versions(STATIC_DIR),
+        "runtime_config": {**RUNTIME_URLS, "ga_id": measurement_id, "production_hostname": urlsplit(site_url).hostname},
         "badge_labels": BADGE_LABELS,
         "selected_papers": selected,
         "working_papers": working,
@@ -87,13 +89,68 @@ def build_context(data: SiteData) -> dict[str, Any]:
     }
 
 
-# Per-page shell settings consumed by base.html.j2.
-_HOME_PAGE = {"root": "", "page_id": "home", "mathjax": "lazy", "page_scripts": ["pages/research.js"]}
-_BLOG_PAGE = {"root": "../", "page_id": "blog-post", "mathjax": "eager", "page_scripts": ["pages/blog_post.js"]}
-_COURSE_PAGE = {"root": "../", "page_id": "course", "mathjax": "none", "page_scripts": []}
+def static_asset_versions(source: Path) -> dict[str, str]:
+    """Stable cache keys change only when the deployed asset bytes change."""
+    return {
+        path.relative_to(source).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()[:12]
+        for path in source.rglob("*")
+        if path.is_file() and path.name != ".DS_Store" and "__pycache__" not in path.parts
+    }
 
 
-def _copy_tree(src, dst) -> None:
+@dataclass(frozen=True)
+class Page:
+    """One rendered URL; the same registry drives metadata and the sitemap."""
+
+    path: str
+    template: str
+    title: str
+    description: str
+    page_id: str
+    root: str = ""
+    scripts: tuple[str, ...] = ()
+    values: dict[str, Any] = field(default_factory=dict)
+    indexed: bool = True
+
+
+def page_registry(data: SiteData) -> list[Page]:
+    profile = data.profile["site"]
+    pages = [Page(
+        path="index.html", template="home.html.j2", title=profile["title"],
+        description=profile["meta_description"], page_id="home",
+        scripts=("pages/research.js",),
+    )]
+    for post in data.posts:
+        slug_value(post["slug"], "blog slug")
+        pages.append(Page(
+            path=f"blogs/{post['slug']}.html", template="blog_post.html.j2",
+            title=f"{post['title']} | {profile['title']}", description=post["summary"],
+            page_id="blog-post", root="../",
+            scripts=("pages/blog_post.js",), values={"post": post},
+        ))
+    for course in data.teaching["courses"]:
+        slug_value(course["slug"], "course slug")
+        if course["published"]:
+            pages.append(Page(
+                path=f"teaching/{course['slug']}.html", template="course.html.j2",
+                title=f"{course['code']} {course['title']} | Teaching", description=course["summary"],
+                page_id="course", root="../", values={"course": course},
+            ))
+    pages.append(Page(
+        path="404.html", template="404.html.j2", title=f"Page not found | {profile['title']}",
+        description="Find research, teaching materials, and notes on Wei You's website.",
+        page_id="not-found", root="/", indexed=False,
+    ))
+    paths = [page.path.casefold() for page in pages]
+    if len(paths) != len(set(paths)):
+        raise DataError("duplicate page output path")
+    return pages
+
+
+def _copy_tree(src: Path, dst: Path) -> None:
+    for candidate in src.rglob("*"):
+        if candidate.is_symlink() and not candidate.resolve().is_relative_to(src.resolve()):
+            raise DataError(f"static symlink escapes source directory: {candidate}")
     shutil.copytree(
         src, dst, dirs_exist_ok=True, ignore=shutil.ignore_patterns(".DS_Store", "__pycache__")
     )
@@ -102,6 +159,7 @@ def _copy_tree(src, dst) -> None:
 def build_site(data: SiteData) -> None:
     env = site_env()
     context = build_context(data)
+    pages = page_registry(data)
 
     # Fresh output directory.
     if DIST_DIR.exists():
@@ -111,30 +169,26 @@ def build_site(data: SiteData) -> None:
     # Static files keep their public URLs: css/, js/, assets/, CV.pdf.
     _copy_tree(STATIC_DIR, DIST_DIR)
     _copy_tree(ASSETS_DIR, DIST_DIR / "assets")
-    if CV_PDF.exists():
-        shutil.copy2(CV_PDF, DIST_DIR / "CV.pdf")
+    shutil.copy2(CV_PDF, DIST_DIR / "CV.pdf")
 
-    # Home page.
-    home = env.get_template("home.html.j2")
-    (DIST_DIR / "index.html").write_text(home.render(**context, **_HOME_PAGE), encoding="utf-8")
+    for page in pages:
+        page_context = {
+            **context, **page.values, "root": page.root, "page_id": page.page_id,
+            "page_scripts": page.scripts,
+            "page_url": f"{context['site_url']}/{page.path}",
+            "page_title": page.title, "page_description": page.description,
+            "page_indexed": page.indexed,
+        }
+        target = local_target(DIST_DIR, page.path)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(env.get_template(page.template).render(**page_context), encoding="utf-8")
 
-    # Blog post pages.
-    post_template = env.get_template("blog_post.html.j2")
-    blog_dir = DIST_DIR / "blogs"
-    blog_dir.mkdir()
-    for post in data.posts:
-        page = post_template.render(post=post, **context, **_BLOG_PAGE)
-        (blog_dir / f"{post['slug']}.html").write_text(page, encoding="utf-8")
-
-    # Course pages.
-    course_template = env.get_template("course.html.j2")
-    teaching_dir = DIST_DIR / "teaching"
-    teaching_dir.mkdir()
-    for course in data.teaching["courses"]:
-        if not course.get("published"):
-            continue
-        page = course_template.render(course=course, **context, **_COURSE_PAGE)
-        (teaching_dir / f"{course['slug']}.html").write_text(page, encoding="utf-8")
+    sitemap = ElementTree.Element("urlset", xmlns="http://www.sitemaps.org/schemas/sitemap/0.9")
+    for page in pages:
+        if page.indexed:
+            ElementTree.SubElement(ElementTree.SubElement(sitemap, "url"), "loc").text = f"{context['site_url']}/{page.path}"
+    ElementTree.ElementTree(sitemap).write(DIST_DIR / "sitemap.xml", encoding="utf-8", xml_declaration=True)
+    (DIST_DIR / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {context['site_url']}/sitemap.xml\n", encoding="utf-8")
 
     published = sum(1 for c in data.teaching["courses"] if c.get("published"))
     print(

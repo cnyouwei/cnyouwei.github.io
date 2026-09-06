@@ -1,6 +1,15 @@
 {
-  "_comment": "Courses shown in the site #teaching hub. published: true generates a course page at teaching/<slug>.html; published: false shows a Coming Soon card. CV teaching history lives in cv.json (teaching_history).",
+  "_comment": "Courses shown in the site #teaching hub. published: true generates teaching/<slug>.html; published: false shows a Coming Soon card. The CV is maintained separately in CV.tex and CV.pdf; review both when course details change.",
   "courses": [
+    {
+      "slug": "ieda5250",
+      "code": "IEDA5250",
+      "title": "Stochastic Models in Operations Research",
+      "period": "2027 Spring",
+      "institution": "HKUST, Department of Industrial Engineering and Decision Analytics",
+      "summary": "Scheduled for Spring 2027. Course materials will be posted here.",
+      "published": false
+    },
     {
       "slug": "ieda3250",
       "code": "IEDA3250",
@@ -13,8 +22,8 @@
     {
       "slug": "ieda5270",
       "code": "IEDA5270",
-      "title": "Engineering Statistics",
-      "period": "2019–present",
+      "title": "Engineering Statistics and Data Analytics",
+      "period": "2019–2025",
       "institution": "HKUST, Department of Industrial Engineering and Decision Analytics",
       "summary": "Graduate-level statistical methodology for data-driven engineering.",
       "published": true,

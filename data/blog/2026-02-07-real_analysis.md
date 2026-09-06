@@ -182,7 +182,7 @@ flowchart TB
   reg -.-> approxf
   approxf -.-> conv
 
-  %% Node palettes live in css/site.css (.mermaid .ch1 rect etc.) so they
+  %% Node palettes live in css/blog.css (.mermaid .ch1 rect etc.) so they
   %% follow the light/dark theme; mermaid's classDef cannot use CSS var().
   class top,borel ch1;
   class ring,outer,carath ch2;

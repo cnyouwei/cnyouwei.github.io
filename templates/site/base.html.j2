@@ -1,16 +1,23 @@
-{#
-  Page shell. Pages extend this and provide:
-    blocks: title, description, main  (+ optional head_extra)
-  Context (from builder.site): root ('' at site root, '../' in subdirectories),
-  page_id, mathjax ('none'|'lazy'|'eager'), page_scripts, ga_id, profile.
-#}
+{# Shared shell; page metadata and dependency configuration come from the builder. #}
 <!DOCTYPE html>
-<html lang="en" data-ga-id="{{ ga_id }}" data-page="{{ page_id }}">
+<html lang="en" data-page="{{ page_id }}">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{% block title %}{{ profile.site.title }}{% endblock %}</title>
-  <meta name="description" content="{% block description %}{{ profile.site.meta_description }}{% endblock %}" />
+  <title>{{ page_title }}</title>
+  <meta name="description" content="{{ page_description }}" />
+  {% if not page_indexed %}<meta name="robots" content="noindex" />{% endif %}
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <link rel="canonical" href="{{ page_url }}" />
+  <meta property="og:type" content="{{ 'article' if page_id == 'blog-post' else 'website' }}" />
+  <meta property="og:site_name" content="{{ profile.site.title }}" />
+  <meta property="og:title" content="{{ page_title }}" />
+  <meta property="og:description" content="{{ page_description }}" />
+  <meta property="og:url" content="{{ page_url }}" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="{{ page_title }}" />
+  <meta name="twitter:description" content="{{ page_description }}" />
+  <link rel="icon" type="image/svg+xml" href="{{ root }}favicon.svg?v={{ asset_versions['favicon.svg'] }}" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   {# Fraunces: serif display headings. Inter: body/UI (stable rendering everywhere). #}
@@ -30,18 +37,22 @@
           root.setAttribute('data-theme', stored);
           return;
         }
-        var dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         root.setAttribute('data-theme', dark ? 'dark' : 'light');
       } catch (error) {
         document.documentElement.setAttribute('data-theme', 'light');
       }
     })();
   </script>
-  <link rel="stylesheet" href="{{ root }}css/site.css" />
-{% include 'partials/mathjax.html.j2' %}
+  <link rel="stylesheet" href="{{ root }}css/site.css?v={{ asset_versions['css/site.css'] }}" />
+  {% if page_id == 'blog-post' %}
+  <link rel="stylesheet" href="{{ root }}css/blog.css?v={{ asset_versions['css/blog.css'] }}" />
+  {% endif %}
+  <script id="site-config" type="application/json">{{ runtime_config | tojson }}</script>
 {% block head_extra %}{% endblock %}
 </head>
 <body>
+  <div id="top"></div>
   <a class="skip-link" href="#main">Skip to content</a>
 {% include 'partials/nav.html.j2' %}
   <main id="main" tabindex="-1">
@@ -49,14 +60,14 @@
   </main>
   <footer class="site-footer">
     <div class="container footer-inner">
-      <p>&copy; <span data-footer-year></span> {{ profile.name }}</p>
+      <p>&copy; {{ build_year }} {{ profile.name }}</p>
       <p>{{ profile.site.footer_affiliation }}</p>
     </div>
   </footer>
-  <button class="back-to-top" type="button" aria-label="Back to top">Top</button>
-  <script src="{{ root }}js/site.js" defer></script>
+  <a class="back-to-top" href="#top" aria-label="Back to top">Top &uarr;</a>
+  <script src="{{ root }}js/site.js?v={{ asset_versions['js/site.js'] }}" defer></script>
 {% for src in page_scripts %}
-  <script src="{{ root }}js/{{ src }}" defer></script>
+  <script src="{{ root }}js/{{ src }}?v={{ asset_versions['js/' ~ src] }}" defer></script>
 {% endfor %}
 </body>
 </html>

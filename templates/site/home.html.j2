@@ -36,7 +36,7 @@
         </div>
         <div class="hero-content">
           <p class="eyebrow">{{ profile.tagline }}</p>
-          <h1>{{ profile.name }} <span class="name-cn">{{ profile.name_cn }}</span></h1>
+          <h1>{{ profile.name }} <span class="name-cn" lang="zh-Hans">{{ profile.name_cn }}</span></h1>
           <p class="hero-title">
             {% for line in profile.position %}{{ line }}{% if not loop.last %}<br />{% endif %}
             {% endfor %}
@@ -56,7 +56,7 @@
       </div>
 
       <div class="container">
-        <div class="spotlight card-surface">
+        <div class="spotlight">
         <h2>Selected Papers</h2>
         <ul class="selected-list">
           {% for paper in selected_papers %}
@@ -82,16 +82,15 @@
           <h2>Research</h2>
         </header>
 
-        <div class="controls card-surface">
+        <div class="controls" data-research-controls hidden>
           <div class="control-group">
             <label class="select-field">
               <span class="sr-only">Filter by type</span>
               <select id="typeFilter" aria-label="Filter by type">
                 <option value="all">All Types</option>
-                <option value="working">Working</option>
-                <option value="journal">Journal</option>
-                <option value="conference">Conference</option>
-                <option value="thesis">Thesis</option>
+                {% for paper_type in paper_types %}
+                <option value="{{ paper_type }}">{{ badge_labels[paper_type] }}</option>
+                {% endfor %}
               </select>
             </label>
             <label class="select-field">
@@ -117,6 +116,7 @@
           </label>
         </div>
 
+        <p id="papers-status" class="papers-status" role="status" aria-live="polite" aria-atomic="true">{{ (working_papers | length) + (publications | length) }} papers</p>
         <div id="papersList">
           <section class="paper-group" data-group="working">
             <h3 class="paper-group-title">Working Papers</h3>
@@ -146,7 +146,7 @@
           <h2>Talks</h2>
         </header>
         <div class="split-grid">
-          <article class="panel card-surface">
+          <article class="panel">
             <h3>Conference Talks</h3>
             <p class="muted">({{ talks.coauthor_note }})</p>
             <ul class="stack-list">
@@ -159,7 +159,7 @@
               {% endfor %}
             </ul>
           </article>
-          <article class="panel card-surface">
+          <article class="panel">
             <h3>Invited Talks</h3>
             <ul class="stack-list">
               {% for talk in talks.invited_talks %}
@@ -179,7 +179,7 @@
         </header>
         <div class="course-grid">
           {% for course in courses %}
-          <article class="course-card card-surface">
+          <article class="course-card">
             <div class="course-meta">
               <span class="badge {{ 'badge--published' if course.published else 'badge--soon' }}">
                 {{ 'Published' if course.published else 'Coming Soon' }}
@@ -207,7 +207,7 @@
           <h2>Team</h2>
         </header>
         <div class="team-wrap">
-          <article class="panel card-surface">
+          <article class="panel">
             <h3>Current Students</h3>
             <div class="student-grid">
               {% for student in students_current %}
@@ -218,7 +218,7 @@
               {% endfor %}
             </div>
           </article>
-          <article class="panel card-surface">
+          <article class="panel">
             <h3>Former Students</h3>
             <div class="student-grid">
               {% for student in students_former %}
@@ -245,13 +245,13 @@
           <h2>About</h2>
         </header>
         <div class="split-grid">
-          <article class="panel card-surface">
+          <article class="panel">
             <h3>Bio</h3>
             {% for paragraph in profile.bio %}
             <p>{{ paragraph | md_links }}</p>
             {% endfor %}
           </article>
-          <article class="panel card-surface">
+          <article class="panel">
             <h3>Education</h3>
             <div class="timeline">
               {% for entry in profile.education %}
@@ -269,7 +269,7 @@
             </div>
           </article>
         </div>
-        <article class="panel card-surface about-interests">
+        <article class="panel about-interests">
           <h3>Research Interests</h3>
           <div class="tag-cloud">
             {% for tag in profile.research_interest_tags %}
@@ -288,7 +288,7 @@
         </header>
         <div class="blog-grid">
           {% for post in posts %}
-          <article class="blog-card card-surface">
+          <article class="blog-card">
             <p class="blog-date"><time datetime="{{ post.date }}">{{ post.date_label }}</time></p>
             <h3><a href="blogs/{{ post.slug }}.html">{{ post.title }}</a></h3>
             <p>{{ post.summary }}</p>
@@ -300,7 +300,7 @@
             </div>
           </article>
           {% else %}
-          <p class="muted">No posts yet. Add a markdown file to data/blog/ and run python3 build.py.</p>
+          <p class="muted">No posts yet.</p>
           {% endfor %}
         </div>
       </div>

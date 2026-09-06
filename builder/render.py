@@ -7,8 +7,8 @@ import re
 from jinja2 import Environment, FileSystemLoader
 from markupsafe import Markup, escape
 
-from . import markdown as md
 from .config import SITE_TEMPLATES_DIR
+from .validation import url_value
 
 _INLINE_LINK = re.compile(r"\[([^\]]+)\]\(([^)\s]+)\)")
 
@@ -23,6 +23,7 @@ def md_links(text: str) -> Markup:
     pos = 0
     for match in _INLINE_LINK.finditer(text):
         parts.append(str(escape(text[pos : match.start()])))
+        url_value(match.group(2), "profile bio link")
         label, url = escape(match.group(1)), escape(match.group(2))
         external = str(url).startswith(("http://", "https://"))
         target = ' target="_blank" rel="noopener noreferrer"' if external else ""
@@ -57,5 +58,4 @@ def site_env() -> Environment:
         lstrip_blocks=True,
     )
     env.filters["md_links"] = md_links
-    env.filters["format_date"] = md.format_date
     return env

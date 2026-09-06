@@ -15,7 +15,7 @@ data/*.json + data/blog/*.md ──► builder/ (load → validate → render �
 
 | Path | What it is |
 | --- | --- |
-| `data/profile.json` | Name, titles, links, bio, education, research interests, GA id |
+| `data/profile.json` | Name, titles, links, bio, education, research interests, canonical URL, GA id |
 | `data/papers.json` | Every paper: authors, optional venue, volume/pages, status, abstract, links |
 | `data/talks.json` | Conference and invited talks |
 | `data/teaching.json` | Course cards + published course pages |
@@ -27,13 +27,14 @@ data/*.json + data/blog/*.md ──► builder/ (load → validate → render �
 | `assets/` | PDFs, avatar, teaching materials (copied into `dist/assets/`) |
 | `dist/` | Build output (gitignored; deployed by GitHub Actions) |
 | `CV.tex` / `CV.pdf` | The CV, maintained by hand; the committed PDF is copied into `dist/` |
+| `tests/` | Python regression tests and development-only browser smoke tests |
 
 ## Setup (once)
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install -r requirements.txt
+python -m pip install --require-hashes -r requirements.txt
 ```
 
 ## Everyday commands
@@ -43,11 +44,60 @@ python3 build.py            # build the website + run all checks
 python3 build.py --serve    # build, then preview at http://localhost:8000
 ```
 
-Every build validates the data first (missing fields, broken local links,
-duplicate ids fail loudly) and verifies the output afterwards (every paper
-present on the page, every local link resolving inside `dist/`).
+Every build validates content types, required metadata, dates, slugs, and URL
+schemes before rendering. It then checks generated pages, unique IDs, local
+files and HTML fragments. The preview server binds
+to `127.0.0.1` by default; `--port 8001` selects a different local port. Use
+`--host` explicitly if you intend to expose a preview on another interface.
+
+## Verification
+
+Use Python 3.12 or newer. The production install does not require browser tools.
+For changes to the generator, templates, styling, or JavaScript:
+
+```bash
+python -m pip install --require-hashes -r requirements-dev.txt
+python -m playwright install chromium
+python -m unittest discover -s tests -p 'test_*.py'
+python build.py
+python tests/browser_smoke.py
+python tests/browser_smoke.py --live-dependencies
+```
+
+The regular browser suite uses deterministic dependency fixtures to exercise
+loading failures and recovery. The live mode requires network access and checks
+the real MathJax, Mermaid, and highlighting assets; an unavailable renderer is
+reported as a failure. Both commands start and stop their own local preview.
+Tests do not send analytics.
+
+The Chromium matrix includes the six content pages plus the custom 404, eight
+widths from 320 to 1440px, and both themes. Additional cases cover 200% text
+enlargement and CSS zoom, keyboard/touch controls, complete print output and
+view restoration, no-JavaScript navigation, and delayed or failed renderers.
+CSS zoom is an emulation; it does not drive the browser's own zoom control.
+
+Dependency input files declare direct packages; the corresponding `.txt` files
+lock the resolved versions and hashes. Review updates together with their lock
+changes and run the complete suite before merging. Browser tooling is confined
+to development requirements.
+
+To refresh the locks as a maintainer:
+
+```bash
+python -m pip install pip-tools==7.5.3
+python -P -m piptools compile --upgrade --generate-hashes --strip-extras --output-file=requirements.txt requirements.in
+python -P -m piptools compile --upgrade --generate-hashes --strip-extras --output-file=requirements-dev.txt requirements-dev.in
+```
+
+The `-P` flag prevents this repository's `build.py` from shadowing pip-tools'
+own build dependency. Regenerate the production lock first; the development
+lock is constrained to the same production package versions.
 
 ## Common edits
+
+Routine updates use the five content JSON files in `data/` and the independently
+maintained CV. Blog text lives in `data/blog/`; add any new linked PDFs or images
+under `assets/`. The generator builds the current content from these sources.
 
 **Add a paper** — append an entry to `data/papers.json`:
 
@@ -92,7 +142,7 @@ the visible review status and venue pill cannot diverge.
 
 **Add a blog post** — create `data/blog/YYYY-MM-DD-slug.md`:
 
-```md
+````md
 ---
 title: My New Note
 date: 2026-02-10
@@ -102,7 +152,13 @@ tags: [queueing, teaching]
 ---
 
 Markdown body. Math ($x^2$), code fences, tables, and ```mermaid blocks all work.
-```
+````
+
+Every post requires nonempty `title`, `date`, and `summary` front-matter fields;
+dates must be valid calendar dates in `YYYY-MM-DD` form. Page slugs are single filename
+segments containing letters, digits, underscores, or hyphens. Keep an existing
+slug unchanged to preserve links. Mathematical notation is handled by Arithmatex
+before heading navigation is generated; normal code fences remain literal.
 
 **Add/maintain a course** — edit `data/teaching.json`. `published: true`
 generates `teaching/<slug>.html`; `false` shows a Coming Soon card.
@@ -118,23 +174,67 @@ the committed PDF into `dist/CV.pdf`, which the hero "CV" chip links to.
 
 ## Deployment
 
-Push to `master`. GitHub Actions (`.github/workflows/pages.yml`) runs
-`python3 build.py` and deploys `dist/` to GitHub Pages. Public URLs are
-unchanged from the previous site: `/index.html`, `/blogs/<slug>.html`,
-`/teaching/<slug>.html`, `/assets/...`, `/CV.pdf`.
+Pull requests run validation without deployment permissions. Trusted branch
+builds run the same checks before GitHub Pages deployment. Deployment permissions
+are restricted to the deploy job; dependency installation and tests do not need
+Pages or OIDC write access.
+
+The public site remains at `https://cnyouwei.github.io`. Each build replaces
+`dist/` with the current homepage, blog and course pages, assets, CV, and site
+metadata. PDFs are published once at their current paths under `assets/`, with
+the CV at `/CV.pdf`. Old standalone section URLs and `/papers/` aliases are no
+longer generated. Use current section anchors such as `/index.html#talks` and
+current download URLs when sharing links.
+
+The build also emits canonical/social metadata, a sitemap, robots instructions,
+and a custom 404 page. `site.base_url` supplies the canonical origin; it must
+match the production site when changing domains.
 
 Analytics: the GA measurement id lives in `data/profile.json` (`site.ga_id`)
-and can be overridden with the `WY_GA_MEASUREMENT_ID` env var.
+and can be overridden with the `WY_GA_MEASUREMENT_ID` env var. Analytics loads
+only on the configured production hostname. Keep the ID empty to disable it.
+The integration retains its existing automatic page-view behavior; it does not
+implement a visitor consent interface.
+
+## Content and safety
+
+Website JSON and the CV are maintained independently. Review both when updating
+courses, students, or publications, then rebuild the site and regenerate the CV
+PDF when its source changes.
+
+Blog Markdown supports authored HTML, so repository contributors are trusted
+content authors. Ordinary template values are escaped, URL schemes are checked,
+and Mermaid uses strict mode. These controls do not turn the builder into a
+safe processor for arbitrary uploaded HTML.
+
+External browser dependencies are deliberately limited:
+
+| Service | Purpose and behavior |
+| --- | --- |
+| Google Fonts | Fraunces and Inter, plus a two-character Chinese name subset on the homepage; system fonts provide a fallback |
+| jsDelivr | Pinned MathJax, Mermaid, and highlight.js; versions and URLs live in `builder/config.py` |
+| Google Analytics | Optional production-only page analytics, controlled by `site.ga_id` or the environment override |
+
+Essential navigation and text remain available without those services or
+JavaScript. GitHub Pages controls HTTP
+response headers. The HTML referrer policy limits referrer disclosure but does
+not configure server-only controls such as frame-ancestors or HSTS.
 
 ## Design notes
 
-- Styling lives in a single `static/css/site.css`, organized by design tokens
-  (light + dark themes) → base → components → sections. Only widely-supported
-  CSS is used; `backdrop-filter` is a progressive enhancement behind
-  `@supports`, so the site renders consistently on Safari/Firefox/Chrome/mobile.
+Interactive features target current browsers with native modules, MathML,
+`matchMedia`, and the Font Loading API. Mermaid uses native MathML for diagram
+equations; no separate KaTeX stylesheet is loaded. The native mode follows
+[Mermaid's current math configuration](https://mermaid.js.org/config/math.html).
+
+- Shared styling lives in `static/css/site.css`; `static/css/blog.css` loads
+  only for blog pages. Local styles, scripts, and the favicon use content hashes
+  in their URLs so cached assets update after publishing. Light and dark themes
+  share semantic tokens. Prose,
+  publication rows, and light separators establish the editorial layout.
 - JavaScript is dependency-free and page-scoped: `static/js/site.js` (theme,
-  nav, scrollspy, analytics) plus `js/pages/research.js` (filters, search,
-  topic grouping, lazy MathJax) and `js/pages/blog_post.js` (TOC highlight,
-  copy buttons, Mermaid, highlight.js — all lazy-loaded only when needed).
-- Theme preference is stored under the same localStorage keys as before
-  (`wy-theme`, `wy-theme-source`), so returning visitors keep their setting.
+  nav, scrollspy, analytics) plus page enhancements for paper filtering, blog
+  navigation, copying, and optional renderers. MathJax loading and typesetting
+  are shared and retryable; the homepage loads it only for an opened math abstract.
+- Theme preference is stored in `wy-theme` and `wy-theme-source`; without a
+  saved manual choice, the site follows the system theme.
