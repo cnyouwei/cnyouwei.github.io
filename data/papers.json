@@ -41,14 +41,14 @@
       "id": "interchange-join-shortest-queue-rv",
       "type": "working",
       "year": 2026,
-      "title": "Stationary Limits for Join-the-Shortest-Queue under Regularly Varying Renewal Input",
+      "title": "Exponential Ergodicity and the Invariant Law of a Degenerate Reflected SDE with Stable Noise",
       "selected": true,
       "topic": "Queueing Theory",
       "authors": ["Guodong Pang","Wei You"],
       "corresponding": ["Wei You"],
       "status": "Preparing submission to Mathematics of Operations Research",
       "venue": "Mathematics of Operations Research",
-      "abstract": "We study steady-state join-the-shortest-queue routing in a system of homogeneous exponential servers fed by a renewal process whose interarrival tail is regularly varying with index $\\alpha\\in(1,2)$. Under staffing matched to the stable renewal scale, the stationary process of scaled occupancy vectors converges to a two-dimensional reflected process driven by a spectrally positive $\\alpha$-stable Lévy process. The total number of customers in positions three and above vanishes in mean without scaling, uniformly over compact stationary time intervals, so the system is asymptotically two-level. We identify the exact mixed-moment domain and marginal tail scales: idleness has a power-law tail with an explicit constant, whereas the queue coordinate has an exact exponential-moment threshold and logarithmic tail rate. For the queueing system, the delay probability and mean waiting time are first-order proportional to the relative spare capacity, while the waiting time conditional on delay converges in total variation to a unit-rate exponential distribution. The limiting process also converges exponentially in every subcritical polynomial–exponential weighted total variation norm. The stationary proof combines an exact level-three flow balance, a Palm-cycle Lyapunov comparison uniform over the full labeled post-arrival state, and a separate drift inequality that eliminates higher occupancy levels without circularity.",
+      "abstract": "We study a two-dimensional degenerate stochastic differential equation with oblique reflection driven by a spectrally positive strictly $\\alpha$-stable L\\'evy process, $1<\\alpha<2$, arising from join-the-shortest-queue systems with heavy-tailed interarrival times. Noise drives idleness, while the regulator transmits randomness to the queue. A polynomial--exponential Lyapunov function and fixed-time minorization establish positive Harris recurrence and exponential ergodicity in weighted total variation. We construct the invariant law from a stable path and prove joint absolute continuity. Regulator occupation identities yield exact mixed moments, negative covariance, and reconstruction of the joint Laplace transform from the queue marginal. We obtain the idleness power-law tail constant and the queue's logarithmic tail rate. Near the reflecting boundary, scaled idleness and the queue converge conditionally to an independent beta variable and size-biased queue. The boundary and upper-tail asymptotics determine the complete real-power moment range of idleness.",
       "links": []
     },
     {
