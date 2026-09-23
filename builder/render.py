@@ -13,21 +13,29 @@ from .validation import url_value
 _INLINE_LINK = re.compile(r"\[([^\]]+)\]\(([^)\s]+)\)")
 
 
+def link_attrs(url: str) -> Markup:
+    """Validate a URL and open web links and local PDFs in a safe new tab."""
+    parsed = url_value(url, "link URL")
+    if parsed.scheme in ("http", "https") or (
+        not parsed.scheme and parsed.path.lower().endswith(".pdf")
+    ):
+        return Markup(' target="_blank" rel="noopener noreferrer"')
+    return Markup("")
+
+
 def md_links(text: str) -> Markup:
     """Render a plain string allowing only inline [label](url) markdown links.
 
     Used for bio paragraphs so data/profile.json stays readable.
-    External links open in a new tab.
+    Web links and local PDFs open in a new tab.
     """
     parts: list[str] = []
     pos = 0
     for match in _INLINE_LINK.finditer(text):
         parts.append(str(escape(text[pos : match.start()])))
-        url_value(match.group(2), "profile bio link")
+        attrs = link_attrs(match.group(2))
         label, url = escape(match.group(1)), escape(match.group(2))
-        external = str(url).startswith(("http://", "https://"))
-        target = ' target="_blank" rel="noopener noreferrer"' if external else ""
-        parts.append(f'<a href="{url}"{target}>{label}</a>')
+        parts.append(f'<a href="{url}"{attrs}>{label}</a>')
         pos = match.end()
     parts.append(str(escape(text[pos:])))
     return Markup("".join(parts))
@@ -57,5 +65,6 @@ def site_env() -> Environment:
         trim_blocks=True,
         lstrip_blocks=True,
     )
+    env.globals["link_attrs"] = link_attrs
     env.filters["md_links"] = md_links
     return env

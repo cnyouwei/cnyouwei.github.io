@@ -16,6 +16,7 @@ from .validation import DataError, list_value, local_target, object_value, slug_
 from .config import (
     BLOG_SOURCE_DIR,
     DATA_DIR,
+    GA_ID_PATTERN,
     PAPER_TYPES,
     ROOT,
     venue_metadata,
@@ -153,7 +154,7 @@ def _validate_profile(profile: dict[str, Any]) -> dict[str, Any]:
         raise DataError("profile.json site.base_url: expected an HTTPS origin without a path, query, or fragment")
     site["base_url"] = site["base_url"].rstrip("/")
     ga = site.get("ga_id", "")
-    if not isinstance(ga, str) or (ga and not re.fullmatch(r"G-[A-Z0-9]+", ga)):
+    if not isinstance(ga, str) or (ga and not re.fullmatch(GA_ID_PATTERN, ga)):
         raise DataError("profile.json site.ga_id: expected an empty string or G- measurement ID")
     site["ga_id"] = ga
     for link in list_value(_require(profile, "links", "profile.json"), "profile.json links"):
@@ -165,6 +166,8 @@ def _validate_profile(profile: dict[str, Any]) -> dict[str, Any]:
     _optional_strings(profile, ("name_cn",), "profile.json")
     avatar = object_value(_require(profile, "avatar", "profile.json"), "profile.json avatar")
     _check_local_url(_require(avatar, "src", "profile.json avatar"), "profile.json avatar")
+    if "share_src" in avatar:
+        _check_local_url(avatar["share_src"], "profile.json avatar.share_src")
     text_value(_require(avatar, "alt", "profile.json avatar"), "profile.json avatar alt")
     for key in ("width", "height"):
         if type(avatar.get(key)) is not int or avatar[key] <= 0:

@@ -29,14 +29,28 @@ CV_PDF = ROOT / "CV.pdf"
 
 # Analytics: override with WY_GA_MEASUREMENT_ID, fall back to profile.json site.ga_id
 GA_MEASUREMENT_ID_ENV = "WY_GA_MEASUREMENT_ID"
+GA_ID_PATTERN = r"G-[A-Z0-9]+"
 
 
 def ga_id(default: str) -> str:
     value = os.environ.get(GA_MEASUREMENT_ID_ENV, default).strip()
-    if value and not re.fullmatch(r"G-[A-Z0-9]+", value):
+    if value and not re.fullmatch(GA_ID_PATTERN, value):
         raise DataError(f"{GA_MEASUREMENT_ID_ENV}: expected an empty string or G- measurement ID")
     return value
 
+
+# Keep these previously published PDF URLs available for external citations.
+# New unlinked PDFs fail the build until deliberately listed here.
+PUBLISHED_UNLINKED_PDFS = frozenset({
+    "papers/APS2017.pdf",
+    "papers/IBM2017.pdf",
+    "papers/INFORMS2016.pdf",
+    "papers/INFORMS2017.pdf",
+    "papers/INFORMS2018.pdf",
+    "papers/RQNA_CUHK_SZ.pdf",
+    "papers/Whitt_You_RQNA_main.pdf",
+    "papers/Whitt_You_flow.pdf",
+})
 
 # Paper badge labels by type (site)
 BADGE_LABELS = {
@@ -53,6 +67,22 @@ RUNTIME_URLS = {
     "mermaid_url": "https://cdn.jsdelivr.net/npm/mermaid@11.16.1/dist/mermaid.esm.min.mjs",
     "hljs_base_url": "https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.11.1/build/",
 }
+
+# Meta CSP works on GitHub Pages; frame-ancestors needs an HTTP header.
+# The build hashes the exact theme bootstrap. Inline styles are required by
+# Markdown tables and the math/diagram renderers. Analytics permits basic GA4;
+# enabling advertising features requires reviewing their additional origins.
+CONTENT_SECURITY_POLICY = "; ".join((
+    "default-src 'self'",
+    "script-src 'self' '{theme_hash}' https://cdn.jsdelivr.net https://www.googletagmanager.com",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net",
+    "font-src 'self' data: https://fonts.gstatic.com https://cdn.jsdelivr.net",
+    "img-src 'self' data: https://*.google-analytics.com https://www.googletagmanager.com",
+    "connect-src 'self' https://*.google-analytics.com https://*.google.com https://www.googletagmanager.com",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'none'",
+))
 
 
 def paper_citation(paper: dict[str, Any]) -> str:

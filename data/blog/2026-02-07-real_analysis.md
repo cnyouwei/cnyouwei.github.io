@@ -182,15 +182,15 @@ flowchart TB
   reg -.-> approxf
   approxf -.-> conv
 
-  %% Node palettes live in css/blog.css (.mermaid .ch1 rect etc.) so they
+  %% Node palettes live in css/blog.css (tone1-tone5, neutral, accent) so they
   %% follow the light/dark theme; mermaid's classDef cannot use CSS var().
-  class top,borel ch1;
-  class ring,outer,carath ch2;
-  class measf ch3;
-  class int,lim,fub ch4;
-  class vitali,diff,rn,bv,ac ch5;
-  class goodset,approxf,conv support;
-  class reg littlewood;
+  class top,borel tone1;
+  class ring,outer,carath tone2;
+  class measf tone3;
+  class int,lim,fub tone4;
+  class vitali,diff,rn,bv,ac tone5;
+  class goodset,approxf,conv neutral;
+  class reg accent;
 ```
 
 ## Theorem Cheat Sheet

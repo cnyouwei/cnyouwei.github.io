@@ -28,8 +28,7 @@
   {% if paper.links %}
   <div class="paper-links">
     {% for link in paper.links %}
-    <a class="chip chip--small" href="{{ link.url }}"
-       {% if link.url.startswith('http') %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ link.label }}</a>
+    <a class="chip chip--small" href="{{ link.url }}"{{ link_attrs(link.url) }}>{{ link.label }}</a>
     {% endfor %}
   </div>
   {% endif %}

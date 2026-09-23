@@ -11,7 +11,7 @@ from unittest.mock import patch
 
 import build
 from builder import checks, config, data, markdown, site
-from builder.render import md_links
+from builder.render import link_attrs, md_links, site_env
 from builder.validation import DataError, local_target, slug_value, url_value
 
 
@@ -33,15 +33,27 @@ class DataValidationTests(unittest.TestCase):
             with self.assertRaises(DataError):
                 markdown.load_post(Path("2026-01-01-demo.md"))
 
-    def test_output_resolution_rejects_traversal_and_symlink(self):
+    def test_output_resolution_rejects_traversal(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder) / "dist"
             root.mkdir()
-            (root / "external").symlink_to(Path(folder), target_is_directory=True)
-            for path in ("../outside", "%2e%2e/outside", r"..\outside", "external/private"):
+            for path in ("../outside", "%2e%2e/outside", r"..\outside"):
                 with self.subTest(path=path), self.assertRaises(DataError):
                     local_target(root, path)
             self.assertEqual(local_target(root, "/index.html"), root.resolve() / "index.html")
+
+    def test_output_resolution_rejects_symlink_escape(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder) / "dist"
+            root.mkdir()
+            try:
+                (root / "external").symlink_to(Path(folder), target_is_directory=True)
+            except OSError as exc:
+                if os.name == "nt" and getattr(exc, "winerror", None) == 1314:
+                    self.skipTest("Windows symlink creation requires Developer Mode or administrator privileges")
+                raise
+            with self.assertRaises(DataError):
+                local_target(root, "external/private")
 
     def test_urls_reject_executable_or_ambiguous_schemes(self):
         for url in ("javascript:alert(1)#anchor", "data:text/html,test", "vbscript:test", "//example.com", " https://example.com", "https://user:password@example.com", "https://example.com:invalid", "java\nscript:alert(1)"):
@@ -95,6 +107,25 @@ class DataValidationTests(unittest.TestCase):
         with self.assertRaises(DataError):
             md_links("[bad](javascript:alert%281%29#anchor)")
 
+    def test_link_attributes_follow_url_scheme_and_pdf_path(self):
+        for url in ("http://example.com", "HTTPS://example.com", "assets/notes.PDF?download=1#page=2", "../notes.pdf"):
+            with self.subTest(url=url):
+                self.assertEqual(str(link_attrs(url)), ' target="_blank" rel="noopener noreferrer"')
+        for url in ("#paper.pdf", "?q=paper.pdf", "mailto:reader@example.pdf", "index.html", "notes.pdf.html"):
+            with self.subTest(url=url):
+                self.assertEqual(str(link_attrs(url)), "")
+        for url in ("javascript:alert(1)", "//example.com/file.pdf", " https://example.com", r"assets\notes.pdf"):
+            with self.subTest(url=url), self.assertRaises(DataError):
+                link_attrs(url)
+
+    def test_shared_link_attributes_preserve_html_escaping(self):
+        url = 'https://example.com/?q="&x=1'
+        template = site_env().from_string('<a href="{{ url }}"{{ link_attrs(url) }}>{{ label }}</a>')
+        rendered = template.render(url=url, label="<label>")
+        self.assertIn('href="https://example.com/?q=&#34;&amp;x=1"', rendered)
+        self.assertIn('&lt;label&gt;</a>', rendered)
+        self.assertEqual(rendered, md_links(f'[<label>]({url})'))
+
 
 class MarkdownTests(unittest.TestCase):
     def test_invalid_dates_report_source_filename(self):
@@ -139,8 +170,18 @@ class MarkdownTests(unittest.TestCase):
         self.assertNotIn('class="arithmatex"', body)
         self.assertIn("<code>$x$</code>", body)
         self.assertIn("$x&lt;y$", body)
+        self.assertIn('<code class="language-tex">', body)
         self.assertIn('<pre class="mermaid">', body)
         self.assertIn("$$x$$", body)
+
+    def test_code_markup_is_independent_of_pygments_availability(self):
+        source = '```python\nprint("hello")\n```\n\n```tex\n$x<y$\n```'
+        with patch("pymdownx.highlight.pygments", False):
+            without_pygments = markdown.to_html(source)
+        with patch("pymdownx.highlight.pygments", True):
+            with_pygments = markdown.to_html(source)
+        self.assertEqual(without_pygments, with_pygments)
+        self.assertIn('class="language-python"', with_pygments[0])
 
     def test_task_lists_and_aligned_tables_remain_supported(self):
         body, _ = markdown.to_html('- [x] Done\n- [ ] Open\n\n| A | B |\n| :- | -: |\n| x | y |')
@@ -243,6 +284,43 @@ class BuiltArtifactTests(unittest.TestCase):
     def test_complete_build_passes_structural_checks(self):
         with patch.object(checks, "DIST_DIR", self.root), redirect_stdout(StringIO()):
             checks.check_site(self.content)
+
+    def test_inline_theme_matches_csp_hash_and_policy_precedes_scripts(self):
+        import base64
+        import hashlib
+        import re
+        from html import unescape
+
+        for page in self.root.rglob("*.html"):
+            source = page.read_text(encoding="utf-8")
+            policy_match = re.search(r'http-equiv="Content-Security-Policy" content="([^"]+)"', source)
+            self.assertIsNotNone(policy_match, page.name)
+            policy = unescape(policy_match.group(1))
+            script_policy = next(part.strip() for part in policy.split(";") if part.strip().startswith("script-src "))
+            self.assertNotIn("'unsafe-inline'", script_policy)
+            self.assertNotIn("'unsafe-eval'", script_policy)
+            scripts = re.findall(r"<script>(.*?)</script>", source, re.DOTALL)
+            self.assertEqual(len(scripts), 1)
+            self.assertLess(policy_match.start(), source.index("<script"))
+            for script in scripts:
+                digest = base64.b64encode(hashlib.sha256(script.encode("utf-8")).digest()).decode("ascii")
+                self.assertIn(f"'sha256-{digest}'", script_policy)
+
+    def test_home_person_data_preserves_current_profile_and_share_image(self):
+        import json
+        import re
+
+        source = (self.root / "index.html").read_text(encoding="utf-8")
+        person = json.loads(re.search(r'<script type="application/ld\+json">(.*?)</script>', source, re.DOTALL).group(1))
+        self.assertEqual(person["@type"], "Person")
+        self.assertEqual(person["name"], self.content.profile["name"])
+        self.assertEqual(person["image"], site.build_context(self.content)["share_image_url"])
+        document = checks.Document(source)
+        self.assertEqual(document.meta["og:image"], person["image"])
+        self.assertEqual(document.meta["twitter:image"], person["image"])
+        for page in self.root.rglob("*.html"):
+            if page.name != "index.html":
+                self.assertNotIn('type="application/ld+json"', page.read_text(encoding="utf-8"))
 
     def test_current_downloads_match_their_source_bytes(self):
         for source in config.ASSETS_DIR.rglob("*.pdf"):

@@ -7,20 +7,6 @@
   if (!body) return;
   var config = site.config;
 
-  function setupScrollLabels() {
-    body.querySelectorAll('pre:not(.mermaid)').forEach(function (pre, index) {
-      pre.dataset.scrollLabel = 'Code example ' + (index + 1) + ': scroll horizontally to explore';
-    });
-    body.querySelectorAll('table').forEach(function (table, index) {
-      var wrap = document.createElement('div');
-      wrap.className = 'table-scroll';
-      wrap.dataset.scrollLabel = 'Table ' + (index + 1) + ': scroll horizontally to explore';
-      table.before(wrap);
-      wrap.appendChild(table);
-    });
-    document.dispatchEvent(new Event('wy:layoutchange'));
-  }
-
   function setupCopyButtons() {
     if (!navigator.clipboard) return;
     body.querySelectorAll('pre:not(.mermaid)').forEach(function (pre) {
@@ -164,7 +150,6 @@
     if (target) target.scrollIntoView({ behavior: 'instant' });
   }
 
-  setupScrollLabels();
   setupCopyButtons();
   setupToc();
   var math = body.querySelector('.arithmatex') ? site.typesetMath([body]).catch(function () {

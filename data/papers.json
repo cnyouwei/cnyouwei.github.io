@@ -118,7 +118,7 @@
       "title": "Cost-Aware Exploration for Structured Bandits",
       "selected": false,
       "topic": "Bandit Learning",
-      "authors": ["Xinyu Liu", "Wei You", "Chao Qin"],
+      "authors": ["Xinyu Liu", "Chao Qin", "Wei You"],
       "student_authors": ["Xinyu Liu"],
       "alphabetical": true,
       "corresponding": ["Wei You"],
@@ -138,7 +138,7 @@
       "student_authors": ["Xinyu Liu"],
       "alphabetical": true,
       "corresponding": ["Wei You"],
-      "status": "Planning submission to Operations Research",
+      "status": "Preparing submission to Operations Research",
       "venue": "Operations Research",
       "note": "Short version appeared at NeurIPS 2025 MLxOR Workshop.",
       "abstract": "We study pure exploration in structured stochastic multi-armed bandits, aiming to efficiently identify the correct hypothesis from a finite set of alternatives. For a broad class of tasks, asymptotic analyses reduce to a maximin optimization that admits a two-player zero-sum game interpretation between an experimenter and a skeptic: the experimenter allocates measurements to rule out alternatives while the skeptic proposes alternatives. We reformulate the game by allowing the skeptic to adopt a mixed strategy, yielding a concave–convex saddle-point problem. This viewpoint leads to Frank–Wolfe Self-Play (FWSP): a projection-free, regularization-free, tuning-free method whose one-hot updates on both sides match the bandit sampling paradigm. However, structural constraints introduce sharp pathologies that complicate algorithm design and analysis: our linear-bandit case study exhibits nonunique optima, optimal designs with zero mass on the best arm, bilinear objectives, and nonsmoothness at the boundary. We address these challenges via a differential-inclusion argument, proving convergence of the game value for best-arm identification in linear bandits. Our analysis proceeds through a continuous-time limit: a differential inclusion with a Lyapunov function that decays exponentially, implying a vanishing duality gap and convergence to the optimal value. Although Lyapunov analysis requires differentiability of the objective, which is not guaranteed on the boundary, we show that along continuous trajectories the algorithm steers away from pathological nonsmooth points and achieves uniform global convergence to the optimal game value. We then embed the discrete-time updates into a perturbed flow and show that the discrete game value also converges. Building on FWSP, we further propose a learning algorithm based on posterior sampling. Numerical experiments demonstrate game-value convergence with a vanishing duality gap.",
@@ -321,6 +321,7 @@
       "links": [
         { "label": "Journal", "url": "https://doi.org/10.1007/s11134-019-09645-8" },
         { "label": "Longer Version", "url": "assets/papers/Whitt_You_flow_full.pdf" },
+        { "label": "Appendix", "url": "assets/papers/Whitt_You_RQNA_app.pdf" },
         { "label": "Slides", "url": "assets/papers/Flow_Slides.pdf" }
       ]
     },

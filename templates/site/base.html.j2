@@ -3,6 +3,8 @@
 <html lang="en" data-page="{{ page_id }}">
 <head>
   <meta charset="utf-8" />
+  {# The policy governs only content that follows it. #}
+  <meta http-equiv="Content-Security-Policy" content="{{ content_security_policy }}" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{{ page_title }}</title>
   <meta name="description" content="{{ page_description }}" />
@@ -14,9 +16,15 @@
   <meta property="og:title" content="{{ page_title }}" />
   <meta property="og:description" content="{{ page_description }}" />
   <meta property="og:url" content="{{ page_url }}" />
+  <meta property="og:image" content="{{ share_image_url }}" />
+  <meta property="og:image:width" content="{{ profile.avatar.width }}" />
+  <meta property="og:image:height" content="{{ profile.avatar.height }}" />
+  <meta property="og:image:alt" content="{{ profile.avatar.alt }}" />
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="{{ page_title }}" />
   <meta name="twitter:description" content="{{ page_description }}" />
+  <meta name="twitter:image" content="{{ share_image_url }}" />
+  <meta name="twitter:image:alt" content="{{ profile.avatar.alt }}" />
   <link rel="icon" type="image/svg+xml" href="{{ root }}favicon.svg?v={{ asset_versions['favicon.svg'] }}" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -26,29 +34,15 @@
   {# The only CJK on the site is the name "尤为" (home only); subset to those glyphs. #}
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&text=%E5%B0%A4%E4%B8%BA&display=swap" rel="stylesheet" />
   {% endif %}
-  <script>
-    /* Apply the saved or system theme before first paint to avoid flashing. */
-    (function () {
-      try {
-        var root = document.documentElement;
-        var stored = localStorage.getItem('wy-theme');
-        var source = localStorage.getItem('wy-theme-source');
-        if (source === 'manual' && (stored === 'light' || stored === 'dark')) {
-          root.setAttribute('data-theme', stored);
-          return;
-        }
-        var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        root.setAttribute('data-theme', dark ? 'dark' : 'light');
-      } catch (error) {
-        document.documentElement.setAttribute('data-theme', 'light');
-      }
-    })();
-  </script>
+  <script>{{ theme_init_js }}</script>
   <link rel="stylesheet" href="{{ root }}css/site.css?v={{ asset_versions['css/site.css'] }}" />
   {% if page_id == 'blog-post' %}
   <link rel="stylesheet" href="{{ root }}css/blog.css?v={{ asset_versions['css/blog.css'] }}" />
   {% endif %}
   <script id="site-config" type="application/json">{{ runtime_config | tojson }}</script>
+  {% if page_id == 'home' %}
+  <script type="application/ld+json">{{ person_json | tojson }}</script>
+  {% endif %}
 {% block head_extra %}{% endblock %}
 </head>
 <body>

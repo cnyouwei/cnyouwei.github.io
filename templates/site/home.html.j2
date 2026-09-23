@@ -43,7 +43,7 @@
           </p>
           <div class="hero-links">
             {% for link in profile.links %}
-            <a class="chip{% if link.icon_only %} chip--icon-only{% endif %}" href="{{ link.url }}"{% if link.icon_only %} aria-label="{{ link.label }}"{% endif %}{% if link.url.startswith('http') or link.url.endswith('.pdf') %} target="_blank" rel="noopener noreferrer"{% endif %}>
+            <a class="chip{% if link.icon_only %} chip--icon-only{% endif %}" href="{{ link.url }}"{% if link.icon_only %} aria-label="{{ link.label }}"{% endif %}{{ link_attrs(link.url) }}>
               {{ link_icon(link.icon) }}
               {% if not link.icon_only %}
               {{ link.label }}
@@ -63,8 +63,7 @@
           <li>
             <span class="paper-year">{{ paper.year }}</span>
             {% if paper.links %}
-            <a href="{{ paper.links[0].url }}"
-               {% if paper.links[0].url.startswith('http') %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ paper.title }}</a>
+            <a href="{{ paper.links[0].url }}"{{ link_attrs(paper.links[0].url) }}>{{ paper.title }}</a>
             {% else %}
             <a href="#paper-{{ paper.id }}">{{ paper.title }}</a>
             {% endif %}
@@ -75,7 +74,7 @@
       </div>
     </section>
 
-    <section class="section alt" id="research">
+    <section class="section" id="research">
       <div class="container">
         <header class="section-header">
           <p class="eyebrow">Publications</p>
@@ -171,7 +170,7 @@
       </div>
     </section>
 
-    <section class="section alt" id="teaching">
+    <section class="section" id="teaching">
       <div class="container">
         <header class="section-header">
           <p class="eyebrow">Courses</p>
@@ -238,7 +237,7 @@
       </div>
     </section>
 
-    <section class="section alt" id="about">
+    <section class="section" id="about">
       <div class="container">
         <header class="section-header">
           <p class="eyebrow">Biography</p>
@@ -261,7 +260,7 @@
                 <p class="timeline-copy">
                   {{ entry.institution }}{% if entry.location %}, {{ entry.location }}{% endif %}.
                   {% if entry.thesis %}
-                  Thesis: <a href="{{ entry.thesis.url }}" target="_blank" rel="noopener noreferrer">{{ entry.thesis.title }}</a>.
+                  Thesis: <a href="{{ entry.thesis.url }}"{{ link_attrs(entry.thesis.url) }}>{{ entry.thesis.title }}</a>.
                   {% endif %}
                 </p>
               </div>

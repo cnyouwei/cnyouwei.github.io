@@ -2,23 +2,28 @@
 
 from __future__ import annotations
 
+import base64
 import shutil
 import datetime as dt
 from dataclasses import dataclass, field
 import hashlib
 from pathlib import Path
 from typing import Any
-from urllib.parse import urlsplit
+from urllib.parse import urljoin, urlsplit
 from xml.etree import ElementTree
+
+from markupsafe import Markup
 
 from .config import (
     ASSETS_DIR,
     BADGE_LABELS,
+    CONTENT_SECURITY_POLICY,
     CV_PDF,
     DIST_DIR,
     STATIC_DIR,
     PAPER_TYPES,
     RUNTIME_URLS,
+    SITE_TEMPLATES_DIR,
     VENUE_TIER_LABELS,
     ga_id,
     paper_citation,
@@ -66,17 +71,38 @@ def build_context(data: SiteData) -> dict[str, Any]:
     selected = [p for p in by_year if p.get("selected")]
     topics = sorted({p["topic"] for p in papers})
 
+    # Inline exactly the normalized text whose hash is allowed by the policy.
+    theme_js = (SITE_TEMPLATES_DIR / "partials" / "theme-init.js").read_text(encoding="utf-8").strip()
+    theme_hash = "sha256-" + base64.b64encode(hashlib.sha256(theme_js.encode("utf-8")).digest()).decode("ascii")
+
     students = data.team["students"]
     measurement_id = ga_id(data.profile["site"]["ga_id"])
     site_url = data.profile["site"]["base_url"]
+    profile = data.profile
+    share_image_url = urljoin(f"{site_url}/", profile["avatar"].get("share_src", profile["avatar"]["src"]))
+    person_json = {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": profile["name"],
+        **({"alternateName": profile["name_cn"]} if profile.get("name_cn") else {}),
+        "jobTitle": profile["position"][0],
+        "affiliation": {"@type": "CollegeOrUniversity", "name": profile["position"][-1]},
+        "url": f"{site_url}/",
+        "image": share_image_url,
+        "sameAs": [link["url"] for link in profile["links"] if urlsplit(link["url"]).scheme == "https"],
+    }
     return {
         "profile": data.profile,
         "site_url": site_url,
+        "share_image_url": share_image_url,
+        "person_json": person_json,
         "build_year": dt.datetime.now(dt.timezone.utc).year,
         "paper_types": PAPER_TYPES,
         "asset_versions": static_asset_versions(STATIC_DIR),
         "runtime_config": {**RUNTIME_URLS, "ga_id": measurement_id, "production_hostname": urlsplit(site_url).hostname},
         "badge_labels": BADGE_LABELS,
+        "theme_init_js": Markup(theme_js),
+        "content_security_policy": CONTENT_SECURITY_POLICY.format(theme_hash=theme_hash),
         "selected_papers": selected,
         "working_papers": working,
         "publications": publications,

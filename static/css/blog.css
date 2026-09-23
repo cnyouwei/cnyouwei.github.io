@@ -4,55 +4,10 @@
   --code-bg: #101729;
   --code-text: #e5e9f0;
   --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
-  --mermaid-ch1-fill: #e0f2fe;
-  --mermaid-ch1-stroke: #0369a1;
-  --mermaid-ch1-text: #0c4a6e;
-  --mermaid-ch2-fill: #dcfce7;
-  --mermaid-ch2-stroke: #15803d;
-  --mermaid-ch2-text: #14532d;
-  --mermaid-ch3-fill: #fef3c7;
-  --mermaid-ch3-stroke: #b45309;
-  --mermaid-ch3-text: #78350f;
-  --mermaid-ch4-fill: #ede9fe;
-  --mermaid-ch4-stroke: #6d28d9;
-  --mermaid-ch4-text: #4c1d95;
-  --mermaid-ch5-fill: #fee2e2;
-  --mermaid-ch5-stroke: #b91c1c;
-  --mermaid-ch5-text: #7f1d1d;
-  --mermaid-support-fill: #f8fafc;
-  --mermaid-support-stroke: #475569;
-  --mermaid-support-text: #0f172a;
-  --mermaid-littlewood-fill: #fff7ed;
-  --mermaid-littlewood-stroke: #ea580c;
-  --mermaid-littlewood-text: #7c2d12;
 }
 
 @media screen {
- :root[data-theme="dark"] {
-  --code-bg: #0b1120;
-  --code-text: #dbe2ec;
-  --mermaid-ch1-fill: #0c3550;
-  --mermaid-ch1-stroke: #38bdf8;
-  --mermaid-ch1-text: #bae6fd;
-  --mermaid-ch2-fill: #103a24;
-  --mermaid-ch2-stroke: #4ade80;
-  --mermaid-ch2-text: #bbf7d0;
-  --mermaid-ch3-fill: #43350f;
-  --mermaid-ch3-stroke: #fbbf24;
-  --mermaid-ch3-text: #fde68a;
-  --mermaid-ch4-fill: #312352;
-  --mermaid-ch4-stroke: #a78bfa;
-  --mermaid-ch4-text: #ddd6fe;
-  --mermaid-ch5-fill: #471a1a;
-  --mermaid-ch5-stroke: #f87171;
-  --mermaid-ch5-text: #fecaca;
-  --mermaid-support-fill: #1c2738;
-  --mermaid-support-stroke: #94a3b8;
-  --mermaid-support-text: #e2e8f0;
-  --mermaid-littlewood-fill: #46260d;
-  --mermaid-littlewood-stroke: #fb923c;
-  --mermaid-littlewood-text: #fed7aa;
- }
+  :root[data-theme="dark"] { --code-bg: #0b1120; --code-text: #dbe2ec; }
 }
 
 /* Reading pages: one title, one native TOC, and a bounded prose column. */
@@ -76,9 +31,8 @@
 .post-body li { margin-bottom: 0.4em; }
 .post-body blockquote { margin: 1.4em 0; padding: 0.4rem 0 0.4rem 1.2rem; border-left: 2px solid var(--accent); color: var(--text-muted); }
 .post-body blockquote > :last-child { margin-bottom: 0; }
-.post-body table { display: block; width: 100%; max-width: 100%; overflow-x: auto; border-collapse: collapse; margin: 1.5em 0; font-size: 0.87rem; }
 .table-scroll { width: 100%; overflow-x: auto; margin: 1.5em 0; }
-.post-body .table-scroll table { display: table; overflow: visible; margin: 0; }
+.post-body table { width: 100%; border-collapse: collapse; font-size: 0.87rem; }
 .post-body th, .post-body td { border: 1px solid var(--line); padding: 0.55em 0.75em; text-align: left; }
 .post-body th { background: var(--surface-soft); }
 .post-body code { font-family: var(--font-mono); font-size: 0.88em; padding: 0.1em 0.2em; border-radius: 3px; background: var(--surface-soft); overflow-wrap: anywhere; }
@@ -102,20 +56,26 @@
 .post-body .arithmatex { max-width: 100%; }
 div.arithmatex { overflow-x: auto; overflow-y: hidden; padding-block: 0.15rem; }
 span.arithmatex { display: inline-block; max-width: 100%; vertical-align: middle; overflow-x: auto; overflow-y: hidden; }
-.post-body pre.mermaid .ch1 rect { fill: var(--mermaid-ch1-fill) !important; stroke: var(--mermaid-ch1-stroke) !important; }
-.post-body pre.mermaid .ch1 .nodeLabel { color: var(--mermaid-ch1-text) !important; }
-.post-body pre.mermaid .ch2 rect { fill: var(--mermaid-ch2-fill) !important; stroke: var(--mermaid-ch2-stroke) !important; }
-.post-body pre.mermaid .ch2 .nodeLabel { color: var(--mermaid-ch2-text) !important; }
-.post-body pre.mermaid .ch3 rect { fill: var(--mermaid-ch3-fill) !important; stroke: var(--mermaid-ch3-stroke) !important; }
-.post-body pre.mermaid .ch3 .nodeLabel { color: var(--mermaid-ch3-text) !important; }
-.post-body pre.mermaid .ch4 rect { fill: var(--mermaid-ch4-fill) !important; stroke: var(--mermaid-ch4-stroke) !important; }
-.post-body pre.mermaid .ch4 .nodeLabel { color: var(--mermaid-ch4-text) !important; }
-.post-body pre.mermaid .ch5 rect { fill: var(--mermaid-ch5-fill) !important; stroke: var(--mermaid-ch5-stroke) !important; }
-.post-body pre.mermaid .ch5 .nodeLabel { color: var(--mermaid-ch5-text) !important; }
-.post-body pre.mermaid .support rect { fill: var(--mermaid-support-fill) !important; stroke: var(--mermaid-support-stroke) !important; }
-.post-body pre.mermaid .support .nodeLabel { color: var(--mermaid-support-text) !important; }
-.post-body pre.mermaid .littlewood rect { fill: var(--mermaid-littlewood-fill) !important; stroke: var(--mermaid-littlewood-stroke) !important; }
-.post-body pre.mermaid .littlewood .nodeLabel { color: var(--mermaid-littlewood-text) !important; }
+/* Diagram node palettes: a post assigns them with `class nodeA,nodeB tone1;`.
+   Mermaid's own classDef cannot read CSS variables, hence !important. */
+.post-body pre.mermaid .node.tone1 { --node-fill: #e0f2fe; --node-stroke: #0369a1; --node-text: #0c4a6e; }
+.post-body pre.mermaid .node.tone2 { --node-fill: #dcfce7; --node-stroke: #15803d; --node-text: #14532d; }
+.post-body pre.mermaid .node.tone3 { --node-fill: #fef3c7; --node-stroke: #b45309; --node-text: #78350f; }
+.post-body pre.mermaid .node.tone4 { --node-fill: #ede9fe; --node-stroke: #6d28d9; --node-text: #4c1d95; }
+.post-body pre.mermaid .node.tone5 { --node-fill: #fee2e2; --node-stroke: #b91c1c; --node-text: #7f1d1d; }
+.post-body pre.mermaid .node.neutral { --node-fill: #f8fafc; --node-stroke: #475569; --node-text: #0f172a; }
+.post-body pre.mermaid .node.accent { --node-fill: #fff7ed; --node-stroke: #ea580c; --node-text: #7c2d12; }
+@media screen {
+  :root[data-theme="dark"] .post-body pre.mermaid .node.tone1 { --node-fill: #0c3550; --node-stroke: #38bdf8; --node-text: #bae6fd; }
+  :root[data-theme="dark"] .post-body pre.mermaid .node.tone2 { --node-fill: #103a24; --node-stroke: #4ade80; --node-text: #bbf7d0; }
+  :root[data-theme="dark"] .post-body pre.mermaid .node.tone3 { --node-fill: #43350f; --node-stroke: #fbbf24; --node-text: #fde68a; }
+  :root[data-theme="dark"] .post-body pre.mermaid .node.tone4 { --node-fill: #312352; --node-stroke: #a78bfa; --node-text: #ddd6fe; }
+  :root[data-theme="dark"] .post-body pre.mermaid .node.tone5 { --node-fill: #471a1a; --node-stroke: #f87171; --node-text: #fecaca; }
+  :root[data-theme="dark"] .post-body pre.mermaid .node.neutral { --node-fill: #1c2738; --node-stroke: #94a3b8; --node-text: #e2e8f0; }
+  :root[data-theme="dark"] .post-body pre.mermaid .node.accent { --node-fill: #46260d; --node-stroke: #fb923c; --node-text: #fed7aa; }
+}
+.post-body pre.mermaid .node:is(.tone1, .tone2, .tone3, .tone4, .tone5, .neutral, .accent) rect { fill: var(--node-fill) !important; stroke: var(--node-stroke) !important; }
+.post-body pre.mermaid .node:is(.tone1, .tone2, .tone3, .tone4, .tone5, .neutral, .accent) .nodeLabel { color: var(--node-text) !important; }
 
 @media (max-width: 880px) {
   .post-layout { display: flex; flex-direction: column; }

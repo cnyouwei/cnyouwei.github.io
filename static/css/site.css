@@ -177,7 +177,6 @@ button { cursor: pointer; }
 .control-group { display: flex; flex-wrap: wrap; gap: 0.5rem; min-width: 0; }
 .select-field { min-width: 0; max-width: 100%; }
 .select-field select, .search input { max-width: 100%; min-height: 44px; padding: 0.45rem 0.65rem; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--bg); color: var(--text); font-size: 1rem; }
-.select-field select { max-width: 100%; }
 .search { flex: 1 1 17rem; max-width: 25rem; min-width: 0; }
 .search input { width: 100%; min-width: 0; }
 .papers-status { color: var(--text-muted); font-size: 0.78rem; margin-bottom: 1.7rem; }
@@ -277,7 +276,7 @@ mjx-container[jax="CHTML"][display="true"] { max-width: 100%; overflow-x: auto; 
 @media print {
   :root, :root[data-theme="dark"] {
     color-scheme: light;
-    --bg: #fff; --bg-alt: #fff; --surface: #fff; --surface-soft: #f3f3f3;
+    --bg: #fff; --surface: #fff; --surface-soft: #f3f3f3;
     --text: #000; --text-muted: #333; --primary: #17354e; --primary-strong: #17354e;
     --accent: #333; --line: #bbb; --line-strong: #999;
   }

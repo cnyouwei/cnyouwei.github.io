@@ -55,8 +55,7 @@
             <p>{{ module.description }}</p>
             {% if module.link_url %}
             {% set external = module.link_url.startswith('http') %}
-            <a class="chip" href="{{ module.link_url if external else root ~ module.link_url }}"
-               {% if external or module.link_url.endswith('.pdf') %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ module.link_label or 'Open resource' }}</a>
+            <a class="chip" href="{{ module.link_url if external else root ~ module.link_url }}"{{ link_attrs(module.link_url) }}>{{ module.link_label or 'Open resource' }}</a>
             {% endif %}
           </article>
           {% else %}

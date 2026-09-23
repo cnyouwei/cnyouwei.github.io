@@ -15,7 +15,7 @@ data/*.json + data/blog/*.md ──► builder/ (load → validate → render �
 
 | Path | What it is |
 | --- | --- |
-| `data/profile.json` | Name, titles, links, bio, education, research interests, canonical URL, GA id |
+| `data/profile.json` | Name, titles, links, bio, education, avatar/share image, research interests, canonical URL, GA id |
 | `data/papers.json` | Every paper: authors, optional venue, volume/pages, status, abstract, links |
 | `data/talks.json` | Conference and invited talks |
 | `data/teaching.json` | Course cards + published course pages |
@@ -68,10 +68,11 @@ The regular browser suite uses deterministic dependency fixtures to exercise
 loading failures and recovery. The live mode requires network access and checks
 the real MathJax, Mermaid, and highlighting assets; an unavailable renderer is
 reported as a failure. Both commands start and stop their own local preview.
-Tests do not send analytics.
+Tests enforce the site's Content Security Policy throughout. Analytics-origin
+checks intercept every request and never send analytics to Google.
 
-The Chromium matrix includes the six content pages plus the custom 404, eight
-widths from 320 to 1440px, and both themes. Additional cases cover 200% text
+The Chromium matrix discovers content pages from the sitemap plus the custom
+404, with eight widths from 320 to 1440px and both themes. Additional cases cover 200% text
 enlargement and CSS zoom, keyboard/touch controls, complete print output and
 view restoration, no-JavaScript navigation, and delayed or failed renderers.
 CSS zoom is an emulation; it does not drive the browser's own zoom control.
@@ -186,9 +187,18 @@ the CV at `/CV.pdf`. Old standalone section URLs and `/papers/` aliases are no
 longer generated. Use current section anchors such as `/index.html#talks` and
 current download URLs when sharing links.
 
+Every published PDF must be linked from a generated page or explicitly retained
+in `PUBLISHED_UNLINKED_PDFS` in `builder/config.py`. That inventory preserves
+existing legacy URLs; new unlinked drafts fail the build. Images and fonts can
+be referenced indirectly by CSS or scripts and are not subject to this PDF check.
+
 The build also emits canonical/social metadata, a sitemap, robots instructions,
 and a custom 404 page. `site.base_url` supplies the canonical origin; it must
 match the production site when changing domains.
+
+`avatar.src` is the optimized portrait. Optional `avatar.share_src` supplies a
+JPEG of the same dimensions for social previews; it falls back to the portrait.
+The homepage also emits Person structured data from the existing profile.
 
 Analytics: the GA measurement id lives in `data/profile.json` (`site.ga_id`)
 and can be overridden with the `WY_GA_MEASUREMENT_ID` env var. Analytics loads
@@ -216,9 +226,13 @@ External browser dependencies are deliberately limited:
 | Google Analytics | Optional production-only page analytics, controlled by `site.ga_id` or the environment override |
 
 Essential navigation and text remain available without those services or
-JavaScript. GitHub Pages controls HTTP
-response headers. The HTML referrer policy limits referrer disclosure but does
-not configure server-only controls such as frame-ancestors or HSTS.
+JavaScript. An early CSP meta tag restricts scripts and network origins. The
+builder hashes the exact theme bootstrap in `templates/site/partials/theme-init.js`;
+inline scripts and eval are otherwise blocked. Inline styles remain allowed for
+math, diagrams, and table alignment. The analytics origins cover basic GA4;
+enabling advertising features requires reviewing the policy in `builder/config.py`.
+GitHub Pages controls HTTP response headers, so the meta policy cannot configure
+server-only controls such as frame-ancestors or HSTS.
 
 ## Design notes
 
@@ -236,5 +250,8 @@ equations; no separate KaTeX stylesheet is loaded. The native mode follows
   nav, scrollspy, analytics) plus page enhancements for paper filtering, blog
   navigation, copying, and optional renderers. MathJax loading and typesetting
   are shared and retryable; the homepage loads it only for an opened math abstract.
+- Table scroll wrappers and code labels are generated during the Markdown build;
+  the browser adds keyboard focus only when a region actually overflows. Diagram
+  palettes use `tone1`–`tone5`, `neutral`, and `accent` classes in `blog.css`.
 - Theme preference is stored in `wy-theme` and `wy-theme-source`; without a
   saved manual choice, the site follows the system theme.

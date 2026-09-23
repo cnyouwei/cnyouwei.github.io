@@ -17,24 +17,47 @@ import json
 from pathlib import Path
 import threading
 import unittest
-from urllib.parse import urlsplit
-
-from playwright.sync_api import sync_playwright
+from urllib.parse import unquote, urlsplit
+from xml.etree import ElementTree
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = Path(__file__).with_name("browser_fixtures")
 WIDTHS = (320, 375, 760, 761, 880, 881, 1024, 1440)
-PAGES = (
-    "index.html",
-    "404.html",
-    "blogs/2026-02-07-real_analysis.html",
-    "blogs/2026-02-09-latex_style_guide.html",
-    "teaching/ieda2540.html",
-    "teaching/ieda5270.html",
-    "teaching/real-analysis-2011.html",
-)
 LIVE = False
 PAPER_COUNT = len(json.loads((ROOT / 'data' / 'papers.json').read_text())["papers"])
+
+
+def discover_pages(dist):
+    """Use the build's indexed pages, plus the intentionally unindexed 404."""
+    dist = dist.resolve()
+    try:
+        sitemap = ElementTree.parse(dist / "sitemap.xml")
+    except (OSError, ElementTree.ParseError) as exc:
+        raise RuntimeError("Build a valid sitemap first: python build.py") from exc
+    locations = sitemap.findall("{http://www.sitemaps.org/schemas/sitemap/0.9}url/{http://www.sitemaps.org/schemas/sitemap/0.9}loc")
+    if not locations:
+        raise RuntimeError("The built sitemap has no pages")
+    pages = []
+    for location in locations:
+        url = urlsplit(location.text or "")
+        path = unquote(url.path).removeprefix("/")
+        if (url.scheme not in ("http", "https") or not url.netloc
+                or url.query or url.fragment or "\\" in path or ":" in path
+                or any(part in ("", ".", "..") for part in path.split("/"))
+                or not path.endswith(".html")):
+            raise RuntimeError(f"Invalid sitemap page: {location.text!r}")
+        if path in pages:
+            raise RuntimeError(f"Duplicate sitemap page: {path}")
+        pages.append(path)
+    if "404.html" not in pages:
+        pages.append("404.html")
+    for path in pages:
+        target = (dist / path).resolve()
+        if not target.is_relative_to(dist):
+            raise RuntimeError(f"Built page escapes the output directory: {path}")
+        if not target.is_file():
+            raise RuntimeError(f"Missing built page {path}; run python build.py")
+    return tuple(pages)
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -45,9 +68,9 @@ class QuietHandler(SimpleHTTPRequestHandler):
 class BrowserSmoke(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        for name in PAGES:
-            if not (ROOT / "dist" / name).is_file():
-                raise RuntimeError("Build the site first: python build.py")
+        from playwright.sync_api import sync_playwright
+
+        cls.pages = discover_pages(ROOT / "dist")
         cls.server = ThreadingHTTPServer(
             ("127.0.0.1", 0), partial(QuietHandler, directory=str(ROOT / "dist"))
         )
@@ -82,7 +105,7 @@ class BrowserSmoke(unittest.TestCase):
             context.close()
         self.assertEqual(self.errors, [], "Uncaught browser errors")
 
-    def page(self, *, width=375, javascript=True, theme="light", fixture=None, **kwargs):
+    def page(self, *, width=375, javascript=True, theme="light", fixture=None, policy_violations=None, **kwargs):
         context = self.browser.new_context(
             viewport={"width": width, "height": 900},
             java_script_enabled=javascript,
@@ -90,6 +113,18 @@ class BrowserSmoke(unittest.TestCase):
             **kwargs,
         )
         self.contexts.append(context)
+        def report_policy_violation(_source, violation):
+            if policy_violations is not None:
+                policy_violations.append(violation)
+            else:
+                self.errors.append(f"Content Security Policy: {violation['directive']} blocked {violation['uri']}")
+        context.expose_binding("reportPolicyViolation", report_policy_violation)
+        context.add_init_script("""window.__policyViolations = [];
+            document.addEventListener('securitypolicyviolation', event => {
+                const violation = { directive: event.effectiveDirective, uri: event.blockedURI };
+                window.__policyViolations.push(violation);
+                window.reportPolicyViolation(violation);
+            });""")
         use_fixture = not LIVE if fixture is None else fixture
 
         def route(request):
@@ -166,7 +201,7 @@ class BrowserSmoke(unittest.TestCase):
         if name == "index.html":
             page.locator(".paper-abstract").evaluate_all("nodes => nodes.forEach(node => node.open = true)")
         if page.locator('.post-body .arithmatex').count() or name == "index.html":
-            page.wait_for_function("window.MathJax && typeof MathJax.typesetPromise === 'function'", timeout=45_000)
+            page.wait_for_function("() => window.MathJax && typeof MathJax.typesetPromise === 'function'", timeout=45_000)
             # Queue a final pass through the public helper, after the UI's open events,
             # to ensure every expanded abstract has settled before measuring layout.
             page.evaluate("""async () => {
@@ -177,33 +212,56 @@ class BrowserSmoke(unittest.TestCase):
                 self.assertGreater(page.locator("mjx-container").count(), 0, "Real MathJax did not render")
                 self.assertEqual(page.locator("mjx-merror, [data-mjx-error]").count(), 0,
                                  "MathJax rendered a parsing error")
-        if "real_analysis" in name:
-            page.locator('.mermaid[aria-busy="false"] svg').first.wait_for(timeout=45_000)
-            if LIVE:
-                self.assertGreater(page.locator(".mermaid svg math").count(), 0,
-                                   "Diagram equations must use native MathML")
-                self.assertEqual(page.locator(".mermaid .katex-html").count(), 0,
-                                 "Legacy CSS math rendering should not be generated")
-                self.assertFalse(any("katex.min.css" in url for url in self.requests),
-                                 "The separate KaTeX stylesheet should not load")
+        if page.locator(".mermaid").count():
+            page.wait_for_function("""() => Array.from(document.querySelectorAll('.mermaid')).every(
+                node => node.getAttribute('aria-busy') === 'false' && node.querySelector('svg')
+            )""", timeout=45_000)
+        if LIVE and "real_analysis" in name:
+            self.assertGreater(page.locator(".mermaid svg math").count(), 0,
+                               "Diagram equations must use native MathML")
+            self.assertEqual(page.locator(".mermaid .katex-html").count(), 0,
+                             "Legacy CSS math rendering should not be generated")
+            self.assertFalse(any("katex.min.css" in url for url in self.requests),
+                             "The separate KaTeX stylesheet should not load")
         self.settle(page)
 
     def test_all_pages_viewports_and_themes(self):
-        for name in PAGES:
+        for name in self.pages:
             page = self.page(width=1440)
             self.goto(page, name)
             self.ready_content(page, name)
             for theme in ("light", "dark"):
                 rerenders_diagram = page.locator(".mermaid svg").count() > 0 and page.locator("html").get_attribute("data-theme") != theme
                 if rerenders_diagram:
-                    page.evaluate("window.__previousMermaidSvg = document.querySelector('.mermaid svg')")
+                    page.evaluate("window.__previousMermaidSvgs = Array.from(document.querySelectorAll('.mermaid'), node => node.querySelector('svg'))")
                 page.emulate_media(color_scheme=theme)
                 page.wait_for_function("theme => document.documentElement.dataset.theme === theme", arg=theme)
                 if rerenders_diagram:
-                    page.wait_for_function("""() => {
-                        const svg = document.querySelector('.mermaid[data-processed][aria-busy="false"] svg');
-                        return svg && svg !== window.__previousMermaidSvg;
-                    }""", timeout=45_000)
+                    page.wait_for_function("""() => Array.from(document.querySelectorAll('.mermaid')).every((node, index) => {
+                        const svg = node.querySelector('svg');
+                        return node.getAttribute('aria-busy') === 'false' && svg && svg !== window.__previousMermaidSvgs[index];
+                    })""", timeout=45_000)
+                if LIVE and page.locator('.mermaid .node').count():
+                    mismatches = page.locator('.mermaid .node').evaluate_all("""nodes => {
+                        const probe = document.createElement('span');
+                        document.body.appendChild(probe);
+                        const color = value => { probe.style.color = value; return getComputedStyle(probe).color; };
+                        const mismatches = [];
+                        for (const node of nodes) {
+                            const styles = getComputedStyle(node);
+                            if (!styles.getPropertyValue('--node-fill').trim()) continue;
+                            const rect = node.querySelector('rect');
+                            const label = node.querySelector('.nodeLabel');
+                            if (!rect || !label || getComputedStyle(rect).fill !== color(styles.getPropertyValue('--node-fill')) ||
+                                getComputedStyle(rect).stroke !== color(styles.getPropertyValue('--node-stroke')) ||
+                                getComputedStyle(label).color !== color(styles.getPropertyValue('--node-text'))) {
+                                mismatches.push(node.id);
+                            }
+                        }
+                        probe.remove();
+                        return mismatches;
+                    }""")
+                    self.assertEqual(mismatches, [], f"Mermaid palette overrides failed in {theme}")
                 for width in WIDTHS:
                     with self.subTest(page=name, theme=theme, width=width, real_dependencies=LIVE):
                         page.set_viewport_size({"width": width, "height": 900})
@@ -216,8 +274,64 @@ class BrowserSmoke(unittest.TestCase):
             print(f"  checked {name}: all widths and themes", flush=True)
             page.close()
 
+    def test_policy_blocks_unapproved_inline_script(self):
+        violations = []
+        page = self.page(fixture=True, policy_violations=violations)
+        self.goto(page, "index.html")
+        self.assertEqual(violations, [])
+        page.evaluate("""() => {
+            const script = document.createElement('script');
+            script.textContent = 'window.__blockedInlineRan = true';
+            document.head.appendChild(script);
+        }""")
+        page.wait_for_function("() => window.__policyViolations.length > 0")
+        self.assertIsNone(page.evaluate("window.__blockedInlineRan"))
+        self.assertTrue(any(item["directive"] == "script-src-elem" and item["uri"] == "inline" for item in violations))
+
+    def test_production_analytics_origins_are_allowed_without_sending_analytics(self):
+        profile = json.loads((ROOT / "data" / "profile.json").read_text(encoding="utf-8"))
+        production = profile["site"]["base_url"]
+        page = self.page(fixture=True)
+        probes = (
+            "https://www.google-analytics.com/g/collect",
+            "https://region1.google-analytics.com/g/collect",
+            "https://analytics.google.com/g/collect",
+            "https://www.google.com/ccm/collect",
+            "https://www.googletagmanager.com/csp-probe",
+        )
+        received = []
+        def respond_probe(route):
+            received.append(route.request.url)
+            route.fulfill(status=204, headers={"access-control-allow-origin": "*"})
+        for url in probes:
+            page.route(url, respond_probe)
+        page.route("https://www.googletagmanager.com/gtag/js?*", lambda route: route.fulfill(
+            status=200, content_type="text/javascript", body=
+            f"Promise.all({json.dumps(probes)}.map(url => fetch(url))).then(() => {{ document.documentElement.dataset.analyticsProbe = 'done'; }});"
+        ))
+        def serve_production(route):
+            from urllib.parse import unquote
+            path = unquote(urlsplit(route.request.url).path).lstrip("/") or "index.html"
+            target = (ROOT / "dist" / path).resolve()
+            if not target.is_relative_to((ROOT / "dist").resolve()) or not target.is_file():
+                route.abort()
+                return
+            route.fulfill(path=target)
+        page.route(f"{production}/**", serve_production)
+        page.goto(f"{production}/index.html", wait_until="load")
+        # Test this path even when analytics was disabled for the local build.
+        if not page.locator('script[src*="googletagmanager.com/gtag/js"]').count():
+            page.evaluate("""() => {
+                const script = document.createElement('script');
+                script.src = 'https://www.googletagmanager.com/gtag/js?id=G-CSPTEST';
+                document.head.appendChild(script);
+            }""")
+        page.locator('html[data-analytics-probe="done"]').wait_for()
+        self.assertEqual(set(received), set(probes))
+        self.assertTrue(all(url in probes for url in received))
+
     def test_no_javascript_content_and_navigation(self):
-        for name in PAGES:
+        for name in self.pages:
             with self.subTest(page=name):
                 page = self.page(javascript=False, width=320)
                 self.goto(page, name, settle=False)
@@ -262,7 +376,7 @@ class BrowserSmoke(unittest.TestCase):
         self.assertEqual(page.locator("html").get_attribute("data-theme"), "dark")
         page.reload()
         self.assertEqual(page.locator("html").get_attribute("data-theme"), "dark")
-        for name in PAGES:
+        for name in self.pages:
             self.goto(page, name)
             self.ready_content(page, name)
             # Root text-size emulation doubles rem-based text without shrinking the viewport.
@@ -283,7 +397,7 @@ class BrowserSmoke(unittest.TestCase):
         original_ids = papers.evaluate_all("nodes => nodes.map(node => node.id)")
         self.assertEqual(total, PAPER_COUNT)
         page.locator("#paperSearch").fill("no-paper-will-match-this-query")
-        page.wait_for_function("document.querySelectorAll('article.paper:not([hidden])').length === 0")
+        page.wait_for_function("() => document.querySelectorAll('article.paper:not([hidden])').length === 0")
         self.assertIn("0", page.locator("#papers-status").inner_text())
         page.locator("#paperSearch").fill("")
         page.wait_for_function("total => document.querySelectorAll('article.paper:not([hidden])').length === total", arg=PAPER_COUNT)
@@ -317,7 +431,7 @@ class BrowserSmoke(unittest.TestCase):
         # CSS zoom emulates enlargement; it does not drive browser-UI zoom or
         # change matchMedia's viewport. The independent width matrix covers reflow.
         page = self.page(width=1440)
-        for name in PAGES:
+        for name in self.pages:
             self.goto(page, name)
             self.ready_content(page, name)
             page.add_style_tag(content="html { zoom: 2 !important; }")
@@ -331,7 +445,7 @@ class BrowserSmoke(unittest.TestCase):
             controls: Array.from(document.querySelectorAll('[data-research-controls] select, [data-research-controls] input')).map(el => [el.id, el.value]),
             papers: Array.from(document.querySelectorAll('article.paper')).map(el => ({id:el.id, hidden:el.hidden, open:el.querySelector('details')?.open ?? null}))
         })"""
-        for name in PAGES:
+        for name in self.pages:
             self.goto(page, name)
             self.assertEqual(page.locator("html").evaluate("el => getComputedStyle(el).scrollBehavior"), "auto")
             self.assertEqual(page.locator(".reveal").count(), 0)
@@ -356,7 +470,7 @@ class BrowserSmoke(unittest.TestCase):
                 self.assertEqual(page.locator(".paper-abstract-body:visible").count(), page.locator(".paper-abstract-body").count())
             page.emulate_media(media="screen")
             if saved:
-                page.wait_for_function("document.getElementById('typeFilter').value === 'working'")
+                page.wait_for_function("() => document.getElementById('typeFilter').value === 'working'")
                 self.assertEqual(page.evaluate(snapshot), saved)
 
     def test_dependency_failure_retry_and_queue(self):
@@ -380,7 +494,7 @@ class BrowserSmoke(unittest.TestCase):
         retry.wait_for()
         self.assertTrue(first_math.locator(".paper-abstract-body").is_visible())
         retry.click()
-        page.wait_for_function("window.__mathCalls && __mathCalls.length > 0 && __mathActive === 0")
+        page.wait_for_function("() => window.__mathCalls && __mathCalls.length > 0 && __mathActive === 0")
         self.assertEqual(len(attempts), 2)
         abstracts.nth(1).evaluate("el => el.open = true")
         abstracts.nth(2).evaluate("el => el.open = true")
@@ -405,7 +519,7 @@ class BrowserSmoke(unittest.TestCase):
         first_math = page.locator("#paper-interchange-join-shortest-queue-rv .paper-abstract")
         first_math.evaluate("el => el.open = true")
         self.assertTrue(first_math.locator(".paper-abstract-body").is_visible())
-        page.wait_for_function("window.__mathCalls && __mathCalls.length > 0 && __mathActive === 0")
+        page.wait_for_function("() => window.__mathCalls && __mathCalls.length > 0 && __mathActive === 0")
         self.assertFalse(any("googletagmanager" in url or "google-analytics" in url for url in self.requests))
 
     def test_stalled_math_startup_times_out_and_retries(self):
@@ -430,7 +544,7 @@ class BrowserSmoke(unittest.TestCase):
         retry = page.get_by_role("button", name="Retry equations").first
         retry.wait_for()
         retry.click()
-        page.wait_for_function("window.__mathCalls && __mathCalls.length > 0 && __mathActive === 0")
+        page.wait_for_function("() => window.__mathCalls && __mathCalls.length > 0 && __mathActive === 0")
         self.assertEqual(len(attempts), 2)
         self.assertEqual(page.locator(".math-load-status").count(), 0)
 
@@ -468,8 +582,14 @@ class BrowserSmoke(unittest.TestCase):
         marker = '<div class="post-body">'
         self.assertIn(marker, source)
         table = '<table><caption>Test comparison</caption><tr>' + ''.join(
-            f'<th style="white-space:nowrap">Long comparison column {i}</th>' for i in range(4)
+            f'<th>Long comparison column {i}</th>' for i in range(4)
         ) + '</tr><tr><td>A</td><td>B</td><td>C</td><td>D</td></tr></table>'
+        # Exercise the actual builder output instead of imitating its wrappers.
+        import sys
+        sys.path.insert(0, str(ROOT))
+        from builder.markdown import to_html
+        table, _ = to_html(table)
+        source = source.replace('</head>', '<style>.table-scroll th { white-space: nowrap; }</style></head>')
         page.route(f"**/{name}", lambda route: route.fulfill(
             status=200, content_type="text/html", body=source.replace(marker, marker + table, 1)
         ))
@@ -492,13 +612,13 @@ class BrowserSmoke(unittest.TestCase):
             ),
         ))
         self.goto(page, "blogs/2026-02-07-real_analysis.html#chapter-2-constructing-lebesgue-measure")
-        page.wait_for_function("typeof window.__finishMath === 'function'")
+        page.wait_for_function("() => typeof window.__finishMath === 'function'")
         initial_y = page.evaluate("scrollY")
         page.mouse.wheel(0, 600)
         page.wait_for_function("before => scrollY > before + 250", arg=initial_y)
         reader_y = page.evaluate("scrollY")
         page.evaluate("window.__finishMath()")
-        page.wait_for_function("window.__mathCalls && __mathCalls.length > 0 && __mathActive === 0")
+        page.wait_for_function("() => window.__mathCalls && __mathCalls.length > 0 && __mathActive === 0")
         self.settle(page)
         self.assertLess(abs(page.evaluate("scrollY") - reader_y), 5,
                         "Finishing a dependency moved the reader back to the initial hash")
@@ -510,5 +630,6 @@ if __name__ == "__main__":
     args, remaining = parser.parse_known_args()
     LIVE = args.live_dependencies
     print("Dependency mode:", "REAL CDN (network required; no skips)" if LIVE else "LOCAL FIXTURES (behavior only)", flush=True)
-    print(f"Viewport matrix: {len(PAGES)} pages × {len(WIDTHS)} widths × 2 themes = {len(PAGES) * len(WIDTHS) * 2} checks", flush=True)
+    pages = discover_pages(ROOT / "dist")
+    print(f"Viewport matrix: {len(pages)} pages × {len(WIDTHS)} widths × 2 themes = {len(pages) * len(WIDTHS) * 2} checks", flush=True)
     unittest.main(argv=[__file__, *remaining], verbosity=2)

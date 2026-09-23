@@ -9,9 +9,10 @@
   ],
   "email": "weiyou@ust.hk",
   "avatar": {
-    "src": "assets/avatar.png",
-    "width": 1122,
-    "height": 1402,
+    "src": "assets/avatar.webp",
+    "share_src": "assets/avatar-share.jpg",
+    "width": 510,
+    "height": 637,
     "alt": "Portrait of Wei You"
   },
   "links": [
@@ -33,7 +34,7 @@
     "Causal Machine Learning"
   ],
   "bio": [
-    "Wei You is an assistant professor of [Industrial Engineering and Decision Analytics](https://ieda.ust.hk/) at the Hong Kong University of Science and Technology. His research focuses on data-driven decision making at the intersection of machine learning, stochastic modeling, causal inference, and optimization, focusing on turning rigorous theory into algorithms that learn, adapt, and act reliably in digital platforms, AI deployment, revenue management, and trustworthy algorithmic decision support.",
+    "Wei You is an assistant professor of [Industrial Engineering and Decision Analytics](https://ieda.ust.hk/) at the Hong Kong University of Science and Technology. His research focuses on data-driven decision making at the intersection of machine learning, stochastic modeling, causal inference, and optimization, turning rigorous theory into algorithms that learn, adapt, and act reliably in digital platforms, AI deployment, revenue management, and trustworthy algorithmic decision support.",
     "He received his Ph.D. in Operations Research (2019) from Columbia University, advised by Professor [Ward Whitt](https://www.columbia.edu/~ww2040/), and his B.S. in Mathematics (2014) from Nanjing University."
   ],
   "education": [

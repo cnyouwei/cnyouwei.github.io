@@ -238,7 +238,7 @@ Here is a compact `macros.tex` suitable for many mathematical documents:
 
 The commands can then be combined without repeating their visual definitions:
 
-<div class="latex-example latex-example--compact">
+<div class="latex-example">
 <div class="latex-example__source">
 <p class="latex-example__label">LaTeX source</p>
 
@@ -282,7 +282,7 @@ The older `eqnarray` environment has inferior spacing and should not be used, an
 
 When several aligned lines form one derivation and need one number, place `aligned` inside `equation`:
 
-<div class="latex-example latex-example--compact">
+<div class="latex-example">
 <div class="latex-example__source">
 <p class="latex-example__label">LaTeX source</p>
 
@@ -307,7 +307,7 @@ When several aligned lines form one derivation and need one number, place `align
 
 If each row makes a separately referenced claim, use `align` and label the rows individually:
 
-<div class="latex-example latex-example--compact">
+<div class="latex-example">
 <div class="latex-example__source">
 <p class="latex-example__label">LaTeX source</p>
 
@@ -349,7 +349,7 @@ Names such as `sec:method`, `fig:error-rate`, `tab:parameters`, `eq:energy-bound
 Place a section label immediately after the section command, a theorem label inside the theorem environment, an equation label inside the numbered display or row, and a figure or table label immediately after its caption.
 Then let `cleveref` supply the object name and number:
 
-<div class="latex-example latex-example--compact">
+<div class="latex-example">
 <div class="latex-example__source">
 <p class="latex-example__label">LaTeX source</p>
 

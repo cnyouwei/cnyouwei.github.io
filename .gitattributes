@@ -1,0 +1,6 @@
+# Store and check out source text consistently; preserve binary assets verbatim.
+* text=auto eol=lf
+*.pdf binary
+*.png binary
+*.jpg binary
+*.webp binary
