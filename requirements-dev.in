@@ -1,4 +1,4 @@
 -r requirements.in
 -c requirements.txt
 # Browser verification only; the deployed site has no Python/browser runtime.
-playwright>=1.58,<2
+playwright>=1.63.0,<2
