@@ -3,6 +3,23 @@
   "highlight_authors": ["Wei You"],
   "papers": [
     {
+      "id": "service-rate-differentiation",
+      "type": "working",
+      "year": 2026,
+      "title": "Service Rate Differentiation for Homogeneous Impatient Customers",
+      "selected": false,
+      "topic": "Queueing Theory",
+      "authors": ["Chenguang (Allen) Wu", "Wei You"],
+      "alphabetical": true,
+      "corresponding": ["Wei You"],
+      "status": "Conditional Accept at Production and Operations Management",
+      "venue": "Production and Operations Management",
+      "abstract": "We study joint service rate and waiting time differentiation for homogeneous impatient customers in many-server quality-based queueing systems, where longer services generate higher values but customers may abandon if they wait too long. Customers are homogeneous upon arrival, but the system manager can differentiate them in two dimensions: by assigning each customer to one of many service grades corresponding to different service rates, and by using customers' elapsed waiting times as a scheduling signal to further differentiate those who are waiting in queue. The manager jointly chooses the service grades, an allocation rule that assigns arriving customers to grades, and a scheduling policy that prioritizes customers across and within each grade. Because an exact stochastic analysis of this joint optimization problem is intractable, we adopt a fluid approach and translate the fluid solution into implementable policies for the underlying stochastic system. Our main structural result is that there exists an optimal fluid policy with at most two active service rate and offered wait pairs, regardless of the welfare function or patience time distribution. This reduces the complicated design problem to operationally simple policies. Motivated by our fluid analysis, we propose using a randomized grade assignment at customer arrival and a priority rule based on grade labels and elapsed waiting times, and establish a formal performance guarantee for this policy in Markovian systems. Our framework can easily extend to heterogeneous customers, where we show at most one customer class needs to be further differentiated, thereby suggesting a robust principle of implementing joint service rate and waiting time differentiation.",
+      "links": [
+        { "label": "PDF", "url": "assets/papers/Wu_You_SRD.pdf" }
+      ]
+    },
+    {
       "id": "transfer-learning-causal-bounds",
       "type": "working",
       "year": 2026,
@@ -49,37 +66,6 @@
       "links": [
         { "label": "PDF", "url": "assets/papers/You_NDS.pdf" }
       ]
-    },
-    {
-      "id": "service-rate-differentiation",
-      "type": "working",
-      "year": 2026,
-      "title": "Service Rate Differentiation for Homogeneous Impatient Customers",
-      "selected": false,
-      "topic": "Queueing Theory",
-      "authors": ["Chenguang (Allen) Wu", "Wei You"],
-      "alphabetical": true,
-      "corresponding": ["Wei You"],
-      "status": "Major revision at Production and Operations Management",
-      "venue": "Production and Operations Management",
-      "abstract": "We study joint service rate and waiting time differentiation for homogeneous impatient customers in many-server quality-based queueing systems, where longer services generate higher values but customers may abandon if they wait too long. Customers are homogeneous upon arrival, but the system manager can differentiate them in two dimensions: by assigning each customer to one of many service grades corresponding to different service rates, and by using customers' elapsed waiting times as a scheduling signal to further differentiate those who are waiting in queue. The manager jointly chooses the service grades, an allocation rule that assigns arriving customers to grades, and a scheduling policy that prioritizes customers across and within each grade. Because an exact stochastic analysis of this joint optimization problem is intractable, we adopt a fluid approach and translate the fluid solution into implementable policies for the underlying stochastic system. Our main structural result is that there exists an optimal fluid policy with at most two active service rate and offered wait pairs, regardless of the welfare function or patience time distribution. This reduces the complicated design problem to operationally simple policies. Motivated by our fluid analysis, we propose using a randomized grade assignment at customer arrival and a priority rule based on grade labels and elapsed waiting times, and establish a formal performance guarantee for this policy in Markovian systems. Our framework can easily extend to heterogeneous customers, where we show at most one customer class needs to be further differentiated, thereby suggesting a robust principle of implementing joint service rate and waiting time differentiation.",
-      "links": [
-        { "label": "PDF", "url": "assets/papers/Wu_You_SRD.pdf" }
-      ]
-    },
-    {
-      "id": "llm-queue",
-      "type": "working",
-      "year": 2026,
-      "title": "PD-Disaggregated LLM Inference over Multiple Heterogeneous Clusters",
-      "selected": false,
-      "topic": "LLM Inference",
-      "authors": ["Ruihan Lin", "Wei You", "Jiheng Zhang"],
-      "student_authors": ["Ruihan Lin"],
-      "status": "Preparing submission to Operations Research",
-      "venue": "Operations Research",
-      "abstract": "",
-      "links": []
     },
     {
       "id": "principal-fairness-ot",
