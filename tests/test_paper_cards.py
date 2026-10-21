@@ -258,6 +258,41 @@ def paper_card_problems(dist: Path, papers: list[dict]) -> list[str]:
 
 
 class PaperCardTests(unittest.TestCase):
+    def test_publication_status_is_visible_in_citation(self):
+        for paper_type in ("journal", "conference"):
+            with self.subTest(paper_type=paper_type):
+                self.assertEqual(
+                    paper_citation({
+                        "type": paper_type,
+                        "venue": "Naval Research Logistics",
+                        "status": "Forthcoming",
+                    }),
+                    "Naval Research Logistics, Forthcoming",
+                )
+
+    def test_conditional_accept_working_status_is_unchanged(self):
+        status = "Conditional Accept at Production and Operations Management"
+        self.assertEqual(
+            paper_citation({
+                "type": "working",
+                "venue": "Production and Operations Management",
+                "status": status,
+            }),
+            status,
+        )
+
+    def test_published_citation_without_status_is_unchanged(self):
+        self.assertEqual(
+            paper_citation({
+                "type": "journal",
+                "venue": "Operations Research",
+                "volume": "74",
+                "number": "2",
+                "pages": "879-897",
+            }),
+            "Operations Research, 74(2), 879–897",
+        )
+
     def test_cards_match_paper_data(self):
         content = data.load_all()
         with tempfile.TemporaryDirectory() as folder:

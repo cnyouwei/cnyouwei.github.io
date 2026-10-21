@@ -95,6 +95,8 @@ def paper_citation(paper: dict[str, Any]) -> str:
         bits.append(f"{volume}({number})" if number else volume)
     if paper.get("pages"):
         bits.append(paper["pages"].replace("-", "–"))
+    if paper.get("status"):
+        bits.append(paper["status"])
     return ", ".join(part for part in bits if part)
 
 
