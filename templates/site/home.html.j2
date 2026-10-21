@@ -117,18 +117,18 @@
 
         <p id="papers-status" class="papers-status" role="status" aria-live="polite" aria-atomic="true">{{ (working_papers | length) + (publications | length) }} papers</p>
         <div id="papersList">
-          <section class="paper-group" data-group="working">
-            <h3 class="paper-group-title">Working Papers</h3>
-            <div class="paper-list">
-              {% for paper in working_papers %}
-              {% include 'partials/paper.html.j2' %}
-              {% endfor %}
-            </div>
-          </section>
           <section class="paper-group" data-group="publications">
             <h3 class="paper-group-title">Publications</h3>
             <div class="paper-list">
               {% for paper in publications %}
+              {% include 'partials/paper.html.j2' %}
+              {% endfor %}
+            </div>
+          </section>
+          <section class="paper-group" data-group="working">
+            <h3 class="paper-group-title">Working Papers</h3>
+            <div class="paper-list">
+              {% for paper in working_papers %}
               {% include 'partials/paper.html.j2' %}
               {% endfor %}
             </div>
