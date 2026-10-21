@@ -285,6 +285,24 @@ class BuiltArtifactTests(unittest.TestCase):
         with patch.object(checks, "DIST_DIR", self.root), redirect_stdout(StringIO()):
             checks.check_site(self.content)
 
+    def test_pages_omit_eyebrow_labels_and_keep_research_headings(self):
+        import re
+
+        for page in self.root.rglob("*.html"):
+            source = page.read_text(encoding="utf-8")
+            with self.subTest(page=page.relative_to(self.root).as_posix()):
+                self.assertNotRegex(source, r'class="[^"]*\beyebrow\b')
+                self.assertIn("<h1", source)
+
+        home = (self.root / "index.html").read_text(encoding="utf-8")
+        self.assertNotIn(self.content.profile["tagline"], home)
+        self.assertIn("<h2>Research</h2>", home)
+        self.assertEqual(
+            re.findall(r'<h3 class="paper-group-title">(.*?)</h3>', home),
+            ["Publications", "Working Papers"],
+        )
+        self.assertNotIn(".eyebrow", (self.root / "css/site.css").read_text(encoding="utf-8"))
+
     def test_inline_theme_matches_csp_hash_and_policy_precedes_scripts(self):
         import base64
         import hashlib

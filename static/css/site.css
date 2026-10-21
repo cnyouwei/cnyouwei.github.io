@@ -100,7 +100,6 @@ button { cursor: pointer; }
 .section + .section { border-top: 1px solid var(--line); }
 .section-header { margin-bottom: 1.6rem; }
 .section-header h2 { margin-bottom: 0; }
-.eyebrow { margin: 0 0 0.6rem; color: var(--accent); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; }
 .split-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3rem; align-items: start; }
 
 /* Header. Navigation is visible until its own enhancement is ready. */
@@ -255,7 +254,6 @@ mjx-container[jax="CHTML"][display="true"] { max-width: 100%; overflow-x: auto; 
   .nav-ready .site-nav.open { display: flex; }
   .nav-ready .nav-link { min-height: 44px; display: flex; align-items: center; }
   .hero-grid { grid-template-columns: minmax(0, 1fr) 120px; gap: 1.3rem; }
-  .hero-content .eyebrow { font-size: 0.64rem; }
   .hero-title { font-size: 0.86rem; }
   .split-grid { grid-template-columns: 1fr; gap: 2rem; }
   .controls { align-items: stretch; }
