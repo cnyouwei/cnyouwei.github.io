@@ -138,15 +138,16 @@
       "id": "robust-queueing-abandonment",
       "type": "journal",
       "year": 2026,
-      "title": "Robust Queueing for Single-Server Queues with Abandonment",
+      "title": "Robust queueing for single-server queues with abandonment",
       "selected": true,
       "topic": "Queueing Theory",
       "authors": ["Wei You"],
       "corresponding": ["Wei You"],
-      "status": "Forthcoming",
       "venue": "Queueing Systems",
+      "venue_display": "Queueing Systems, 110, Article 49",
       "abstract": "Single-server queues with customer abandonment arise in call centers and other service systems, yet their steady-state performance is analytically tractable only in special cases. We develop Robust Queueing approximations for the mean stationary virtual waiting time in the $GI/GI/1+GI$ model. Our starting point is an exact reverse-time representation of the workload in terms of the net-input process, defined as the work brought by customers who eventually enter service minus cumulative service capacity. RQ approximates this random process by its mean plus a robustness parameter times its standard deviation. Abandonment makes both moments endogenous because the probability that a customer enters service depends on the waiting time observed upon arrival. We resolve this dependence by imposing self-consistency through a deterministic trial approximation to the mean stationary virtual waiting time. For the drift, the Poisson compensator identity is exact under Poisson arrivals; under renewal arrivals, the resulting mean Palm correction is controlled on the relevant heavy-traffic optimizer scales. For the variance, we develop a deterministic-time-change surrogate and a refined finite-system surrogate. The refined surrogate interpolates between two proved variance limits using a scale-dependent variance-reduction factor derived from a heavy-traffic diffusion limit. Both constructions reduce to one-dimensional fixed-point equations that can be solved by bisection using the arrival index of dispersion for counts, the service-time squared coefficient of variation, and the patience distribution. We establish heavy-traffic limits for the $GI/GI/1+GI$ model and for both RQ fixed points, which calibrate the robustness parameter and provide theoretical support for the variance-reduction function. Numerical experiments show that the refined approximation is accurate over a broad parameter range.",
       "links": [
+        { "label": "Journal", "url": "https://link.springer.com/article/10.1007/s11134-026-10009-2" },
         { "label": "arXiv", "url": "https://arxiv.org/abs/2603.00982" },
         { "label": "Code", "url": "https://github.com/cnyouwei/RQ_ab_toolkit.git" }
       ]
