@@ -4,7 +4,7 @@
   "papers": [
     {
       "id": "service-rate-differentiation",
-      "type": "working",
+      "type": "journal",
       "year": 2026,
       "title": "Service Rate Differentiation for Homogeneous Impatient Customers",
       "selected": false,
@@ -12,12 +12,26 @@
       "authors": ["Chenguang (Allen) Wu", "Wei You"],
       "alphabetical": true,
       "corresponding": ["Wei You"],
-      "status": "Conditional Accept at Production and Operations Management",
+      "status": "Conditional Accept",
       "venue": "Production and Operations Management",
       "abstract": "We study joint service rate and waiting time differentiation for homogeneous impatient customers in many-server quality-based queueing systems, where longer services generate higher values but customers may abandon if they wait too long. Customers are homogeneous upon arrival, but the system manager can differentiate them in two dimensions: by assigning each customer to one of many service grades corresponding to different service rates, and by using customers' elapsed waiting times as a scheduling signal to further differentiate those who are waiting in queue. The manager jointly chooses the service grades, an allocation rule that assigns arriving customers to grades, and a scheduling policy that prioritizes customers across and within each grade. Because an exact stochastic analysis of this joint optimization problem is intractable, we adopt a fluid approach and translate the fluid solution into implementable policies for the underlying stochastic system. Our main structural result is that there exists an optimal fluid policy with at most two active service rate and offered wait pairs, regardless of the welfare function or patience time distribution. This reduces the complicated design problem to operationally simple policies. Motivated by our fluid analysis, we propose using a randomized grade assignment at customer arrival and a priority rule based on grade labels and elapsed waiting times, and establish a formal performance guarantee for this policy in Markovian systems. Our framework can easily extend to heterogeneous customers, where we show at most one customer class needs to be further differentiated, thereby suggesting a robust principle of implementing joint service rate and waiting time differentiation.",
       "links": [
         { "label": "PDF", "url": "assets/papers/Wu_You_SRD.pdf" }
       ]
+    },
+    {
+      "id": "interchange-join-shortest-queue-rv",
+      "type": "working",
+      "year": 2026,
+      "title": "Exponential Ergodicity and Invariant Distribution of a Degenerate Reflected SDE with Stable Noise",
+      "selected": true,
+      "topic": "Queueing Theory",
+      "authors": ["Guodong Pang","Wei You"],
+      "corresponding": ["Wei You"],
+      "status": "Under review at Mathematics of Operations Research",
+      "venue": "Mathematics of Operations Research",
+      "abstract": "We study a two-dimensional degenerate stochastic differential equation with oblique reflection and spectrally positive strictly stable noise of index in $(1,2)$, motivated by join-the-shortest-queue systems with heavy-tailed interarrival times. A polynomial–exponential Lyapunov function and fixed-time minorization establish positive Harris recurrence and exponential ergodicity in weighted total variation. We construct the invariant law from a stable path and prove its absolute continuity. Regulator identities describe stationary dependence and recover the joint Laplace transform from the queue marginal. Idleness inherits the classical stable Ornstein–Uhlenbeck tail; the queue has a sharp exponential tail with a polynomial prefactor whose power is half the stable index and a positive constant represented through regeneration. Conditional on small idleness, idleness divided by the conditioning threshold and the queue converge to independent beta and size-biased limits. Under large-queue conditioning, normalized idleness and queue excess converge to independent Mittag–Leffler and exponential limits.",
+      "links": []
     },
     {
       "id": "transfer-learning-causal-bounds",
@@ -36,20 +50,6 @@
       "links": [
         { "label": "arXiv", "url": "https://arxiv.org/abs/2308.03572" }
       ]
-    },
-    {
-      "id": "interchange-join-shortest-queue-rv",
-      "type": "working",
-      "year": 2026,
-      "title": "Exponential Ergodicity and Invariant Distribution of a Degenerate Reflected SDE with Stable Noise",
-      "selected": true,
-      "topic": "Queueing Theory",
-      "authors": ["Guodong Pang","Wei You"],
-      "corresponding": ["Wei You"],
-      "status": "Under review at Mathematics of Operations Research",
-      "venue": "Mathematics of Operations Research",
-      "abstract": "We study a two-dimensional degenerate stochastic differential equation with oblique reflection and spectrally positive strictly stable noise of index in $(1,2)$, motivated by join-the-shortest-queue systems with heavy-tailed interarrival times. A polynomial–exponential Lyapunov function and fixed-time minorization establish positive Harris recurrence and exponential ergodicity in weighted total variation. We construct the invariant law from a stable path and prove its absolute continuity. Regulator identities describe stationary dependence and recover the joint Laplace transform from the queue marginal. Idleness inherits the classical stable Ornstein–Uhlenbeck tail; the queue has a sharp exponential tail with a polynomial prefactor whose power is half the stable index and a positive constant represented through regeneration. Conditional on small idleness, idleness divided by the conditioning threshold and the queue converge to independent beta and size-biased limits. Under large-queue conditioning, normalized idleness and queue excess converge to independent Mittag–Leffler and exponential limits.",
-      "links": []
     },
     {
       "id": "interchange-join-shortest-queue",
