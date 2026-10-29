@@ -41,14 +41,14 @@
       "id": "interchange-join-shortest-queue-rv",
       "type": "working",
       "year": 2026,
-      "title": "Exponential Ergodicity and the Invariant Law of a Degenerate Reflected SDE with Stable Noise",
+      "title": "Exponential Ergodicity and Invariant Distribution of a Degenerate Reflected SDE with Stable Noise",
       "selected": true,
       "topic": "Queueing Theory",
       "authors": ["Guodong Pang","Wei You"],
       "corresponding": ["Wei You"],
-      "status": "Preparing submission to Mathematics of Operations Research",
+      "status": "Under review at Mathematics of Operations Research",
       "venue": "Mathematics of Operations Research",
-      "abstract": "We study a two-dimensional degenerate stochastic differential equation with oblique reflection driven by a spectrally positive strictly $\\alpha$-stable L\\'evy process, $1<\\alpha<2$, arising from join-the-shortest-queue systems with heavy-tailed interarrival times. Noise drives idleness, while the regulator transmits randomness to the queue. A polynomial--exponential Lyapunov function and fixed-time minorization establish positive Harris recurrence and exponential ergodicity in weighted total variation. We construct the invariant law from a stable path and prove joint absolute continuity. Regulator occupation identities yield exact mixed moments, negative covariance, and reconstruction of the joint Laplace transform from the queue marginal. We obtain the idleness power-law tail constant and the queue's logarithmic tail rate. Near the reflecting boundary, scaled idleness and the queue converge conditionally to an independent beta variable and size-biased queue. The boundary and upper-tail asymptotics determine the complete real-power moment range of idleness.",
+      "abstract": "We study a two-dimensional degenerate stochastic differential equation with oblique reflection and spectrally positive strictly stable noise of index in $(1,2)$, motivated by join-the-shortest-queue systems with heavy-tailed interarrival times. A polynomial–exponential Lyapunov function and fixed-time minorization establish positive Harris recurrence and exponential ergodicity in weighted total variation. We construct the invariant law from a stable path and prove its absolute continuity. Regulator identities describe stationary dependence and recover the joint Laplace transform from the queue marginal. Idleness inherits the classical stable Ornstein–Uhlenbeck tail; the queue has a sharp exponential tail with a polynomial prefactor whose power is half the stable index and a positive constant represented through regeneration. Conditional on small idleness, idleness divided by the conditioning threshold and the queue converge to independent beta and size-biased limits. Under large-queue conditioning, normalized idleness and queue excess converge to independent Mittag–Leffler and exponential limits.",
       "links": []
     },
     {
