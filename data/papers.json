@@ -31,7 +31,9 @@
       "status": "Under review at Mathematics of Operations Research",
       "venue": "Mathematics of Operations Research",
       "abstract": "We study a two-dimensional degenerate stochastic differential equation with oblique reflection and spectrally positive strictly stable noise of index in $(1,2)$, motivated by join-the-shortest-queue systems with heavy-tailed interarrival times. A polynomial–exponential Lyapunov function and fixed-time minorization establish positive Harris recurrence and exponential ergodicity in weighted total variation. We construct the invariant law from a stable path and prove its absolute continuity. Regulator identities describe stationary dependence and recover the joint Laplace transform from the queue marginal. Idleness inherits the classical stable Ornstein–Uhlenbeck tail; the queue has a sharp exponential tail with a polynomial prefactor whose power is half the stable index and a positive constant represented through regeneration. Conditional on small idleness, idleness divided by the conditioning threshold and the queue converge to independent beta and size-biased limits. Under large-queue conditioning, normalized idleness and queue excess converge to independent Mittag–Leffler and exponential limits.",
-      "links": []
+      "links": [
+        { "label": "arXiv", "url": "https://arxiv.org/abs/2610.39471" }
+      ]
     },
     {
       "id": "transfer-learning-causal-bounds",
