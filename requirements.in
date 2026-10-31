@@ -1,4 +1,4 @@
 # Runtime dependencies. Regenerate the hashed lock with pip-compile.
 Jinja2>=3.1.6,<4
-Markdown>=3.10.2,<4
+Markdown>=3.11,<4
 pymdown-extensions>=11.0.2,<12
