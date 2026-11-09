@@ -3,6 +3,24 @@
   "highlight_authors": ["Wei You"],
   "papers": [
     {
+      "id": "transfer-learning-causal-bounds",
+      "type": "journal",
+      "year": 2026,
+      "title": "Efficient Transfer Learning via Causal Bounds",
+      "selected": false,
+      "topic": "Transfer Learning and Causal Inference",
+      "authors": ["Xueping Gong", "Wei You", "Jiheng Zhang"],
+      "student_authors": ["Xueping Gong"],
+      "alphabetical": true,
+      "corresponding": ["Wei You"],
+      "status": "Forthcoming",
+      "venue": "Operations Research",
+      "abstract": "Transfer learning seeks to accelerate sequential decision-making by leveraging offline data from related agents. However, data from heterogeneous sources that differ in observed features, logging policies, or unobserved confounders often render causal effects non-identifiable and bias naive estimators. We address this by forming ambiguity sets of structural causal models defined via integral constraints on their joint densities. Optimizing any causal effect over these sets leads to generally non-convex programs whose solutions tightly bound the range of possible effects under heterogeneity or confounding. To solve these programs efficiently, we develop a sample-then-optimize framework to produce causal bound estimates that converge to the true limits and quantify the optimality gaps by outer relaxation. We further accommodate estimation error by relaxing the ambiguity set and exploit the Lipschitz continuity of causal effects to establish precise error propagation guarantees. These causal bounds are then embedded into bandit algorithms via arm elimination and truncated UCB indices, yielding optimal gap-dependent and minimax regret bounds. To handle estimation error, we also develop a safe algorithm for incorporating noisy causal bounds. In the contextual-bandit setting with function approximation, our method uses causal bounds to prune both the function class and the per-context action set, achieving matching upper and lower regret bounds with only logarithmic dependence on function-class complexity. Our analysis precisely characterizes when and how causal side-information accelerates online learning, and experiments on synthetic benchmarks confirm substantial regret reductions in confounded regimes.",
+      "links": [
+        { "label": "arXiv", "url": "https://arxiv.org/abs/2308.03572" }
+      ]
+    },
+    {
       "id": "service-rate-differentiation",
       "type": "journal",
       "year": 2026,
@@ -33,24 +51,6 @@
       "abstract": "We study a two-dimensional degenerate stochastic differential equation with oblique reflection and spectrally positive strictly stable noise of index in $(1,2)$, motivated by join-the-shortest-queue systems with heavy-tailed interarrival times. A polynomial–exponential Lyapunov function and fixed-time minorization establish positive Harris recurrence and exponential ergodicity in weighted total variation. We construct the invariant law from a stable path and prove its absolute continuity. Regulator identities describe stationary dependence and recover the joint Laplace transform from the queue marginal. Idleness inherits the classical stable Ornstein–Uhlenbeck tail; the queue has a sharp exponential tail with a polynomial prefactor whose power is half the stable index and a positive constant represented through regeneration. Conditional on small idleness, idleness divided by the conditioning threshold and the queue converge to independent beta and size-biased limits. Under large-queue conditioning, normalized idleness and queue excess converge to independent Mittag–Leffler and exponential limits.",
       "links": [
         { "label": "arXiv", "url": "https://arxiv.org/abs/2610.39471" }
-      ]
-    },
-    {
-      "id": "transfer-learning-causal-bounds",
-      "type": "working",
-      "year": 2026,
-      "title": "Efficient Transfer Learning via Causal Bounds",
-      "selected": false,
-      "topic": "Transfer Learning and Causal Inference",
-      "authors": ["Xueping Gong", "Wei You", "Jiheng Zhang"],
-      "student_authors": ["Xueping Gong"],
-      "alphabetical": true,
-      "corresponding": ["Wei You"],
-      "status": "Minor revision at Operations Research",
-      "venue": "Operations Research",
-      "abstract": "Transfer learning seeks to accelerate sequential decision-making by leveraging offline data from related agents. However, data from heterogeneous sources that differ in observed features, logging policies, or unobserved confounders often render causal effects non-identifiable and bias naive estimators. We address this by forming ambiguity sets of structural causal models defined via integral constraints on their joint densities. Optimizing any causal effect over these sets leads to generally non-convex programs whose solutions tightly bound the range of possible effects under heterogeneity or confounding. To solve these programs efficiently, we develop a sample-then-optimize framework to produce causal bound estimates that converge to the true limits and quantify the optimality gaps by outer relaxation. We further accommodate estimation error by relaxing the ambiguity set and exploit the Lipschitz continuity of causal effects to establish precise error propagation guarantees. These causal bounds are then embedded into bandit algorithms via arm elimination and truncated UCB indices, yielding optimal gap-dependent and minimax regret bounds. To handle estimation error, we also develop a safe algorithm for incorporating noisy causal bounds. In the contextual-bandit setting with function approximation, our method uses causal bounds to prune both the function class and the per-context action set, achieving matching upper and lower regret bounds with only logarithmic dependence on function-class complexity. Our analysis precisely characterizes when and how causal side-information accelerates online learning, and experiments on synthetic benchmarks confirm substantial regret reductions in confounded regimes.",
-      "links": [
-        { "label": "arXiv", "url": "https://arxiv.org/abs/2308.03572" }
       ]
     },
     {
@@ -135,7 +135,6 @@
         { "label": "PDF", "url": "assets/papers/Wang_You_ORA.pdf" }
       ]
     },
-
     {
       "id": "robust-queueing-abandonment",
       "type": "journal",
