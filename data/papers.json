@@ -57,17 +57,20 @@
       "id": "interchange-join-shortest-queue",
       "type": "working",
       "year": 2026,
-      "title": "Steady-State Limit Interchange for Join-the-Shortest-Queue in the Nondegenerate Slowdown Regime",
+      "title": "Routing Information and Stationary Limits in Many-Server Load Balancing",
       "selected": false,
       "topic": "Queueing Theory",
-      "authors": ["Wei You"],
-      "corresponding": ["Wei You"],
-      "status": "Under review at Operations Research",
-      "venue": "Operations Research",
-      "abstract": "We establish steady-state validity of the nondegenerate slowdown diffusion approximation for the stationary marginal of normalized total population in a homogeneous Markovian parallel-server system operating under join-the-shortest-queue, with one queue at each server. Without abandonment, the finite-horizon diffusion limit and its invariant law were known, but stationary convergence remained open because irrevocable routing allows idle servers and waiting jobs to coexist. A Palm analysis of marked excursions controls stationary idleness in high-population states; combined with a state-space-collapse estimate, this yields population tail control. We prove convergence of the stationary normalized-population marginal, interchange of the two iterated limits, and convergence of stationary moments. We also study customer abandonment with mean patience proportional to system size. From balanced initial queue lengths we prove the normalized-population diffusion limit, and separately prove convergence of the stationary normalized-population marginal. Abandonment adds a linear mean-reverting drift and gives Gaussian-type decay in the limiting invariant density without altering the lower-boundary effect of idleness.",
-      "links": [
-        { "label": "PDF", "url": "assets/papers/You_NDS.pdf" }
-      ]
+      "authors": [
+        "Wei You"
+      ],
+      "corresponding": [
+        "Wei You"
+      ],
+      "status": "Under review at Mathematics of Operations Research",
+      "venue": "Mathematics of Operations Research",
+      "abstract": "We study how routing information determines stationary congestion in many-server systems with Poisson arrivals and homogeneous exponential servers. We consider policies that prioritize idle servers and choose queues stochastically no longer than a uniform choice. In nondegenerate slowdown, where spare capacity is fixed, we identify population laws from the fraction of queues with waiting jobs at each population level. We establish these laws for one-job priority, join-idle-queue, and idle-first sampling. One-job priority attains the join-the-shortest-queue population law and mean delays; further queue information can improve limiting delays in convex order without changing their means. In the super-Halfin–Whitt and Halfin–Whitt regimes, every such policy has the same stationary limits. Our estimates bound idleness-weighted occupancy tails in terms of ordinary tails, uniformly over queue-length thresholds and policies. They also yield process convergence and limit interchange for initial laws uniformly dominated by stationarity, with convergent scaled initial states.",
+      "links": [],
+      "note": "Submitted to arXiv; public link forthcoming."
     },
     {
       "id": "principal-fairness-ot",
