@@ -50,7 +50,6 @@ PUBLISHED_UNLINKED_PDFS = frozenset({
     "papers/RQNA_CUHK_SZ.pdf",
     "papers/Whitt_You_RQNA_main.pdf",
     "papers/Whitt_You_flow.pdf",
-    "papers/You_NDS.pdf",  # Superseded manuscript; preserve existing external URLs.
 })
 
 # Paper badge labels by type (site)
