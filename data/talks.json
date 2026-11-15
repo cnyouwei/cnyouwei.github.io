@@ -120,7 +120,7 @@
     }
   ],
   "invited_talks": [
-    { "host": "Department of Decision Analytics and Operations, City University of Hong Kong", "years": [2026], "title": "Learning What Evidence to Collect: Adaptive Experimental Design for Reliable Decisions" },
+    { "host": "Department of Decision Analytics and Operations, City University of Hong Kong", "years": [2026] },
     { "host": "Miami Herbert Business School, University of Miami", "years": [2025] },
     { "host": "Antai College of Economics and Management, Shanghai Jiao Tong University", "years": [2025] },
     { "host": "Institute of Statistics and Big Data, Renmin University of China", "years": [2024] },
