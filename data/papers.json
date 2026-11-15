@@ -39,6 +39,7 @@
     },
     {
       "id": "interchange-join-shortest-queue-rv",
+      "updated": "2026-10-30",
       "type": "working",
       "year": 2026,
       "title": "Exponential Ergodicity and Invariant Distribution of a Degenerate Reflected SDE with Stable Noise",
@@ -55,6 +56,7 @@
     },
     {
       "id": "interchange-join-shortest-queue",
+      "updated": "2026-11-15",
       "type": "working",
       "year": 2026,
       "title": "Routing Information and Stationary Limits in Many-Server Load Balancing",
@@ -69,11 +71,11 @@
       "status": "Under review at Mathematics of Operations Research",
       "venue": "Mathematics of Operations Research",
       "abstract": "We study how routing information determines stationary congestion in many-server systems with Poisson arrivals and homogeneous exponential servers. We consider policies that prioritize idle servers and choose queues stochastically no longer than a uniform choice. In nondegenerate slowdown, where spare capacity is fixed, we identify population laws from the fraction of queues with waiting jobs at each population level. We establish these laws for one-job priority, join-idle-queue, and idle-first sampling. One-job priority attains the join-the-shortest-queue population law and mean delays; further queue information can improve limiting delays in convex order without changing their means. In the super-Halfin–Whitt and Halfin–Whitt regimes, every such policy has the same stationary limits. Our estimates bound idleness-weighted occupancy tails in terms of ordinary tails, uniformly over queue-length thresholds and policies. They also yield process convergence and limit interchange for initial laws uniformly dominated by stationarity, with convergent scaled initial states.",
-      "links": [],
-      "note": "Submitted to arXiv; public link forthcoming."
+      "links": []
     },
     {
       "id": "principal-fairness-ot",
+      "updated": "2026-07-23",
       "type": "working",
       "year": 2026,
       "title": "Principal Fairness with Optimal Transport for Heterogeneous Population",
@@ -87,6 +89,7 @@
     },
     {
       "id": "cost-aware-structured-bandits",
+      "updated": "2026-09-23",
       "type": "working",
       "year": 2026,
       "title": "Cost-Aware Exploration for Structured Bandits",
@@ -103,6 +106,7 @@
     },
     {
       "id": "frank-wolfe-self-play",
+      "updated": "2026-09-23",
       "type": "working",
       "year": 2026,
       "title": "Pure Exploration via Frank–Wolfe Self-Play",

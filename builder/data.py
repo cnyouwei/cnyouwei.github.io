@@ -6,6 +6,7 @@ a JSON file never ships as a silently broken page.
 
 from __future__ import annotations
 
+from datetime import date
 import json
 import re
 from dataclasses import dataclass, field
@@ -85,6 +86,11 @@ def _validate_papers(payload: dict[str, Any]) -> tuple[list[dict[str, Any]], lis
         year = _require(paper, "year", where)
         if type(year) is not int or not 1000 <= year <= 9999:
             raise DataError(f"{where}: year must be an integer")
+        if "updated" in paper:
+            try:
+                date.fromisoformat(paper["updated"])
+            except (TypeError, ValueError) as exc:
+                raise DataError(f"{where}: updated must be an ISO date") from exc
         authors = _require(paper, "authors", where)
         _strings(authors, f"{where} authors")
         for key in ("topic", "volume", "number", "pages", "abstract", "note", "status"):

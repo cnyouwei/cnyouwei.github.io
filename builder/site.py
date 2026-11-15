@@ -66,7 +66,11 @@ def _prepare_paper(paper: dict[str, Any], highlight: list[str]) -> dict[str, Any
 def build_context(data: SiteData) -> dict[str, Any]:
     papers = [_prepare_paper(p, data.highlight_authors) for p in data.papers]
     by_year = sorted(papers, key=lambda p: p["year"], reverse=True)
-    working = [p for p in by_year if p["type"] == "working"]
+    working = sorted(
+        (p for p in by_year if p["type"] == "working"),
+        key=lambda p: p.get("updated", f"{p['year']}-01-01"),
+        reverse=True,
+    )
     publications = [p for p in by_year if p["type"] != "working"]
     selected = [p for p in by_year if p.get("selected")]
     topics = sorted({p["topic"] for p in papers})

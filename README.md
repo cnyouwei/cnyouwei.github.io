@@ -255,3 +255,13 @@ equations; no separate KaTeX stylesheet is loaded. The native mode follows
   palettes use `tone1`–`tone5`, `neutral`, and `accent` classes in `blog.css`.
 - Theme preference is stored in `wy-theme` and `wy-theme-source`; without a
   saved manual choice, the site follows the system theme.
+
+### Working-paper ordering
+
+Working papers are sorted newest-first by `updated` (YYYY-MM-DD). This is the date
+of the latest substantive public-entry update (metadata, manuscript, or link),
+not unannounced private draft activity. Keep it current when updating an entry.
+Ties preserve source order; publications retain publication-year order. The CV
+is maintained separately and should mirror this working-paper order. Initial
+dates were recovered from the repository history: routing Nov 15, 2026;
+stable-noise Oct 30; Cost-Aware and FWSP Sep 23; Principal Fairness Jul 23.
