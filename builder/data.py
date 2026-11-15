@@ -228,6 +228,7 @@ def _validate_talks(payload: dict[str, Any]) -> dict[str, Any]:
                 raise DataError("talks.json by_coauthor: expected true or false")
     for talk in list_value(_require(payload, "invited_talks", "talks.json"), "talks.json invited_talks"):
         text_value(_require(talk, "host", "talks.json invited_talks"), "talks.json host")
+        _optional_strings(talk, ("title",), "talks.json invited_talks")
         years = list_value(_require(talk, "years", f"talks.json invited[{talk.get('host', '?')}]"), "talks.json years")
         if not years or any(type(year) is not int or not 1000 <= year <= 9999 for year in years):
             raise DataError("talks.json years: expected calendar years as integers")

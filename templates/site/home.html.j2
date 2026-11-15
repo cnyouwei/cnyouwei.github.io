@@ -159,7 +159,7 @@
             <h3>Invited Talks</h3>
             <ul class="stack-list">
               {% for talk in talks.invited_talks %}
-              <li>{{ talk.host }}, {{ talk.years | join(', ') }}</li>
+              <li>{% if talk.title %}<em>{{ talk.title }}</em><br>{% endif %}{{ talk.host }}, {{ talk.years | join(', ') }}</li>
               {% endfor %}
             </ul>
           </article>

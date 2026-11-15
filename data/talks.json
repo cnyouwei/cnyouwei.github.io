@@ -3,6 +3,22 @@
   "coauthor_note": "* Presented by co-authors",
   "conference_talks": [
     {
+      "title": "Exponential Ergodicity and Invariant Distribution of a Degenerate Reflected SDE with Stable Noise",
+      "venues": [
+        {
+          "venue": "ASCI 2027, Guangzhou (scheduled)"
+        }
+      ]
+    },
+    {
+      "title": "Ranking-and-Selection with Multiple Correct Answers and Non-Answerable Estimates",
+      "venues": [
+        {
+          "venue": "Winter Simulation Conference (WSC) 2026, Glasgow, Scotland (scheduled)"
+        }
+      ]
+    },
+    {
       "title": "Minimax Optimality in Contextual Dynamic Pricing with General Valuation Models",
       "venues": [
         { "venue": "2026 POMS International Conference in China, Xi'an", "by_coauthor": true }
@@ -104,6 +120,7 @@
     }
   ],
   "invited_talks": [
+    { "host": "Department of Decision Analytics and Operations, City University of Hong Kong", "years": [2026], "title": "Learning What Evidence to Collect: Adaptive Experimental Design for Reliable Decisions" },
     { "host": "Miami Herbert Business School, University of Miami", "years": [2025] },
     { "host": "Antai College of Economics and Management, Shanghai Jiao Tong University", "years": [2025] },
     { "host": "Institute of Statistics and Big Data, Renmin University of China", "years": [2024] },
