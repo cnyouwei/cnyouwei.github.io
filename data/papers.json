@@ -71,7 +71,9 @@
       "status": "Under review at Mathematics of Operations Research",
       "venue": "Mathematics of Operations Research",
       "abstract": "We study how routing information determines stationary congestion in many-server systems with Poisson arrivals and homogeneous exponential servers. We consider policies that prioritize idle servers and choose queues stochastically no longer than a uniform choice. In nondegenerate slowdown, where spare capacity is fixed, we identify population laws from the fraction of queues with waiting jobs at each population level. We establish these laws for one-job priority, join-idle-queue, and idle-first sampling. One-job priority attains the join-the-shortest-queue population law and mean delays; further queue information can improve limiting delays in convex order without changing their means. In the super-Halfin–Whitt and Halfin–Whitt regimes, every such policy has the same stationary limits. Our estimates bound idleness-weighted occupancy tails in terms of ordinary tails, uniformly over queue-length thresholds and policies. They also yield process convergence and limit interchange for initial laws uniformly dominated by stationarity, with convergent scaled initial states.",
-      "links": []
+      "links": [
+        { "label": "arXiv", "url": "https://arxiv.org/abs/2611.19766" }
+      ]
     },
     {
       "id": "principal-fairness-ot",
